@@ -30,7 +30,7 @@ export const AuthComponent = () => {
     <main className="grid items-center justify-center min-h-[800px] bg-background">
       <Card className="w-[350px] bg-card">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Log In</CardTitle>
+          <CardTitle className="text-2xl text-center">Inicio sesión</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit}>
