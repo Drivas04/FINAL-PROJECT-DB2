@@ -1,18 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from './components/ui/button'
+import "./App.css";
+import { AuthComponent } from "./Auth/AuthComponent";
+import { Header } from "./components/Header";
+import { Button } from "./components/ui/button";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1 className='text-2xl text-center'>Hola mundo</h1>
-      <Button>Press me</Button>
+      <Header />
+      <AuthComponent />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
