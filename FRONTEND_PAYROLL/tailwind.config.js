@@ -61,7 +61,12 @@ export default {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		}
-  	}
+  	},
+	screens: {
+		phone: "640px",  
+		tablet: "768px",  
+		pc: "1024px",     
+	  }
   },
   plugins: [require("tailwindcss-animate")],
 }

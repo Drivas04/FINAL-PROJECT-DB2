@@ -8,10 +8,12 @@ export const authHelper = (username, password, setUser, setError) => {
         setUser(newUser);
         setError("");
         console.log("exito");
+        return true;
 
     } else{
 
         setError("Tus credenciales son incorrectas. Por favor intenta nuevamente.")
+        return false;
 
     }
 }

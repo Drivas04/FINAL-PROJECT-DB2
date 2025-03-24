@@ -7,6 +7,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useForm } from "@/hooks/useForm";
 import { authHelper } from "@/helpers/authHelper";
+import { useNavigate } from "react-router-dom";
 
 export const AuthComponent = () => {
   const initialForm = {
@@ -17,13 +18,15 @@ export const AuthComponent = () => {
   const { formState, onInputChange } = useForm(initialForm);
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const { username, password } = formState;
 
   const onSubmit = (event) => {
-    authHelper(username, password, setUser, setError);
     event.preventDefault();
-    //console.log(formState);
+    if(authHelper(username, password, setUser, setError)){
+      navigate('/dashboard')
+    }
   };
 
   return (
