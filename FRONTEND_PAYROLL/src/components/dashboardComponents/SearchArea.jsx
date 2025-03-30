@@ -1,24 +1,30 @@
-import React from 'react'
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-
+import { Card, CardContent, CardTitle , CardHeader, CardDescription} from "@/components/ui/card";
 
 export const SearchArea = () => {
   return (
-     <Card className="row-span-2 border rounded-lg shadow-md flex justify-center p-6">
-              <CardContent className="grid grid-cols-2 grid-rows-2 gap-1.5">
-                <div>
-                  <Label htmlFor="email">Id del empleado</Label>
-                </div>
-                <div className="row-span-2 content-end">
-                  <Button type="submit">Buscar</Button>
-                </div>
-                <div>
-                  <Input type="text" name="id" placeholder="Id del empleado" />
-                </div>
-              </CardContent>
-            </Card>
-  )
-}
+    <Card className='h-auto'>
+      <CardHeader>
+        <CardTitle>
+        <h1 className="text-violet-600 text-4xl font-semibold">
+            Buscar empleado
+          </h1>
+        </CardTitle>
+        <CardDescription>Busca uno de los empleados activos por su identificador unico</CardDescription>
+      </CardHeader>
+      <CardContent>
+          <div className="grid w-full items-center gap-4">
+              <Label htmlFor="name">Identificador del empleado</Label>
+            <div className="flex flex-row gap-3">
+              <Input id="name" placeholder="Id" />
+              <Button>Buscar</Button>
+            </div>
+
+          </div>
+      </CardContent>
+    </Card>
+  );
+};

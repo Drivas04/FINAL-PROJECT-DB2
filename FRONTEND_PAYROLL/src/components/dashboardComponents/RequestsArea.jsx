@@ -1,33 +1,38 @@
-import React from 'react'
+import React from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { requests } from '@/data/requests';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { requests } from "@/data/requests";
 
 export const RequestsArea = () => {
-
-    const reqs = requests;
+  const reqs = requests;
   return (
-    <Card className="row-span-2 row-start-3 border rounded-lg shadow-md">
-              <div className="p-4">
-                <CardTitle>
-                  <h1 className="text-violet-600 text-4xl font-semibold">
-                    Solicitudes pendientes
-                  </h1>
-                </CardTitle>
-                <br />
-                <hr />
-                <CardContent>
-                  <ul className="pt-4 pl-4">
-                    {reqs.map((req) => {
-                      return (
-                        <div key={req.id}>
-                          <li>{req.requestType}</li>
-                          <hr />
-                        </div>
-                      );
-                    })}
-                  </ul>
-                </CardContent>
-              </div>
-            </Card>
-  )
-}
+    <Card >
+      <div className="p-4">
+        <CardTitle>
+          <h1 className="text-violet-600 text-4xl font-semibold">
+            Solicitudes pendientes
+          </h1>
+        </CardTitle>
+        <br />
+        <hr />
+        <CardContent>
+          <ScrollArea className="h-72 w-full rounded-md border">
+            <div className="p-4">
+              {reqs.map((req) => {
+                return (
+                  <div key={req.id}>
+                    <div className="text-sm">
+                      {req.requestType}
+                    </div>
+                    <Separator className="my-2" />
+                  </div>
+                );
+              })}
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </div>
+    </Card>
+  );
+};

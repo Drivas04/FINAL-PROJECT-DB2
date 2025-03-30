@@ -2,19 +2,18 @@ import React from "react";
 import { SearchArea } from "@/components/dashboardComponents/SearchArea";
 import { ActiveEmployeesArea } from "@/components/dashboardComponents/ActiveEmployeesArea";
 import { RequestsArea } from "@/components/dashboardComponents/RequestsArea";
+import { EventsArea } from "@/components/dashboardComponents/EventsArea";
 
 export const DashboardScreen = () => {
   
 
   return (
-    <main className="pl-28 pt-10 pr-14 pb-12">
-      <div className="grid grid-cols-2 grid-rows-4 gap-4">
+    <main className="pl-28 pt-3 pr-14 pb-4">
+      <div className="grid grid-cols-2 grid-rows-2 gap-3">
        <SearchArea/>
         <ActiveEmployeesArea/>
         <RequestsArea/>
-        <div className="col-start-2 row-start-4 border rounded-lg shadow-md">
-          Eventos
-        </div>
+        <EventsArea/>
       </div>
     </main>
   );

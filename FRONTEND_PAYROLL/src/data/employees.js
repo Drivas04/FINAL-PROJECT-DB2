@@ -1,22 +1,20 @@
 export const employees = [
-    { id: 1, name: "Jaime Ruiz", status: true },
-    { id: 2, name: "Mariana López", status: false },
-    { id: 3, name: "Carlos Fernández", status: true },
-    { id: 4, name: "Sofía Ramírez", status: false },
-    { id: 5, name: "Ricardo Gómez", status: true },
-    { id: 6, name: "Fernanda Torres", status: false },
-    { id: 7, name: "Alejandro Morales", status: true },
-    { id: 8, name: "Valeria Mendoza", status: false },
-    { id: 9, name: "Juan Pérez", status: true },
-    { id: 10, name: "Andrea Herrera", status: false },
-    { id: 11, name: "Pedro Castillo", status: true },
-    { id: 12, name: "Camila Rojas", status: false },
-    { id: 13, name: "Francisco Ortega", status: true },
-    { id: 14, name: "Isabela Duarte", status: false },
-    { id: 15, name: "Diego Vargas", status: true },
-    { id: 16, name: "Lucía Estrada", status: false },
-    { id: 17, name: "Emilio Sánchez", status: true },
-    { id: 18, name: "Paola Gutiérrez", status: false },
-    { id: 19, name: "José Ramírez", status: true },
-    { id: 20, name: "Natalia Suárez", status: false },
-  ];
+  {
+    id_empleado: 1,
+    nombre: "Juan Pérez",
+    documento: "1001234567",
+    fecha_nacimiento: "1990-05-12",
+    correo: "juan.perez@email.com",
+    telefono: "3014567890",
+    id_departamento: 2
+  },
+  {
+    id_empleado: 2,
+    nombre: "María Gómez",
+    documento: "1007654321",
+    fecha_nacimiento: "1995-09-22",
+    correo: "maria.gomez@email.com",
+    telefono: "3129876543",
+    id_departamento: 1
+  }
+]

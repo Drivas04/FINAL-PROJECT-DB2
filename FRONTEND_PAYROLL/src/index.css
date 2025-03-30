@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -83,3 +88,6 @@
   }
 }
 
+ul {
+  list-style-type: none;
+}
