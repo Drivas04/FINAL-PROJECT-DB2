@@ -237,6 +237,7 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
       size="icon"
       className={cn("h-7 w-7", className)}
       onClick={(event) => {
+        console.log("click")
         onClick?.(event)
         toggleSidebar()
       }}

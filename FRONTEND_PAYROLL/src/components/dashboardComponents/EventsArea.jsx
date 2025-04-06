@@ -67,16 +67,13 @@ export const EventsArea = () => {
     },
   ];
 
-  const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-  )
 
   return (
     <Card className=" border rounded-lg shadow-md">
       <div className="p-4">
         <CardTitle>
           <h1 className="text-violet-600 text-4xl font-semibold">
-            Empleados Activos
+            Eventos
           </h1>
         </CardTitle>
         <br />

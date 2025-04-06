@@ -16,17 +16,17 @@ export const ActiveEmployeesArea = () => {
         </CardTitle>
         <br />
         <hr />
-        <ScrollArea className="h-full w-full rounded-md border ">
-          <ul className="pt-4 pl-4">
+        <ScrollArea className="h-72 w-full rounded-md border">
+          <div className="p-4">
             {emps.map((emp) => {
               return (
-                <div key={emp.id_empleado}>
-                  <li>{emp.nombre}</li>
+                <div key={emp.id}>
+                  <div className="text-sm">{emp.nombre}</div>
                   <Separator className="my-2" />
                 </div>
               );
             })}
-          </ul>
+          </div>
         </ScrollArea>
       </div>
     </Card>

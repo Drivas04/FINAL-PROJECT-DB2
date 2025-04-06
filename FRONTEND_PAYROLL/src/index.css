@@ -91,3 +91,10 @@ body {
 ul {
   list-style-type: none;
 }
+
+body {
+  position: relative; /* opcional si estás usando fixed en Toaster */
+  overflow-x: hidden; /* ok */
+  overflow-y: auto;   /* ok */
+}
+
