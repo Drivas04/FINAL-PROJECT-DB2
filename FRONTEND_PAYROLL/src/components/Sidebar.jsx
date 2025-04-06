@@ -1,5 +1,6 @@
-import { Home, ScrollText} from "lucide-react";
+import { ScrollText, UserPlus} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 
 
 export function SidebarComponent() {
@@ -13,7 +14,7 @@ export function SidebarComponent() {
   if (path.startsWith("/empleados")) {
     items = [
       { label: "Contratos", path: "/contratos", icon: <ScrollText /> },
-      { label: "Agregar", path: "/empleados/nuevo" },
+      { label: "Agregar", path: "/empleados/nuevo", icon: <UserPlus /> },
     ];
   } else if (path.startsWith("/nomina")) {
     items = [
