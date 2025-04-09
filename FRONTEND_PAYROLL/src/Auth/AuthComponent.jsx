@@ -30,7 +30,7 @@ export const AuthComponent = () => {
   };
 
   return (
-    <main className="grid items-center justify-center min-h-[800px] bg-background">
+    <main className="flex flex-col items-center justify-center content-center h-[calc(100vh-101px)] bg-background">
       <Card className="w-[350px] bg-card">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Inicio sesión</CardTitle>

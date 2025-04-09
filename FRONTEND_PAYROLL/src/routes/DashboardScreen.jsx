@@ -8,8 +8,8 @@ export const DashboardScreen = () => {
   
 
   return (
-    <main className="pl-28 pt-3 pr-14 pb-4">
-      <div className="grid grid-cols-2 grid-rows-2 gap-3 h-[810px]">
+    <main className="pl-28 pt-3 pr-14 pb-4 h-[calc(100vh-101px)]">
+      <div className="grid grid-cols-2 grid-rows-2 gap-3">
        <SearchArea/>
         <ActiveEmployeesArea/>
         <RequestsArea/>
