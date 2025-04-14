@@ -1,4 +1,4 @@
-import { ScrollText, UserPlus} from "lucide-react";
+import { ScrollText, UserPlus, Users} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
@@ -26,9 +26,10 @@ export function SidebarComponent() {
       { label: "Novedades", path: "/novedades" },
       { label: "Historial", path: "/novedades/historial" },
     ];
-  } else {
+  } else if (path.startsWith("/contratos")) {
     items = [
-      { label: "Dashboard", path: "/dashboard" },
+      { label: "Empleados", path: "/empleados", icon: <Users /> },
+      { label: "Nuevo Contrato", path: "/contratos/nuevo", icon: <UserPlus /> },
     ];
   }
 

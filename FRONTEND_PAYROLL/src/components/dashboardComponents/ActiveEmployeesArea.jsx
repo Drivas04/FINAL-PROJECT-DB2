@@ -20,7 +20,7 @@ export const ActiveEmployeesArea = () => {
           <div className="p-4">
             {emps.map((emp) => {
               return (
-                <div key={emp.id}>
+                <div key={emp.id_empleado}>
                   <div className="text-sm">{emp.nombre}</div>
                   <Separator className="my-2" />
                 </div>

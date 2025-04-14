@@ -21,8 +21,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@/hooks/useForm";
 import { DatePicker } from "@/components/ui/date-picker";
+import { department } from "@/data/department";
 
-export const EditProfileComponent = ({ open, setOpen, employee, departmentName }) => {
+export const EditProfileComponent = ({
+  open,
+  setOpen,
+  employee,
+  departmentName,
+  onUpdateEmployee,
+}) => {
   const initialForm = {
     cedula: employee.documento,
     tipo_documento: employee.tipo_documento,
@@ -62,14 +69,34 @@ export const EditProfileComponent = ({ open, setOpen, employee, departmentName }
     }
   }, [employee, setFormState]);
 
+  const handleSaveChanges = () => {
+    // Crear un objeto con la estructura esperada por EmployeesTable
+    const updatedEmployee = {
+      ...employee, // Mantener los campos originales que no cambiaron (como id_empleado)
+      documento: formState.cedula,
+      tipo_documento: formState.tipo_documento,
+      nombre: formState.nombre,
+      telefono: formState.telefono,
+      correo: formState.correo,
+      fecha_nacimiento: formState.fecha_nacimiento,
+      fecha_contratacion: formState.fecha_contratacion,
+      id_departamento: formState.id_departamento,
+    };
+
+    // Llamar a la función de actualización con el empleado modificado
+    onUpdateEmployee(updatedEmployee);
+    console.log("Datos del empleado actualizados:", updatedEmployee);
+    setOpen(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Editar perfil de {employee.nombre}</DialogTitle>
           <DialogDescription>
-            Haz los cambios necesarios aqui. Da click en "Guardar" para
-            aplicar los cambios.
+            Haz los cambios necesarios aqui. Da click en "Guardar" para aplicar
+            los cambios.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -90,7 +117,15 @@ export const EditProfileComponent = ({ open, setOpen, employee, departmentName }
             <Label htmlFor="tipo_cedula" className="text-right">
               Tipo de documento
             </Label>
-            <Select defaultValue={tipo_documento}>
+            <Select
+              defaultValue={tipo_documento}
+              onValueChange={(value) =>
+                setFormState({ ...formState, tipo_documento: value })
+              }
+              name="tipo_documento"
+              value={tipo_documento}
+              onChange={onInputChange}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Seleccione el tipo de documento" />
               </SelectTrigger>
@@ -174,16 +209,38 @@ export const EditProfileComponent = ({ open, setOpen, employee, departmentName }
             <Label htmlFor="id_departamento" className="text-right">
               Departamento
             </Label>
-            <Input
+            <Select
               name="id_departamento"
-              value={departmentName}
+              defaultValue={departmentName}
               onChange={onInputChange}
-              className="col-span-3"
-            />
+              value={departmentName}
+              onValueChange={(value) =>
+                setFormState((prev) => ({
+                  ...prev,
+                  id_departamento: value,
+                }))
+              }
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Selecciona un departamento" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {department.map((dept) => (
+                    <SelectItem
+                      key={dept.id_departamento}
+                      value={dept.id_departamento}
+                    >
+                      {dept.nombre}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={() => setOpen(false)}>Save changes</Button>
+          <Button onClick={handleSaveChanges}>Guardar cambios</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

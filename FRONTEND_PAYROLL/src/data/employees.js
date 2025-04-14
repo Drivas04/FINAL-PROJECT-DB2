@@ -100,3 +100,8 @@ export const employees = [
 export const getEmployee = (id) => {
   return employees.find((employee) => employee.id_empleado === id);
 };
+
+export const getDocumentById = (id) => {
+  const employee = employees.find((employee) => employee.id_empleado === id);
+  return employee.documento;
+}

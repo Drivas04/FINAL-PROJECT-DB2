@@ -19,7 +19,7 @@ export const Header = () => {
       <div className="flex items-center">
         <img
           className="ml-2"
-          src="src\assets\logo-rh.png"
+          src="logo-rh.png"
           alt="logo"
           width="100px"
           height="100px"

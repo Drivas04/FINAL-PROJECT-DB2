@@ -12,9 +12,21 @@ export const useForm = (initialForm) => {
         })
     }
 
+    const onNumberInputChange = ({target}) => {
+        const {name, value} = target;
+        
+        if (/^\d*$/.test(value)) {
+          setFormState({
+            ...formState,
+            [name]: value
+        })
+        }
+    }
+
   return {
     formState, 
     onInputChange,
+    onNumberInputChange,
     setFormState
   }
 }
