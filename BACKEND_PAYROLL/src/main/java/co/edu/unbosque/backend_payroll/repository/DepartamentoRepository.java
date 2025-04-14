@@ -10,4 +10,5 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Shor
 
     @Procedure(procedureName = "sp_updatedepartment")
     void updateDepartment(Short id_department, String new_name);
+
 }
