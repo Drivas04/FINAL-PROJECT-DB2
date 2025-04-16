@@ -1,20 +1,23 @@
-import { ScrollText, UserPlus, Users} from "lucide-react";
+import {
+  ScrollText,
+  UserPlus,
+  Users,
+  HandCoins,
+  PiggyBank,
+  Building,
+  Home,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
-
 export function SidebarComponent() {
-
   const location = useLocation();
-
- 
 
   const path = location.pathname;
   let items = [];
   if (path.startsWith("/empleados")) {
     items = [
       { label: "Contratos", path: "/contratos", icon: <ScrollText /> },
-      { label: "Agregar", path: "/empleados/nuevo", icon: <UserPlus /> },
+      { label: "Departamentos", path: "/departamentos", icon: <Building /> },
     ];
   } else if (path.startsWith("/nomina")) {
     items = [
@@ -31,6 +34,25 @@ export function SidebarComponent() {
       { label: "Empleados", path: "/empleados", icon: <Users /> },
       { label: "Nuevo Contrato", path: "/contratos/nuevo", icon: <UserPlus /> },
     ];
+  } else if (path.startsWith("/deposito-cesantias") || path.startsWith("/retiro-cesantias")) {
+    items = [
+      {
+        label: "Deposito de cesantias",
+        path: "/deposito-cesantias",
+        icon: <PiggyBank />,
+      },
+      {
+        label: "Retiro de cesantias",
+        path: "/retiro-cesantias",
+        icon: <HandCoins />,
+      },
+    ];
+  }
+  else if (path.startsWith("/departamentos")) {
+    items = [
+      { label: "Empleados", path: "/empleados", icon: <Users /> },
+      { label: "Dashboard", path: "/dashboard", icon: <Home/> },
+    ];
   }
 
   return (
@@ -38,25 +60,39 @@ export function SidebarComponent() {
       <div className="text-2xl font-bold mb-8"></div>
       <nav className="flex-1 space-y-2">
         {items.map((item) => (
-          <SidebarItem key={item.path} icon={item.icon} label={item.label} path={item.path}/>
+          <SidebarItem
+            key={item.path}
+            icon={item.icon}
+            label={item.label}
+            path={item.path}
+            style={
+              item.path === path
+                ? "text-violet-600 font-semibold"
+                : "text-gray-700 hover:text-violet-600"
+            }
+          />
         ))}
-
       </nav>
     </aside>
   );
 }
 
-
-
-function SidebarItem({ icon, label, path }) {
+function SidebarItem({ icon, label, path, style}) {
   const navigate = useNavigate();
   const navigateOnClick = (path) => {
     navigate(path);
-  }
+  };
   return (
-    <button className="w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors" onClick={() => navigateOnClick(path)}>
+    <button
+      className="w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors"
+      onClick={() => navigateOnClick(path)}
+    >
       {icon}
-      <span>{label}</span>
+      <span
+        className={style}
+      >
+        {label}
+      </span>
     </button>
   );
 }

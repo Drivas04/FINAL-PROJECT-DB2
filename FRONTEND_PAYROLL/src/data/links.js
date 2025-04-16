@@ -11,8 +11,8 @@ export const links = [
   },
   {
     id: 3,
-    name: "Liquidacion de cesantias",
-    path: "/cesantias",
+    name: "Cesantias",
+    path: "/deposito-cesantias",
   },
   {
     id: 4,

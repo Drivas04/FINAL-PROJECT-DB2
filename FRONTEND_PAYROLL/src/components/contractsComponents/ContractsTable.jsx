@@ -47,6 +47,7 @@ export const ContractsTable = () => {
             <TableHead>Documento del empleado</TableHead>
             <TableHead>Nombre del empleado</TableHead>
             <TableHead>Tipo de contrato</TableHead>
+            <TableHead>Cargo</TableHead>
             <TableHead>Fecha de inicio</TableHead>
             <TableHead>Fecha de finalización</TableHead>
             <TableHead>Salario</TableHead>
@@ -69,6 +70,9 @@ export const ContractsTable = () => {
                 </TableCell>
                 <TableCell className="text-center">
                   {contract.tipo_contrato}
+                </TableCell>
+                <TableCell className="text-center">
+                  {contract.cargo}
                 </TableCell>
                 <TableCell className="text-center">
                   {format(new Date(contract.fecha_inicio), "d-MM-yyyy", { locale: es })}

@@ -11,7 +11,9 @@ import { Toaster } from "./components/ui/toaster";
 import { ContractsScreen } from "./routes/ContractsScreen";
 import { NewContractScreen } from "./routes/NewContractScreen";
 import { DataProvider } from "./context/DataContext";
-import { SeverancePayScreen } from "./routes/SeverancePayScreen";
+import { SeveranceDepositScreen } from "./routes/SeveranceDepositScreen";
+import { SeveranceWithdrawScreen } from "./routes/SeveranceWithdrawScreen";
+import { Departments } from "./routes/Departments";
 
 function App() {
   const location = useLocation();
@@ -31,10 +33,12 @@ function App() {
               <Route path="/nomina" element={<PayrollScreen />} />
               <Route path="/nomina/:id" element={<PayrollScreen />} />
               <Route path="/nomina/:id/:mes" element={<PayrollScreen />} />
-              <Route path="/cesantias" element={<SeverancePayScreen />} />
+              <Route path="/deposito-cesantias" element={<SeveranceDepositScreen />} />
+              <Route path="/retiro-cesantias" element={<SeveranceWithdrawScreen />} />
               <Route path="/novedades" element={<NewsScreen />} />
               <Route path="/contratos" element={<ContractsScreen />} />
               <Route path="/contratos/nuevo" element={<NewContractScreen />} />
+              <Route path="/departamentos" element={<Departments/>} />
             </Routes>
           </main>
         </div>
