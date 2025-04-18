@@ -19,7 +19,6 @@ import {
   import { Button } from "@/components/ui/button";
 import { useForm } from '@/hooks/useForm';
 import React, {useEffect} from 'react'
-import { id } from "date-fns/locale";
 
 export const EditContractComponent = ({open, setOpen, contract, onUpdateContract}) => {
     const initialForm = {

@@ -39,7 +39,7 @@ export const Header = () => {
               to={link.path}
               className={`${
                 link.path === location.pathname &&
-                "text-violet-600 border-b-2 font-semibold border-violet-600 tex"
+                "text-violet-600 border-b-2 font-semibold border-violet-600"
               }`}
               >
                 {link.name}

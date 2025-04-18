@@ -54,7 +54,14 @@ export function SidebarComponent() {
       { label: "Dashboard", path: "/dashboard", icon: <Home/> },
     ];
   }
+  else if (path.endsWith("/nominas")) {
+    items = [
+      { label: "Empleados", path: "/empleados", icon: <Users /> },
+      { label: "Dashboard", path: "/dashboard", icon: <Home/> },
+    ];
+  }
 
+  console.log(path)
   return (
     <aside className="w-64 h-[calc(100vh-101px)] text-black bg-background flex flex-col p-4 border-r-2">
       <div className="text-2xl font-bold mb-8"></div>

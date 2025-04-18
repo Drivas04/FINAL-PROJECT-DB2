@@ -26,16 +26,16 @@ import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { EditProfileComponent } from "./EditProfileComponent";
 import { department } from "@/data/department";
 import { useDataContext } from "@/context/DataContext";
+import { useNavigate } from "react-router-dom";
+import { getDepartmentName } from "@/helpers/EmployeeHelper";
 
 export const EmployeesTable = () => {
   const { employees, updateEmployee } = useDataContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const navigate = useNavigate();
 
-  const getDepartmentName = (department_id) => {
-    return department.find((dept) => dept.id_departamento === department_id)
-      .nombre;
-  };
+  
 
   /*
   useEffect(() => {
@@ -53,6 +53,10 @@ export const EmployeesTable = () => {
 
   }, []);
   */
+
+  const goToPayroll = (employee_id) => {
+    navigate(`/nomina/${employee_id}`);
+  }
 
   return (
     <>
@@ -114,6 +118,7 @@ export const EmployeesTable = () => {
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
                         <DropdownMenuItem>Ver contrato</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate(`/empleados/${emp.id_empleado}/nominas`)}>Ver nóminas</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
                             setIsDialogOpen(true);

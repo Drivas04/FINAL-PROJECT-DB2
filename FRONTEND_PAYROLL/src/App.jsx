@@ -4,7 +4,7 @@ import { AuthComponent } from "./Auth/AuthComponent";
 import { Header } from "./components/Header";
 import { EmployeesScreen } from "./routes/EmployeesScreen";
 import { DashboardScreen } from "./routes/DashboardScreen";
-import { PayrollScreen } from "./routes/PayrollScreen";
+import { PayrollListScreen} from "./routes/PayrollListScreen";
 import { NewsScreen } from "./routes/NewsScreen";
 import { SidebarComponent } from "./components/Sidebar";
 import { Toaster } from "./components/ui/toaster";
@@ -14,6 +14,7 @@ import { DataProvider } from "./context/DataContext";
 import { SeveranceDepositScreen } from "./routes/SeveranceDepositScreen";
 import { SeveranceWithdrawScreen } from "./routes/SeveranceWithdrawScreen";
 import { Departments } from "./routes/Departments";
+import { PayrollDetailsScreen } from "./routes/PayrollDetailsScreen";
 
 function App() {
   const location = useLocation();
@@ -30,9 +31,8 @@ function App() {
               <Route path="/" element={<AuthComponent />} />
               <Route path="/dashboard" element={<DashboardScreen />} />
               <Route path="/empleados" element={<EmployeesScreen />} />
-              <Route path="/nomina" element={<PayrollScreen />} />
-              <Route path="/nomina/:id" element={<PayrollScreen />} />
-              <Route path="/nomina/:id/:mes" element={<PayrollScreen />} />
+              <Route path="/empleados/:idEmpleado/nominas" element={<PayrollListScreen />} />
+              <Route path="/empleados/:idEmpleado/nominas/:idNomina" element={<PayrollDetailsScreen />} />
               <Route path="/deposito-cesantias" element={<SeveranceDepositScreen />} />
               <Route path="/retiro-cesantias" element={<SeveranceWithdrawScreen />} />
               <Route path="/novedades" element={<NewsScreen />} />

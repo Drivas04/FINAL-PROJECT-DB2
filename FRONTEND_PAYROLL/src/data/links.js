@@ -6,8 +6,8 @@ export const links = [
   },
   {
     id: 2,
-    name: "Nomina",
-    path: "/nomina",
+    name: "Nominas",
+    path: "/nominas",
   },
   {
     id: 3,
