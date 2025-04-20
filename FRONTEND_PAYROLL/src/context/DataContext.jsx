@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
 import { employees as initialEmployees } from '@/data/employees';
 import { contract as initialContracts } from '@/data/contract';
+import { payroll as initialPayrolls } from '@/data/payroll';
 
 const DataContext = createContext();
 
@@ -10,6 +11,8 @@ export const DataProvider = ({ children }) => {
   const [employees, setEmployees] = useState(initialEmployees);
   
   const [contracts, setContracts] = useState(initialContracts);
+
+  const [payrolls, setPayrolls] = useState(initialPayrolls);
 
   const addEmployee = (newEmployee) => {
     setEmployees((prevEmployees) => {
@@ -49,13 +52,41 @@ export const DataProvider = ({ children }) => {
     );
   };
 
+  const addPayroll = (newPayroll) => {
+    setPayrolls((prevPayrolls) => {
+      const payrollWithId = {
+        ...newPayroll,
+        id_nomina: prevPayrolls.length + 1
+      };
+      return [...prevPayrolls, payrollWithId];
+    });
+  };
+
+  const updatePayroll = (updatedPayroll) => {
+    setPayrolls((prevPayrolls) => 
+      prevPayrolls.map((payroll) => 
+        payroll.id_nomina === updatedPayroll.id_nomina ? updatedPayroll : payroll
+      )
+    );
+  };
+
+  const deletePayroll = (id_nomina) => {
+    setPayrolls((prevPayrolls) => 
+      prevPayrolls.filter((payroll) => payroll.id_nomina !== id_nomina)
+    );
+  };
+
   const value = {
     employees,
     contracts,
+    payrolls,
     addEmployee,
     updateEmployee,
     addContract,
-    updateContract
+    updateContract,
+    addPayroll,
+    updatePayroll,
+    deletePayroll,
   };
 
   return (

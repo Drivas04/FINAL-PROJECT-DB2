@@ -15,6 +15,7 @@ import { SeveranceDepositScreen } from "./routes/SeveranceDepositScreen";
 import { SeveranceWithdrawScreen } from "./routes/SeveranceWithdrawScreen";
 import { Departments } from "./routes/Departments";
 import { PayrollDetailsScreen } from "./routes/PayrollDetailsScreen";
+import { AllPayrollsScreen } from "./routes/AllPayrollsScreen";
 
 function App() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
               <Route path="/" element={<AuthComponent />} />
               <Route path="/dashboard" element={<DashboardScreen />} />
               <Route path="/empleados" element={<EmployeesScreen />} />
+              <Route path="/nominas" element={<AllPayrollsScreen />} />
               <Route path="/empleados/:idEmpleado/nominas" element={<PayrollListScreen />} />
               <Route path="/empleados/:idEmpleado/nominas/:idNomina" element={<PayrollDetailsScreen />} />
               <Route path="/deposito-cesantias" element={<SeveranceDepositScreen />} />

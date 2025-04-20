@@ -61,7 +61,6 @@ export function SidebarComponent() {
     ];
   }
 
-  console.log(path)
   return (
     <aside className="w-64 h-[calc(100vh-101px)] text-black bg-background flex flex-col p-4 border-r-2">
       <div className="text-2xl font-bold mb-8"></div>

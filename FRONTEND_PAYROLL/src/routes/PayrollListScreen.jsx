@@ -60,7 +60,7 @@ export const PayrollListScreen = () => {
           <TableRow key={payroll.id_nomina}>
             <TableCell className="font-medium text-center text-violet-600"><Link className='border-b-2 border-violet-600' to={`/empleados/${idEmpleado}/nominas/${payroll.id_nomina}`}>{payroll.id_nomina}</Link></TableCell>
             <TableCell className="font-medium">{payroll.periodo}</TableCell>
-            <TableCell>{payroll.total_pagado}</TableCell>
+            <TableCell>${payroll.total_pagado}</TableCell>
           </TableRow>
         ))}
       </TableBody>

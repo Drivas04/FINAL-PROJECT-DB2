@@ -5,12 +5,15 @@ import { contract } from "@/data/contract";
 import { payroll } from "@/data/payroll";
 import { getDepartmentName } from "@/helpers/EmployeeHelper";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export const PayrollDetailsScreen = () => {
   const { idNomina } = useParams();
   const [empleado, setEmpleado] = useState(null);
   const [contrato, setContrato] = useState(null);
   const [nomina, setNomina] = useState(null);
+
+  const { toast } = useToast();
 
   useEffect(() => {
     const nominaSeleccionada = payroll.find(
@@ -27,11 +30,45 @@ export const PayrollDetailsScreen = () => {
     }
   }, [idNomina]);
 
-  const sendPayrollEmail = () => {
-    const email = empleado.correo;
-    const subject = "Detalles de nómina";
-    const body = `Hola ${empleado.nombre},\n\nAquí están los detalles de tu nómina:\n\nSalario base: ${nomina.salario_base}\nHoras extras: ${nomina.horas_extras}\nDeducciones: ${nomina.descuentos}\nTotal a pagar: ${nomina.total_pagado}\n\nSaludos,\nEquipo de Recursos Humanos`;
-    console.log('correo enviado a:', email);
+  const sendPayrollEmail = async () => {
+    
+    if (!empleado || !nomina) return;
+
+    const emailPayload = {
+      toEmail: "davidmrivasb077@gmail.com",//empleado.correo,
+      subject: "Detalles de nómina",
+      message: `Hola ${empleado.nombre},\n\nAquí están los detalles de tu nómina:\n\nSalario base: ${nomina.salario_base}\nHoras extras: ${nomina.horas_extras}\nDeducciones: ${nomina.descuentos}\nTotal a pagar: ${nomina.total_pagado}\n\nSaludos,\nEquipo de Recursos Humanos`,
+      nomina: nomina,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emailPayload),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Correo enviado",
+          description: "El correo ha sido enviado exitosamente",
+        })
+      } else {
+        const errorData = await response.json();
+        toast({
+          variant: "destructive",
+          title: "Error al enviar correo",
+          description: errorData.message || "Error desconocido",
+        })
+      }
+    } catch (error) {
+      console.error("Error enviando correo:", error);
+      alert("Error en la conexión con el servidor");
+    }
+
+    
   };
 
   if (!empleado || !contrato || !nomina)

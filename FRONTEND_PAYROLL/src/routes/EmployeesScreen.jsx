@@ -6,7 +6,7 @@ export const EmployeesScreen = () => {
   return (
     <main>
       <div className="container mx-auto py-10">
-        <EmployeesTable/>
+        <EmployeesTable />
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import {
@@ -28,11 +28,10 @@ import { useDataContext } from "@/context/DataContext";
 import { getEmployeeDocument, getEmployeeName } from "@/helpers/EmployeeHelper";
 
 export const ContractsTable = () => {
-  const {contracts, updateContract} = useDataContext();
+  const { contracts, updateContract } = useDataContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
-
-  
+  const dropdownRef = useRef(null);
 
   return (
     <div className="overflow-x-auto container mx-auto mt-10">
@@ -40,19 +39,23 @@ export const ContractsTable = () => {
         <h1 className="text-4xl font-bold">Contratos</h1>
       </div>
       <Table className="w-full border-collapse border border-slate-300">
-        <TableCaption>Lista de los contratos activos hasta la fecha</TableCaption>
+        <TableCaption>
+          Lista de los contratos activos hasta la fecha
+        </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Id</TableHead>
-            <TableHead>Documento del empleado</TableHead>
-            <TableHead>Nombre del empleado</TableHead>
-            <TableHead>Tipo de contrato</TableHead>
-            <TableHead>Cargo</TableHead>
-            <TableHead>Fecha de inicio</TableHead>
-            <TableHead>Fecha de finalización</TableHead>
-            <TableHead>Salario</TableHead>
-            <TableHead>Estado</TableHead>
-            <TableHead>Accion</TableHead>
+            <TableHead className="w-[100px] text-center">Id</TableHead>
+            <TableHead className="text-center">
+              Documento del empleado
+            </TableHead>
+            <TableHead className="text-center">Nombre del empleado</TableHead>
+            <TableHead className="text-center">Tipo de contrato</TableHead>
+            <TableHead className="text-center">Cargo</TableHead>
+            <TableHead className="text-center">Fecha de inicio</TableHead>
+            <TableHead className="text-center">Fecha de finalización</TableHead>
+            <TableHead className="text-center">Salario</TableHead>
+            <TableHead className="text-center">Estado</TableHead>
+            <TableHead className="text-center">Acción</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -71,54 +74,67 @@ export const ContractsTable = () => {
                 <TableCell className="text-center">
                   {contract.tipo_contrato}
                 </TableCell>
+                <TableCell className="text-center">{contract.cargo}</TableCell>
                 <TableCell className="text-center">
-                  {contract.cargo}
+                  {format(new Date(contract.fecha_inicio), "d-MM-yyyy", {
+                    locale: es,
+                  })}
                 </TableCell>
                 <TableCell className="text-center">
-                  {format(new Date(contract.fecha_inicio), "d-MM-yyyy", { locale: es })}
-                </TableCell>
-                <TableCell className="text-center">
-                  {contract.fecha_fin ? format(new Date(contract.fecha_fin), "d-MM-yyyy", { locale: es }) : "Indefinido"}
+                  {contract.fecha_fin
+                    ? format(new Date(contract.fecha_fin), "d-MM-yyyy", {
+                        locale: es,
+                      })
+                    : "Indefinido"}
                 </TableCell>
                 <TableCell className="text-center">
                   {contract.salario}
                 </TableCell>
                 <TableCell className="text-center">{contract.estado}</TableCell>
-                <TableCell className="text-center"><DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost">
-                      <HiEllipsisHorizontal />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>Ver contrato</DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setIsDialogOpen(true);
-                          setSelectedContract(contract);}}
-                      >
-                        Editar contrato
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="!text-red-600 hover:!text-white hover:!bg-red-600">
-                        Recindir contrato
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu></TableCell>
+                <TableCell className="text-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button ref={dropdownRef} variant="ghost">
+                        <HiEllipsisHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>Ver contrato</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            if (dropdownRef.current) {
+                              dropdownRef.current.click();
+                            }
+
+                            setTimeout(() => {
+                              setIsDialogOpen(true);
+                              setSelectedContract(contract);
+                            }, 50);
+                          }}
+                        >
+                          Editar contrato
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="!text-red-600 hover:!text-white hover:!bg-red-600">
+                          Recindir contrato
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
               </TableRow>
             );
           })}
           {selectedContract && (
-                    <EditContractComponent
-                      open={isDialogOpen}
-                      setOpen={setIsDialogOpen}
-                      contract={selectedContract}
-                      onUpdateContract={updateContract}
-                    />
-                  )}
+            <EditContractComponent
+              open={isDialogOpen}
+              setOpen={setIsDialogOpen}
+              contract={selectedContract}
+              onUpdateContract={updateContract}
+            />
+          )}
         </TableBody>
       </Table>
     </div>

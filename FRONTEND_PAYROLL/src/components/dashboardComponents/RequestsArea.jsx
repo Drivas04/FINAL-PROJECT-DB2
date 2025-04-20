@@ -27,7 +27,7 @@ export const RequestsArea = () => {
 
   const [reqs, setReqs] = useState(requests);
 
-  const { toast } = useToast();
+    const {toast} = useToast();
 
   const acceptRequest = (request_id) => {
     setReqs(reqs.filter((request) => request_id !== request.id));
