@@ -33,6 +33,7 @@ export const NewContractComponent = ({employeeId}) => {
 
   const initialForm = {
     tipo_contrato: "",
+    cargo: "",
     fecha_inicio: "",
     fecha_fin: "",
     salario: "",
@@ -41,12 +42,13 @@ export const NewContractComponent = ({employeeId}) => {
 
   const { formState, setFormState, onInputChange, onNumberInputChange } = useForm(initialForm);
 
-  const { tipo_contrato, fecha_inicio, fecha_fin, salario, estado } = formState;
+  const { tipo_contrato, cargo, fecha_inicio, fecha_fin, salario, estado } = formState;
 
   const handleCreateContract = () => {
     const newContract = {
       id_empleado: employeeId,
       tipo_contrato,
+      cargo,
       fecha_inicio,
       fecha_fin: tipo_contrato === "Indefinido" ? null : fecha_fin,
       salario: Number(salario),
@@ -59,6 +61,7 @@ export const NewContractComponent = ({employeeId}) => {
     // Resetear formulario
     setFormState({
       tipo_contrato: "",
+      cargo: "",
       fecha_inicio: "",
       fecha_fin: "",
       salario: "",
@@ -103,6 +106,15 @@ export const NewContractComponent = ({employeeId}) => {
               </SelectGroup>
             </SelectContent>
           </Select>
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="cargo">Cargo</Label>
+          <Input
+            name="cargo"
+            value={cargo}
+            onChange={onInputChange}
+            required
+          />
         </div>
         <div className="space-y-1">
           <Label htmlFor="fecha_inicio">Fecha de inicio</Label>

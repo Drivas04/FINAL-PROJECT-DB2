@@ -22,21 +22,42 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
-import { contract } from "@/data/contract";
 import { EditContractComponent } from "./EditContractComponent";
 import { useDataContext } from "@/context/DataContext";
 import { getEmployeeDocument, getEmployeeName } from "@/helpers/EmployeeHelper";
+import useSearch from "@/hooks/useSearch";
+import usePagination from "@/hooks/usePagination";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export const ContractsTable = () => {
-  const { contracts, updateContract } = useDataContext();
+  const { contracts, updateContract, employees } = useDataContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
   const dropdownRef = useRef(null);
+  const {
+    search,
+    setSearch,
+    filteredData: filteredContracts,
+  } = useSearch(contracts, "id_contrato");
+  const { currentPage, maxPage, goToPage, paginatedData } = usePagination(
+    filteredContracts,
+    5
+  );
+
 
   return (
     <div className="overflow-x-auto container mx-auto mt-10">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-4xl font-bold">Contratos</h1>
+      </div>
+      <div className="flex items-center justify-between mb-4 pl-2">
+        <Input
+          placeholder="Buscar por codigo de contrato..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-[300px]"
+        />
       </div>
       <Table className="w-full border-collapse border border-slate-300">
         <TableCaption>
@@ -59,17 +80,17 @@ export const ContractsTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {contracts.map((contract) => {
+          {paginatedData.map((contract) => {
             return (
               <TableRow key={contract.id_contrato}>
                 <TableCell className="text-center">
                   {contract.id_contrato}
                 </TableCell>
                 <TableCell className="text-center">
-                  {getEmployeeDocument(contract.id_empleado)}
+                  {getEmployeeDocument(contract.id_empleado, employees)}
                 </TableCell>
                 <TableCell className="text-center">
-                  {getEmployeeName(contract.id_empleado)}
+                  {getEmployeeName(contract.id_empleado, employees)}
                 </TableCell>
                 <TableCell className="text-center">
                   {contract.tipo_contrato}
@@ -137,6 +158,23 @@ export const ContractsTable = () => {
           )}
         </TableBody>
       </Table>
+      <div>
+        <Button
+          variant="ghost"
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <ChevronLeft />
+        </Button>
+        <span>{`Página ${currentPage} de ${maxPage}`}</span>
+        <Button
+          variant="ghost"
+          onClick={() => goToPage(currentPage + 1)}
+          hidden={currentPage === maxPage}
+        >
+          <ChevronRight />
+        </Button>
+      </div>
     </div>
   );
 };

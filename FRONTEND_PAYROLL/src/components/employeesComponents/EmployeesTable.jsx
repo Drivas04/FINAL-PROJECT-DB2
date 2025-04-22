@@ -29,6 +29,8 @@ import { useDataContext } from "@/context/DataContext";
 import { useNavigate } from "react-router-dom";
 import { getDepartmentName } from "@/helpers/EmployeeHelper";
 import usePagination from "@/hooks/usePagination";
+import useSearch from "@/hooks/useSearch";
+import { Input } from "../ui/input";
 
 export const EmployeesTable = () => {
   const { employees, updateEmployee } = useDataContext();
@@ -38,13 +40,16 @@ export const EmployeesTable = () => {
   const dropdownRef = useRef(null);
 
   const {
+    search,
+    setSearch,
+    filteredData: filteredEmployees,
+  } = useSearch(employees, "documento");
+  const {
     currentPage,
-    totalPages,
-    currentData,
-    nextPage,
-    prevPage,
+    maxPage,
     goToPage,
-  } = usePagination(employees, 5);
+    paginatedData,
+  } = usePagination(filteredEmployees, 5);
 
   /*
   useEffect(() => {
@@ -71,6 +76,15 @@ export const EmployeesTable = () => {
           <h1 className="text-4xl font-bold">Empleados</h1>
         </div>
       </div>
+      <div className="flex items-center justify-between mb-4">
+              <Input
+                placeholder="Buscar por numero de documento..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-[300px]"
+              />
+              
+            </div>
       <Table className="w-full border-collapse border border-slate-300">
         <TableCaption>
           Lista de todos los empleados activos en la empresa
@@ -89,7 +103,7 @@ export const EmployeesTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {currentData().map((emp) => {
+          {paginatedData.map((emp) => {
             return (
               <TableRow key={emp.id_empleado}>
                 <TableCell className="text-center">{emp.documento}</TableCell>
@@ -169,11 +183,11 @@ export const EmployeesTable = () => {
         </TableBody>
       </Table>
       <div>
-        <Button variant="ghost" onClick={prevPage} disabled={currentPage === 1}>
+        <Button variant="ghost" onClick={() => goToPage(currentPage-1)} disabled={currentPage === 1}>
           <ChevronLeft />
         </Button>
-        <span>{`Página ${currentPage} de ${totalPages}`}</span>
-        <Button variant="ghost" onClick={nextPage} hidden={currentPage === totalPages}>
+        <span>{`Página ${currentPage} de ${maxPage}`}</span>
+        <Button variant="ghost" onClick={() => goToPage(currentPage+1)} hidden={currentPage === maxPage}>
           <ChevronRight />
         </Button>
       </div>
