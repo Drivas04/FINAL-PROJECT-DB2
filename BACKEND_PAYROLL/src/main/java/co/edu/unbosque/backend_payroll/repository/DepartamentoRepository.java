@@ -15,6 +15,7 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Shor
     @Query(value = "SELECT * FROM fn_consultar_departamentos()", nativeQuery = true)
     List<Departamento> getDepartments();
 
+
     @Procedure(procedureName = "sp_updatedepartment")
     void updateDepartment(Short id_department, String new_name);
 
