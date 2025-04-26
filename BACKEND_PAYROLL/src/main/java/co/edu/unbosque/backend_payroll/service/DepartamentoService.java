@@ -14,7 +14,7 @@ public class DepartamentoService {
     private DepartamentoRepository departamentoRepository;
 
     public List<Departamento> getAll() {
-        return departamentoRepository.findAll();
+        return departamentoRepository.getDepartments();
     }
 
     public void updateDepartment(Short id_department, String new_name){

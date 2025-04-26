@@ -49,7 +49,6 @@ export const NewContractComponent = ({employeeId}) => {
       id_empleado: employeeId,
       tipo_contrato,
       cargo,
-      fecha_inicio,
       fecha_fin: tipo_contrato === "Indefinido" ? null : fecha_fin,
       salario: Number(salario),
       estado
@@ -116,16 +115,7 @@ export const NewContractComponent = ({employeeId}) => {
             required
           />
         </div>
-        <div className="space-y-1">
-          <Label htmlFor="fecha_inicio">Fecha de inicio</Label>
-          <Input
-            type="date"
-            name="fecha_inicio"
-            value={fecha_inicio}
-            onChange={onInputChange}
-            required
-          />
-        </div>
+        
         <div className="space-y-1">
           <Label htmlFor="fecha_fin">Fecha de finalización</Label>
           <Input

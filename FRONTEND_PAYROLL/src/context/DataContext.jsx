@@ -2,6 +2,8 @@ import React, { createContext, useState, useContext } from 'react';
 import { employees as initialEmployees } from '@/data/employees';
 import { contract as initialContracts } from '@/data/contract';
 import { payroll as initialPayrolls } from '@/data/payroll';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const DataContext = createContext();
 
@@ -38,7 +40,8 @@ export const DataProvider = ({ children }) => {
     setContracts((prevContracts) => {
       const contractWithId = {
         ...newContract,
-        id_contrato: prevContracts.length + 1
+        id_contrato: prevContracts.length + 1,
+        fecha_inicio: new Date()
       };
       return [...prevContracts, contractWithId];
     });
