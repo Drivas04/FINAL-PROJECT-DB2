@@ -35,9 +35,10 @@ import usePagination from "@/hooks/usePagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useSearch from "@/hooks/useSearch";
 import { Input } from "../ui/input";
+import { getEmployeeNameByPayroll } from "@/helpers/payrollHelper";
 
 export const PayrollsTable = () => {
-  const { payrolls, deletePayroll } = useDataContext();
+  const { payrolls, deletePayroll, contracts, employees } = useDataContext();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPayroll, setSelectedPayroll] = useState(null);
@@ -80,7 +81,7 @@ export const PayrollsTable = () => {
           {paginatedData.map((pay) => (
             <TableRow key={pay.id_nomina}>
               <TableCell className="font-medium">{pay.id_nomina}</TableCell>
-              <TableCell className="font-medium">{pay.id_contrato}</TableCell>
+              <TableCell className="font-medium">{getEmployeeNameByPayroll(contracts, employees, pay)}</TableCell>
               <TableCell>{pay.periodo}</TableCell>
               <TableCell className="text-right font-bold">
                 ${pay.total_pagado}

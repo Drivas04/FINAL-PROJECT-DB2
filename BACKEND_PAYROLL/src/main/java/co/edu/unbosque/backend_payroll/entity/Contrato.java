@@ -1,6 +1,8 @@
 package co.edu.unbosque.backend_payroll.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "contrato", schema = "public", indexes = {
-        @Index(name = "contrato_id_salario_idx", columnList = "salarioempleado_id_salario", unique = true)
-})
+@Table(name = "contrato")
 public class Contrato {
     @Id
     @Column(name = "id_contrato", nullable = false)
@@ -21,10 +21,12 @@ public class Contrato {
     @Column(name = "salario", precision = 10, scale = 2)
     private BigDecimal salario;
 
-    @Column(name = "tipo_contrato", length = 20)
+    @Size(max = 40)
+    @Column(name = "tipo_contrato", length = 40)
     private String tipoContrato;
 
-    @Column(name = "nombre_cargo", length = 20)
+    @Size(max = 40)
+    @Column(name = "nombre_cargo", length = 40)
     private String nombreCargo;
 
     @Column(name = "fecha_inicio")
@@ -33,15 +35,13 @@ public class Contrato {
     @Column(name = "fecha_fin")
     private LocalDate fechaFin;
 
+    @Size(max = 10)
     @Column(name = "estado", length = 10)
     private String estado;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "empleado_id_empleado", nullable = false)
     private Empleado empleadoIdEmpleado;
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "salarioempleado_id_salario", nullable = false)
-    private Salarioempleado salarioempleadoIdSalario;
 
 }

@@ -16,6 +16,7 @@ import { SeveranceWithdrawScreen } from "./routes/SeveranceWithdrawScreen";
 import { Departments } from "./routes/Departments";
 import { PayrollDetailsScreen } from "./routes/PayrollDetailsScreen";
 import { AllPayrollsScreen } from "./routes/AllPayrollsScreen";
+import { SocialSecurity } from "./routes/SocialSecurity";
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
               <Route path="/empleados/:idEmpleado/nominas/:idNomina" element={<PayrollDetailsScreen />} />
               <Route path="/deposito-cesantias" element={<SeveranceDepositScreen />} />
               <Route path="/retiro-cesantias" element={<SeveranceWithdrawScreen />} />
+              <Route path="/seguridad-social" element={<SocialSecurity />} />
               <Route path="/novedades" element={<NewsScreen />} />
               <Route path="/contratos" element={<ContractsScreen />} />
               <Route path="/contratos/nuevo" element={<NewContractScreen />} />

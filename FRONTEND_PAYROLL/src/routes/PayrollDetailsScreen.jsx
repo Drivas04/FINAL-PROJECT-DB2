@@ -6,6 +6,7 @@ import { payroll } from "@/data/payroll";
 import { getDepartmentName } from "@/helpers/EmployeeHelper";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { getTotalDeductions } from "@/helpers/payrollHelper";
 
 export const PayrollDetailsScreen = () => {
   const { idNomina } = useParams();
@@ -165,7 +166,7 @@ export const PayrollDetailsScreen = () => {
           <tr>
             <td className="border border-gray-300 p-2">Deducciones</td>
             <td className="border border-gray-300 p-2">
-              ${nomina.descuentos.toLocaleString()}
+              ${getTotalDeductions(nomina.id_nomina).toLocaleString()}
             </td>
           </tr>
           <tr>

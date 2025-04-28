@@ -19,11 +19,6 @@ export function SidebarComponent() {
       { label: "Contratos", path: "/contratos", icon: <ScrollText /> },
       { label: "Departamentos", path: "/departamentos", icon: <Building /> },
     ];
-  } else if (path.startsWith("/nomina")) {
-    items = [
-      { label: "Resumen", path: "/nomina" },
-      { label: "Liquidación", path: "/nomina/liquidacion" },
-    ];
   } else if (path.startsWith("/novedades")) {
     items = [
       { label: "Novedades", path: "/novedades" },
@@ -54,10 +49,27 @@ export function SidebarComponent() {
       { label: "Dashboard", path: "/dashboard", icon: <Home/> },
     ];
   }
-  else if (path.endsWith("/nominas")) {
+  else if (path.startsWith("/nominas")) {
     items = [
       { label: "Empleados", path: "/empleados", icon: <Users /> },
       { label: "Dashboard", path: "/dashboard", icon: <Home/> },
+    ];
+  }
+  else if (path.startsWith("/seguridad-social")) {
+    items = [
+      { label: "Empleados", path: "/empleados", icon: <Users /> },
+      { label: "Dashboard", path: "/dashboard", icon: <Home/> },
+    ];
+  } else {
+    items = [
+      { label: "Empleados", path: "/empleados", icon: <Users /> },
+      { label: "Nominas", path: "/nominas", icon: <ScrollText /> },
+      { label: "Deposito de cesantias", path: "/deposito-cesantias", icon: <PiggyBank /> },
+      { label: "Retiro de cesantias", path: "/retiro-cesantias", icon: <HandCoins /> },
+      { label: "Seguridad Social", path: "/seguridad-social", icon: <ScrollText /> },
+      { label: "Novedades", path: "/novedades", icon: <ScrollText /> },
+      { label: "Contratos", path: "/contratos", icon: <ScrollText /> },
+      { label: "Departamentos", path: "/departamentos", icon: <Building /> },
     ];
   }
 

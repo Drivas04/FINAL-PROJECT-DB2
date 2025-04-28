@@ -16,8 +16,8 @@ export const links = [
   },
   {
     id: 4,
-    name: "Novedades",
-    path: "/novedades",
+    name: "Seguridad Social",
+    path: "/seguridad-social",
   },
   {
     id: 5,

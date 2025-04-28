@@ -11,14 +11,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "departamento")
-public class Departamento {
+@Table(name = "banco")
+public class Banco {
     @Id
-    @Column(name = "id_departamento", nullable = false)
+    @Column(name = "id_banco", nullable = false)
     private Short id;
 
     @Size(max = 20)
-    @Column(name = "nombre_departamento", length = 20)
-    private String nombreDepartamento;
+    @Column(name = "nombre_banco", length = 20)
+    private String nombreBanco;
 
 }

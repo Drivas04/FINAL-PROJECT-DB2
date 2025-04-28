@@ -12,10 +12,15 @@ import {
 } from "@/components/ui/table"
 import { payroll } from '@/data/payroll';
 import { contract } from '@/data/contract';
+import { getEmployeeName } from '@/helpers/EmployeeHelper';
+import { useDataContext } from '@/context/DataContext';
+import { getEmployee } from '@/helpers/contractHelper';
+import { id } from 'date-fns/locale';
 
 export const PayrollListScreen = () => {
 
   const {idEmpleado} = useParams();
+  const { employees } = useDataContext();
   const [payrolls, setPayrolls] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,10 +44,12 @@ export const PayrollListScreen = () => {
 
     fetchFakeNominas();
   }, [idEmpleado]);
+
   
   if(loading) return <h1>Loading...</h1>
   return (
     <div className="container mx-auto mt-5 w-auto">
+      <h1 className='text-4xl font-bold mb-10 p-6'>Nominas del empleado {employees.find(e => e.id_empleado === parseInt(idEmpleado)).nombre}</h1>
       {payrolls.length === 0 ? (
         <p>No hay nóminas registradas para este empleado.</p>
       ) : (

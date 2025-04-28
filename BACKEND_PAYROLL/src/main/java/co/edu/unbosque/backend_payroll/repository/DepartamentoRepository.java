@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DepartamentoRepository extends JpaRepository<Departamento, Short> {
+ public interface DepartamentoRepository extends JpaRepository<Departamento, Short> {
 
     @Query(value = "SELECT * FROM fn_consultar_departamentos()", nativeQuery = true)
     List<Departamento> getDepartments();

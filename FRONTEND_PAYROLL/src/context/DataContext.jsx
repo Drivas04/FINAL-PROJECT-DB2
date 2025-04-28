@@ -2,8 +2,6 @@ import React, { createContext, useState, useContext } from 'react';
 import { employees as initialEmployees } from '@/data/employees';
 import { contract as initialContracts } from '@/data/contract';
 import { payroll as initialPayrolls } from '@/data/payroll';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 
 const DataContext = createContext();
 
