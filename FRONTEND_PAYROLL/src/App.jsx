@@ -43,6 +43,7 @@ function App() {
               <Route path="/contratos" element={<ContractsScreen />} />
               <Route path="/contratos/nuevo" element={<NewContractScreen />} />
               <Route path="/departamentos" element={<Departments/>} />
+              <Route path="/novedades" element={<NewsScreen/>} />
             </Routes>
           </main>
         </div>

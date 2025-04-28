@@ -6,6 +6,7 @@ import {
   PiggyBank,
   Building,
   Home,
+  Newspaper
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -53,6 +54,7 @@ export function SidebarComponent() {
     items = [
       { label: "Empleados", path: "/empleados", icon: <Users /> },
       { label: "Dashboard", path: "/dashboard", icon: <Home/> },
+      { label: "Novedades", path: "/novedades", icon: <Newspaper/> },
     ];
   }
   else if (path.startsWith("/seguridad-social")) {
