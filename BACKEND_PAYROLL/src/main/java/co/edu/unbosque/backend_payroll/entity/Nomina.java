@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Nomina {
     @Id
     @Column(name = "id_nomina", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     @Column(name = "periodo")

@@ -17,7 +17,7 @@ public class NovedadesNominaService {
     @Autowired
     private NovedadesNominaRepository novedadesNominaRepository;
 
-    public List<Novedadesnomina> getAll(){
+    public List<NovedadDTO> getAll(){
         return novedadesNominaRepository.getPayrollNews();
     }
 

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Empleado {
     @Id
     @Column(name = "id_empleado", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     @Size(max = 20)

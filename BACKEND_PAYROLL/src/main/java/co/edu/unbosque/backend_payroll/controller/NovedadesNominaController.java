@@ -21,7 +21,7 @@ public class NovedadesNominaController {
     private NovedadesNominaService novedadesNominaService;
 
     @GetMapping
-    public List<Novedadesnomina> getAll() {
+    public List<NovedadDTO> getAll() {
         return novedadesNominaService.getAll();
     }
 

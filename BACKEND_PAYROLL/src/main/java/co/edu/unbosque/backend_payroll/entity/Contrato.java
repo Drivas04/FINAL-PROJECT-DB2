@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class Contrato {
     @Id
     @Column(name = "id_contrato", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     @Column(name = "salario", precision = 10, scale = 2)

@@ -17,8 +17,11 @@ import java.util.List;
 @Repository
 public interface NovedadesNominaRepository extends JpaRepository<Novedadesnomina, Short> {
 
-    @Query(value = "SELECT id_novedad, tipo_novedad, descripcion, valor_afectacion, fecha_inicio, fecha_fin, nomina_id_nomina FROM public.fn_consultar_novedadesnomina()", nativeQuery = true)
-    List<Novedadesnomina> getPayrollNews();
+    @Query("SELECT new co.edu.unbosque.backend_payroll.dto.NovedadDTO(" +
+            "n.id, n.tipoNovedad, n.descripcion, n.valorAfectacion, " +
+            "n.fechaInicio, n.fechaFin, n.nominaIdNomina.id) " +
+            "FROM Novedadesnomina n")
+    List<NovedadDTO> getPayrollNews();
 
     @Procedure(value = "sp_agregar_novedadnomina")
     void agregarNovedadNomina(
