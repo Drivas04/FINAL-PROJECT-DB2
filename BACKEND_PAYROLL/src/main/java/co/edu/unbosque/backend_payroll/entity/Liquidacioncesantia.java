@@ -18,8 +18,8 @@ public class Liquidacioncesantia {
     @Column(name = "id_liquidacion", nullable = false)
     private Short id;
 
-    @Size(max = 5)
-    @Column(name = "periodo", length = 5)
+    @Size(max = 10)
+    @Column(name = "periodo", length = 10)
     private String periodo;
 
     @Column(name = "intereses_cesantias", precision = 10, scale = 2)

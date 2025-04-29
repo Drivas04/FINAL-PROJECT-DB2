@@ -1,5 +1,6 @@
 package co.edu.unbosque.backend_payroll.controller;
 
+import co.edu.unbosque.backend_payroll.dto.EmpleadoDTO;
 import co.edu.unbosque.backend_payroll.entity.Empleado;
 import co.edu.unbosque.backend_payroll.repository.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class EmpleadoController {
     }
 
     @PostMapping("/new-employee")
-    public ResponseEntity<Empleado> save(@RequestBody Empleado newEmployee){
-        return ResponseEntity.ok(newEmployee);
+    public ResponseEntity<Void> save(@RequestBody EmpleadoDTO newEmployee){
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/edit-employee/{id}")
