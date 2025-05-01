@@ -24,16 +24,25 @@ import {
 } from "@/components/ui/table";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { EditProfileComponent } from "./EditProfileComponent";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useDataContext } from "@/context/DataContext";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getDepartmentName } from "@/helpers/EmployeeHelper";
 import usePagination from "@/hooks/usePagination";
 import useSearch from "@/hooks/useSearch";
 import { Input } from "../ui/input";
+import { useEmployeeContext } from "@/context/EmployeeContext";
 
 export const EmployeesTable = () => {
-  const { employees, updateEmployee } = useDataContext();
+  const { employees, updateEmployee } = useEmployeeContext();
+  // Al inicio de tu componente
+  console.log("useEmployeeContext: ", useEmployeeContext());
+
+  // Antes de renderizar
+  console.log("employees: ", employees);
+  console.log("updateEmployee: ", updateEmployee);
+
+  // Antes de usar getDepartmentName
+  console.log("getDepartmentName: ", typeof getDepartmentName);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const navigate = useNavigate();
@@ -44,12 +53,10 @@ export const EmployeesTable = () => {
     setSearch,
     filteredData: filteredEmployees,
   } = useSearch(employees, "documento");
-  const {
-    currentPage,
-    maxPage,
-    goToPage,
-    paginatedData,
-  } = usePagination(filteredEmployees, 5);
+  const { currentPage, maxPage, goToPage, paginatedData } = usePagination(
+    filteredEmployees,
+    5
+  );
 
   /*
   useEffect(() => {
@@ -68,7 +75,6 @@ export const EmployeesTable = () => {
   }, []);
   */
 
-
   return (
     <>
       <div className="overflow-x-auto container mx-auto mt-5">
@@ -77,14 +83,13 @@ export const EmployeesTable = () => {
         </div>
       </div>
       <div className="flex items-center justify-between mb-4">
-              <Input
-                placeholder="Buscar por numero de documento..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-[300px]"
-              />
-              
-            </div>
+        <Input
+          placeholder="Buscar por numero de documento..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-[300px]"
+        />
+      </div>
       <Table className="w-full border-collapse border border-slate-300">
         <TableCaption>
           Lista de todos los empleados activos en la empresa
@@ -183,11 +188,19 @@ export const EmployeesTable = () => {
         </TableBody>
       </Table>
       <div>
-        <Button variant="ghost" onClick={() => goToPage(currentPage-1)} disabled={currentPage === 1}>
+        <Button
+          variant="ghost"
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
           <ChevronLeft />
         </Button>
         <span>{`Página ${currentPage} de ${maxPage}`}</span>
-        <Button variant="ghost" onClick={() => goToPage(currentPage+1)} hidden={currentPage === maxPage}>
+        <Button
+          variant="ghost"
+          onClick={() => goToPage(currentPage + 1)}
+          hidden={currentPage === maxPage}
+        >
           <ChevronRight />
         </Button>
       </div>

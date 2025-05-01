@@ -1,15 +1,21 @@
 package co.edu.unbosque.backend_payroll.repository;
 
+import co.edu.unbosque.backend_payroll.dto.EmpleadoDTO;
 import co.edu.unbosque.backend_payroll.entity.Empleado;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface EmpleadoRepository  extends JpaRepository<Empleado, Short> {
+
+    @Query(value = "SELECT * FROM fn_consultarempleados()", nativeQuery = true)
+    List<EmpleadoDTO> findAllEmpleados();
 
     @Procedure(procedureName = "sp_agregarEmpleado")
     void agregarEmpleado(@Param("pv_nombre") String nombre,

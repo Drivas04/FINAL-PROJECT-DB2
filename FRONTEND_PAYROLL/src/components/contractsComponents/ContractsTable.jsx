@@ -29,9 +29,10 @@ import useSearch from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useContractContext } from "@/context/ContractContext";
 
 export const ContractsTable = () => {
-  const { contracts, updateContract, employees } = useDataContext();
+  const { contracts, loadingContracts, updateContract, employees } = useContractContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
   const dropdownRef = useRef(null);
@@ -39,12 +40,13 @@ export const ContractsTable = () => {
     search,
     setSearch,
     filteredData: filteredContracts,
-  } = useSearch(contracts, "id_contrato");
+  } = useSearch(contracts, "idContrato");
   const { currentPage, maxPage, goToPage, paginatedData } = usePagination(
     filteredContracts,
     5
   );
 
+  if (loadingContracts) return <p>Cargando contratos...</p>;
 
   return (
     <div className="overflow-x-auto container mx-auto mt-10">
@@ -82,28 +84,28 @@ export const ContractsTable = () => {
         <TableBody>
           {paginatedData.map((contract) => {
             return (
-              <TableRow key={contract.id_contrato}>
+              <TableRow key={contract.idContrato}>
                 <TableCell className="text-center">
-                  {contract.id_contrato}
+                  {contract.idContrato}
                 </TableCell>
                 <TableCell className="text-center">
-                  {getEmployeeDocument(contract.id_empleado, employees)}
+                  {getEmployeeDocument(contract.idEmpleado, employees)}
                 </TableCell>
                 <TableCell className="text-center">
                   {getEmployeeName(contract.id_empleado, employees)}
                 </TableCell>
                 <TableCell className="text-center">
-                  {contract.tipo_contrato}
+                  {contract.tipoContrato}
                 </TableCell>
-                <TableCell className="text-center">{contract.cargo}</TableCell>
+                <TableCell className="text-center">{contract.nombreCargo}</TableCell>
                 <TableCell className="text-center">
-                  {format(new Date(contract.fecha_inicio), "d-MM-yyyy", {
+                  {format(new Date(contract.fechaInicio), "d-MM-yyyy", {
                     locale: es,
                   })}
                 </TableCell>
                 <TableCell className="text-center">
                   {contract.fecha_fin
-                    ? format(new Date(contract.fecha_fin), "d-MM-yyyy", {
+                    ? format(new Date(contract.fechaFin), "d-MM-yyyy", {
                         locale: es,
                       })
                     : "Indefinido"}

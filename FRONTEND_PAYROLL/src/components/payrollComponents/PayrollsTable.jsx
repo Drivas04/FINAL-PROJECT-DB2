@@ -36,9 +36,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import useSearch from "@/hooks/useSearch";
 import { Input } from "../ui/input";
 import { getEmployeeNameByPayroll } from "@/helpers/payrollHelper";
+import { usePayrollContext } from "@/context/PayrollContext";
+import { useEmployeeContext } from "@/context/EmployeeContext";
+import { useContractContext } from "@/context/ContractContext";
 
 export const PayrollsTable = () => {
-  const { payrolls, deletePayroll, contracts, employees } = useDataContext();
+  const { payrolls, deletePayroll } = usePayrollContext();
+  const {employees} = useEmployeeContext();
+  const { contracts } = useContractContext();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPayroll, setSelectedPayroll] = useState(null);

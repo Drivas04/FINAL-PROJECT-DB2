@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 @Data
-public class EmpleadoDTO {
+public interface EmpleadoDTO {
     String nombre;
     String apellido;
     String tipoDocumento;
