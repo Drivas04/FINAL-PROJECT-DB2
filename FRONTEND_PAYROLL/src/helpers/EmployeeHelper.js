@@ -1,3 +1,4 @@
+import { get } from "react-hook-form";
 
 export const getEmployeeName = (idEmpleado, employees) => {
   const employee = employees.find((emp) => emp.idEmpleado === idEmpleado);
@@ -18,3 +19,4 @@ export const getDepartmentName = (department_id, departments) => {
   const departamento = departments.find((dep) => dep.id === department_id);
   return departamento ? departamento.nombreDepartamento : "Departamento no encontrado";
 };
+

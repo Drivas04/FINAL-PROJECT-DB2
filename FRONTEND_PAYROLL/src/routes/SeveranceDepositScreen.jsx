@@ -71,7 +71,7 @@ export const SeveranceDepositScreen = () => {
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="id_empleado">Valor a depositar</Label>
+              <Label htmlFor="valorCesantias">Valor a depositar</Label>
               <Input
                 name="valor_deposito"
                 placeholder="Ingrese el valor a depositar"

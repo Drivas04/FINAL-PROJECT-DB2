@@ -31,7 +31,7 @@ export function SidebarComponent() {
       { label: "Empleados", path: "/empleados", icon: <Users /> },
       { label: "Nuevo Contrato", path: "/contratos/nuevo", icon: <UserPlus /> },
     ];
-  } else if (path.startsWith("/deposito-cesantias") || path.startsWith("/retiro-cesantias")) {
+  } else if (path.startsWith("/deposito-cesantias") || path.startsWith("/retiro-cesantias") || path.startsWith("/lista-retiros") || path.startsWith("/lista-depositos")) {
     items = [
       {
         label: "Deposito de cesantias",

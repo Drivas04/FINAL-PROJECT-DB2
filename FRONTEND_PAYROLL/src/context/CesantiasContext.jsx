@@ -1,8 +1,9 @@
-import { createContext, useContext } from "react";
+import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const cesantiasContext = createContext();
 
-export const useCeasntiasContext = () => useContext(cesantiasContext);
+export const useCesantiasContext = () => useContext(cesantiasContext);
 
 export const CesantiasProvider = ({ children }) => {
   const [cesantias, setCesantias] = useState([]);
@@ -29,7 +30,7 @@ export const CesantiasProvider = ({ children }) => {
         "http://localhost:8080/cesantias",
         newCesantia
       );
-      setCesantias((prevCesantias) => [...prevCesantias, newCesantia]);
+      setCesantias((prevCesantias) => [...prevCesantias, response.data]);
     } catch (error) {
       console.error("Error al agregar cesantía:", error);
     }
@@ -39,6 +40,7 @@ export const CesantiasProvider = ({ children }) => {
     cesantias,
     loadingCesantias,
     setCesantias,
+    addCesantia
   };
 
   return (
