@@ -1,11 +1,13 @@
 package co.edu.unbosque.backend_payroll.controller;
 
+import co.edu.unbosque.backend_payroll.dto.ContratoDTO;
+import co.edu.unbosque.backend_payroll.dto.ContratoEmpleadoDTO;
+import co.edu.unbosque.backend_payroll.dto.EmpleadoDTO;
 import co.edu.unbosque.backend_payroll.projection.ContratoProjection;
 import co.edu.unbosque.backend_payroll.service.ContratoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +21,11 @@ public class ContratoController {
     @GetMapping
     public List<ContratoProjection> getContratos() {
         return contratoService.getContratos();
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addContrato(@RequestBody ContratoEmpleadoDTO dto) {
+        contratoService.agregarContrato(dto.getContrato(), dto.getEmpleado());
+        return ResponseEntity.ok().build();
     }
 }

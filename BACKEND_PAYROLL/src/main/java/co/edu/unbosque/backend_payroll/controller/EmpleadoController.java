@@ -1,9 +1,8 @@
 package co.edu.unbosque.backend_payroll.controller;
 
 import co.edu.unbosque.backend_payroll.dto.ActualizarEmpleadoDTO;
-import co.edu.unbosque.backend_payroll.dto.EmpleadoDTO;
+import co.edu.unbosque.backend_payroll.projection.EmpleadoProjection;
 import co.edu.unbosque.backend_payroll.entity.Empleado;
-import co.edu.unbosque.backend_payroll.repository.EmpleadoRepository;
 import co.edu.unbosque.backend_payroll.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ public class EmpleadoController {
     private EmpleadoService empleadoService;
 
     @GetMapping
-    public List<EmpleadoDTO> getAll(){
+    public List<EmpleadoProjection> getAll(){
         return empleadoService.findAll();
     }
 
@@ -30,7 +29,7 @@ public class EmpleadoController {
     }
 
     @PostMapping("/new-employee")
-    public ResponseEntity<Void> save(@RequestBody EmpleadoDTO newEmployee){
+    public ResponseEntity<Void> save(@RequestBody EmpleadoProjection newEmployee){
         return ResponseEntity.ok().build();
     }
 

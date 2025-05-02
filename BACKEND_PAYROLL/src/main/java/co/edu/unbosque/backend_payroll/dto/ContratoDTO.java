@@ -8,12 +8,10 @@ import java.time.LocalDate;
 @Data
 public class ContratoDTO {
 
-    Short idContrato;
     BigDecimal salario;
     String tipoContrato;
     String nombreCargo;
     LocalDate fechaInicio;
     LocalDate fechaFin;
     String estado;
-    Short idEmpleado;
 }
