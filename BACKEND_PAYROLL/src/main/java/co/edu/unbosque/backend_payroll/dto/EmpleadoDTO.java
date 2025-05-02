@@ -5,20 +5,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@Data
+
 public interface EmpleadoDTO {
-    String nombre;
-    String apellido;
-    String tipoDocumento;
-    String numeroDocumento;
-    String correo;
-    String telefono;
-    String direccion;
+    Short getIdEmpleado();
+    String getNombre();
+    String getApellido();
+    String getTipoDocumento();
+    String getNumeroDocumento();
+    String getCorreo();
+    String getTelefono();
+    String getDireccion();
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    LocalDate fechaNacimiento;
+    LocalDate getFechaNacimiento();
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    LocalDate fechaContratacion;
-    String eps;
-    Short idDepartamento;
-    Long numeroCuenta;
+    LocalDate getFechaContratacion();
+    String getEpsEmpleado();
+    Short getDepartamentoIdDepartamento();
+    Long getCuentabancariaNumeroCuenta();
 }

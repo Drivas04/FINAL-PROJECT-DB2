@@ -31,18 +31,12 @@ import usePagination from "@/hooks/usePagination";
 import useSearch from "@/hooks/useSearch";
 import { Input } from "../ui/input";
 import { useEmployeeContext } from "@/context/EmployeeContext";
+import { useDepartmentContext } from "@/context/DepartmentsContext";
 
 export const EmployeesTable = () => {
   const { employees, updateEmployee } = useEmployeeContext();
-  // Al inicio de tu componente
-  console.log("useEmployeeContext: ", useEmployeeContext());
+  const { departments } = useDepartmentContext();
 
-  // Antes de renderizar
-  console.log("employees: ", employees);
-  console.log("updateEmployee: ", updateEmployee);
-
-  // Antes de usar getDepartmentName
-  console.log("getDepartmentName: ", typeof getDepartmentName);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const navigate = useNavigate();
@@ -52,28 +46,11 @@ export const EmployeesTable = () => {
     search,
     setSearch,
     filteredData: filteredEmployees,
-  } = useSearch(employees, "documento");
+  } = useSearch(employees, "numeroDocumento");
   const { currentPage, maxPage, goToPage, paginatedData } = usePagination(
     filteredEmployees,
     5
   );
-
-  /*
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/empleados");
-        const data = await response.json();
-        setEmps(data);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
-
-    fetchEmployees();
-
-  }, []);
-  */
 
   return (
     <>
@@ -104,32 +81,42 @@ export const EmployeesTable = () => {
             <TableHead className="text-center">Correo</TableHead>
             <TableHead className="text-center">Fecha de contratación</TableHead>
             <TableHead className="text-center">Departamento</TableHead>
+            <TableHead className="text-center">Número de cuenta</TableHead>
             <TableHead className="text-center">Acción</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedData.map((emp) => {
+            console.log(emp.idEmpleado);
             return (
-              <TableRow key={emp.id_empleado}>
-                <TableCell className="text-center">{emp.documento}</TableCell>
+              <TableRow key={emp.numeroDocumento}>
                 <TableCell className="text-center">
-                  {emp.tipo_documento}
+                  {emp.numeroDocumento}
+                </TableCell>
+                <TableCell className="text-center">
+                  {emp.tipoDocumento}
                 </TableCell>
                 <TableCell className="text-center">{emp.nombre}</TableCell>
                 <TableCell className="text-center">
-                  {format(new Date(emp.fecha_nacimiento), "d-MM-yyyy", {
-                    locale: es,
+                  {format(new Date(emp.fechaNacimiento).setHours(24), "dd-MM-yyyy", {
+                    locale: es, 
                   })}
                 </TableCell>
                 <TableCell className="text-center">{emp.telefono}</TableCell>
                 <TableCell className="text-center">{emp.correo}</TableCell>
                 <TableCell className="text-center">
-                  {format(new Date(emp.fecha_contratacion), "d-MM-yyyy", {
+                  {format(new Date(emp.fechaContratacion), "dd-MM-yyyy", {
                     locale: es,
                   })}
                 </TableCell>
                 <TableCell className="text-center">
-                  {getDepartmentName(emp.id_departamento)}
+                  {getDepartmentName(
+                    emp.departamentoIdDepartamento,
+                    departments
+                  )}
+                </TableCell>
+                <TableCell className="text-center">
+                  {emp.cuentabancariaNumeroCuenta}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -145,7 +132,7 @@ export const EmployeesTable = () => {
                         <DropdownMenuItem>Ver contrato</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() =>
-                            navigate(`/empleados/${emp.id_empleado}/nominas`)
+                            navigate(`/empleados/${emp.idEmpleado}/nominas`)
                           }
                         >
                           Ver nóminas
@@ -180,9 +167,9 @@ export const EmployeesTable = () => {
               setOpen={setIsDialogOpen}
               employee={selectedEmployee}
               departmentName={getDepartmentName(
-                selectedEmployee.id_departamento
+                selectedEmployee.departamentoIdDepartamento,
+                departments
               )}
-              onUpdateEmployee={updateEmployee}
             />
           )}
         </TableBody>

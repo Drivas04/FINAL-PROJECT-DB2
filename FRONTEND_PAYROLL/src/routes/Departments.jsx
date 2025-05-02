@@ -9,20 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import axios from "axios";
+import { useDepartmentContext } from "@/context/DepartmentsContext";
 
 export const Departments = () => {
-  const [departamento, setDepartments] = useState([]);
+  const { departments, loadingDepartments } = useDepartmentContext();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/departamentos/")
-      .then((response) => {
-        setDepartments(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+  
 
   return (
     <div className="overflow-x-auto container mx-auto mt-10">
@@ -41,7 +33,7 @@ export const Departments = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {departamento.map((dep) => (
+            {departments.map((dep) => (
               <TableRow key={dep.id}>
                 <TableCell className="text-center">{dep.id}</TableCell>
                 <TableCell className="text-center capitalize"> 

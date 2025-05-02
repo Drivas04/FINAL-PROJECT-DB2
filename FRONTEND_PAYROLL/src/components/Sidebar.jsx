@@ -6,7 +6,8 @@ import {
   PiggyBank,
   Building,
   Home,
-  Newspaper
+  Newspaper,
+  List
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -41,6 +42,11 @@ export function SidebarComponent() {
         label: "Retiro de cesantias",
         path: "/retiro-cesantias",
         icon: <HandCoins />,
+      },
+      {
+        label: "Retiros recientes",
+        path: "/lista-retiros",
+        icon: <List />,
       },
     ];
   }

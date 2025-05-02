@@ -12,5 +12,5 @@ public interface ContratoProjection {
     LocalDate getFechaInicio();
     LocalDate getFechaFin();
     String getEstado();
-    Short getIdEmpleado();
+    Short getEmpleadoIdEmpleado();
 }

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useToast } from '@/hooks/use-toast';
 
 const EmployeeContext = createContext();
 
@@ -9,18 +10,17 @@ export const EmployeeProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
   const [loadingEmployees, setLoadingEmployees] = useState(true);
 
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/empleados");
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Error al cargar empleados:", error);
+    } finally {
+      setLoadingEmployees(false);
+    }
+  };
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/empleados");
-        setEmployees(response.data);
-      } catch (error) {
-        console.error("Error al cargar empleados:", error);
-      } finally {
-        setLoadingEmployees(false);
-      }
-    };
-    
     fetchEmployees();
   }, []);
 
@@ -36,12 +36,34 @@ export const EmployeeProvider = ({ children }) => {
     return employees.length + 1; 
   };
 
-  const updateEmployee = (updatedEmployee) => {
-    setEmployees((prevEmployees) => 
-      prevEmployees.map((emp) => 
-        emp.id_empleado === updatedEmployee.id_empleado ? updatedEmployee : emp
-      )
-    );
+  const updateEmployee = async (employeeId, updatedData) => {
+    try {
+      console.log(`Actualizando empleado ${employeeId} con datos:`, updatedData);
+      
+      const response = await axios.put(
+        `http://localhost:8080/empleados/${employeeId}`,
+        updatedData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      // Actualiza el estado local con los datos devueltos por el servidor
+      setEmployees(prevEmployees => 
+        prevEmployees.map(emp => 
+          emp.idEmpleado === employeeId ? { ...emp, ...updatedData } : emp
+        )
+      );
+      
+      console.log("Empleado actualizado con éxito:", response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.error("Error al actualizar empleado:", error);
+      throw error; // Re-lanzar el error para manejarlo en el componente
+    }
   };
 
   const value = {

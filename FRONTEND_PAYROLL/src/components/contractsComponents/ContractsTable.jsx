@@ -23,16 +23,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { EditContractComponent } from "./EditContractComponent";
-import { useDataContext } from "@/context/DataContext";
 import { getEmployeeDocument, getEmployeeName } from "@/helpers/EmployeeHelper";
 import useSearch from "@/hooks/useSearch";
 import usePagination from "@/hooks/usePagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useContractContext } from "@/context/ContractContext";
+import { useEmployeeContext } from "@/context/EmployeeContext";
 
 export const ContractsTable = () => {
-  const { contracts, loadingContracts, updateContract, employees } = useContractContext();
+  const { contracts, loadingContracts, updateContract } = useContractContext();
+  const { employees } = useEmployeeContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
   const dropdownRef = useRef(null);
@@ -45,6 +46,8 @@ export const ContractsTable = () => {
     filteredContracts,
     5
   );
+
+  console.log(contracts)
 
   if (loadingContracts) return <p>Cargando contratos...</p>;
 
@@ -89,10 +92,10 @@ export const ContractsTable = () => {
                   {contract.idContrato}
                 </TableCell>
                 <TableCell className="text-center">
-                  {getEmployeeDocument(contract.idEmpleado, employees)}
+                  {getEmployeeDocument(contract.empleadoIdEmpleado, employees)}
                 </TableCell>
                 <TableCell className="text-center">
-                  {getEmployeeName(contract.id_empleado, employees)}
+                  {getEmployeeName(contract.empleadoIdEmpleado, employees)}
                 </TableCell>
                 <TableCell className="text-center">
                   {contract.tipoContrato}
@@ -113,7 +116,7 @@ export const ContractsTable = () => {
                 <TableCell className="text-center">
                   {contract.salario}
                 </TableCell>
-                <TableCell className="text-center">{contract.estado}</TableCell>
+                <TableCell className="text-center">{contract.estado === 'A'?'Activo':'Inactivo'}</TableCell>
                 <TableCell className="text-center">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

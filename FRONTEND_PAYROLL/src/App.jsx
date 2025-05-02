@@ -22,6 +22,8 @@ import { EmployeeProvider } from "./context/EmployeeContext";
 import { ContractProvider } from "./context/ContractContext";
 import { PayrollProvider } from "./context/PayrollContext";
 import { DataProvider } from "./context/DataContext";
+import { DepartmentProvider } from "./context/DepartmentsContext";
+import { SeveranceListScreen } from "./routes/SeveranceListScreen";
 
 function App() {
   const location = useLocation();
@@ -33,31 +35,54 @@ function App() {
     <EmployeeProvider>
       <ContractProvider>
         <PayrollProvider>
-          {/* DataProvider debe ir dentro de los otros providers para poder usar useEmployeeContext, etc. */}
-          <DataProvider>
-            <Header />
-            <div className="flex h-[calc(100vh-101px)]">
-              {!isAuthPage && <SidebarComponent />}
-              <main className="flex-1 overflow-y-auto bg-gray-100">
-                <Routes>
-                  <Route path="/" element={<AuthComponent />} />
-                  <Route path="/dashboard" element={<DashboardScreen />} />
-                  <Route path="/empleados" element={<EmployeesScreen />} />
-                  <Route path="/nominas" element={<AllPayrollsScreen />} />
-                  <Route path="/empleados/:idEmpleado/nominas" element={<PayrollListScreen />} />
-                  <Route path="/empleados/:idEmpleado/nominas/:idNomina" element={<PayrollDetailsScreen />} />
-                  <Route path="/deposito-cesantias" element={<SeveranceDepositScreen />} />
-                  <Route path="/retiro-cesantias" element={<SeveranceWithdrawScreen />} />
-                  <Route path="/seguridad-social" element={<SocialSecurity />} />
-                  <Route path="/novedades" element={<NewsScreen />} />
-                  <Route path="/contratos" element={<ContractsScreen />} />
-                  <Route path="/contratos/nuevo" element={<NewContractScreen />} />
-                  <Route path="/departamentos" element={<Departments />} />
-                </Routes>
-              </main>
-            </div>
-            <Toaster />
-          </DataProvider>
+          <DepartmentProvider>
+            <DataProvider>
+              <Header />
+              <div className="flex h-[calc(100vh-101px)]">
+                {!isAuthPage && <SidebarComponent />}
+                <main className="flex-1 overflow-y-auto bg-gray-100">
+                  <Routes>
+                    <Route path="/" element={<AuthComponent />} />
+                    <Route path="/dashboard" element={<DashboardScreen />} />
+                    <Route path="/empleados" element={<EmployeesScreen />} />
+                    <Route path="/nominas" element={<AllPayrollsScreen />} />
+                    <Route
+                      path="/empleados/:idEmpleado/nominas"
+                      element={<PayrollListScreen />}
+                    />
+                    <Route
+                      path="/empleados/:idEmpleado/nominas/:idNomina"
+                      element={<PayrollDetailsScreen />}
+                    />
+                    <Route
+                      path="/deposito-cesantias"
+                      element={<SeveranceDepositScreen />}
+                    />
+                    <Route
+                      path="/retiro-cesantias"
+                      element={<SeveranceWithdrawScreen />}
+                    />
+                    <Route
+                      path="/lista-retiros"
+                      element={<SeveranceListScreen />}
+                    />
+                    <Route
+                      path="/seguridad-social"
+                      element={<SocialSecurity />}
+                    />
+                    <Route path="/novedades" element={<NewsScreen />} />
+                    <Route path="/contratos" element={<ContractsScreen />} />
+                    <Route
+                      path="/contratos/nuevo"
+                      element={<NewContractScreen />}
+                    />
+                    <Route path="/departamentos" element={<Departments />} />
+                  </Routes>
+                </main>
+              </div>
+              <Toaster />
+            </DataProvider>
+          </DepartmentProvider>
         </PayrollProvider>
       </ContractProvider>
     </EmployeeProvider>

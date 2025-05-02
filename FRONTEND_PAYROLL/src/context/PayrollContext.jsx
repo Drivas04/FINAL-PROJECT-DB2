@@ -12,7 +12,7 @@ export const PayrollProvider = ({ children }) => {
   useEffect(() => {
     const fetchPayrolls = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/contratos"); // Ajusta la URL
+        const response = await axios.get("http://localhost:8080/contratos"); // Ajusta la URL
         setPayrolls(response.data);
       } catch (error) {
         console.error("Error al cargar contratos:", error);

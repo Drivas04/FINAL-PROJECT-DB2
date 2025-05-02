@@ -16,7 +16,7 @@ public class Empleado {
     @Id
     @Column(name = "id_empleado", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+    private Short idEmpleado;
 
     @Size(max = 20)
     @Column(name = "nombre", length = 20)

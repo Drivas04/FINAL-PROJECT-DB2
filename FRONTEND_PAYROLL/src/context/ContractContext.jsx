@@ -12,7 +12,7 @@ export const ContractProvider = ({ children }) => {
   useEffect(() => {
     const fetchContracts = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/contratos"); // Ajusta la URL
+        const response = await axios.get("http://localhost:8080/contratos");
         setContracts(response.data);
       } catch (error) {
         console.error("Error al cargar contratos:", error);
@@ -46,6 +46,8 @@ export const ContractProvider = ({ children }) => {
   const value = {
     contracts,
     loadingContracts,
+    addContract,
+    updateContract,
     setContracts,
   };
 

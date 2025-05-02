@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Liquidacioncesantia {
     @Id
     @Column(name = "id_liquidacion", nullable = false)
-    private Short id;
+    private Short idLiquidacion;
 
     @Size(max = 10)
     @Column(name = "periodo", length = 10)

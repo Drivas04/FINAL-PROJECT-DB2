@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Cuentabancaria {
     @Id
     @Column(name = "numero_cuenta", nullable = false)
-    private Integer id;
+    private Integer numeroCuenta;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
