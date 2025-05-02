@@ -25,55 +25,43 @@ import { useForm } from "@/hooks/useForm";
 import { useDataContext } from "@/context/DataContext";
 import { useNavigate } from "react-router-dom";
 
-export const NewContractComponent = ({employeeId}) => {
-
-  const { addContract} = useDataContext();
+export const NewContractComponent = ({ employeeData, onContractSubmit }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const initialForm = {
-    tipo_contrato: "",
-    cargo: "",
-    fecha_inicio: "",
-    fecha_fin: "",
+    tipoContrato: "",
+    nombreCargo: "",
+    fechaInicio: new Date().toISOString().split("T")[0], // Fecha actual por defecto
+    fechaFin: "",
     salario: "",
     estado: "Activo",
   };
 
   const { formState, setFormState, onInputChange, onNumberInputChange } = useForm(initialForm);
 
-  const { tipo_contrato, cargo, fecha_inicio, fecha_fin, salario, estado } = formState;
+  const { tipoContrato, nombreCargo, fechaInicio, fechaFin, salario, estado } = formState;
 
   const handleCreateContract = () => {
-    const newContract = {
-      id_empleado: employeeId,
-      tipo_contrato,
-      cargo,
-      fecha_fin: tipo_contrato === "Indefinido" ? null : fecha_fin,
-      salario: Number(salario),
-      estado
+    // Validar campos requeridos
+    if (!tipoContrato || !nombreCargo || !salario) {
+      toast({
+        variant: "destructive",
+        title: "Error de validación",
+        description: "Por favor completa todos los campos requeridos",
+      });
+      return;
+    }
+
+    // Si es contrato indefinido, fecha_fin debe ser null
+    const finalData = {
+      ...formState,
+      fechaFin: tipoContrato === "Indefinido" ? null : fechaFin,
+      salario: Number(salario)
     };
 
-    // Agregar contrato al contexto
-    addContract(newContract);
-    
-    // Resetear formulario
-    setFormState({
-      tipo_contrato: "",
-      cargo: "",
-      fecha_inicio: "",
-      fecha_fin: "",
-      salario: "",
-      estado: "Activo",
-    });
-
-    navigate("/contratos");
-
-    toast({
-      description: "El contrato se ha creado con exito",
-    })
-
-    
+    // Enviar los datos al componente padre
+    onContractSubmit(finalData);
   };
 
   return (
@@ -81,17 +69,17 @@ export const NewContractComponent = ({employeeId}) => {
       <CardHeader>
         <CardTitle>Datos del contrato</CardTitle>
         <CardDescription>
-          Ingrese los datos del contrato del nuevo empleado
+          Ingrese los datos del contrato para {employeeData?.nombre || "el nuevo empleado"}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="space-y-1">
-          <Label htmlFor="tipo_contrato">Tipo de contrato</Label>
+          <Label htmlFor="tipoContrato">Tipo de contrato</Label>
           <Select
-            name="tipo_contrato"
-            value={tipo_contrato}
+            name="tipoContrato"
+            value={tipoContrato}
             onValueChange={(value) => {
-              setFormState({ ...formState, tipo_contrato: value });
+              setFormState({ ...formState, tipoContrato: value });
             }}
             onChange={onInputChange}
           >
@@ -107,23 +95,33 @@ export const NewContractComponent = ({employeeId}) => {
           </Select>
         </div>
         <div className="space-y-1">
-          <Label htmlFor="cargo">Cargo</Label>
+          <Label htmlFor="nombreCargo">Cargo</Label>
           <Input
-            name="cargo"
-            value={cargo}
+            name="nombreCargo"
+            value={nombreCargo}
             onChange={onInputChange}
             required
           />
         </div>
         
         <div className="space-y-1">
-          <Label htmlFor="fecha_fin">Fecha de finalización</Label>
+          <Label htmlFor="fechaInicio">Fecha de inicio</Label>
           <Input
             type="date"
-            name="fecha_fin"
-            value={fecha_fin}
+            name="fechaInicio"
+            value={fechaInicio}
             onChange={onInputChange}
-            disabled={tipo_contrato === "Indefinido" ? true : false}
+          />
+        </div>
+        
+        <div className="space-y-1">
+          <Label htmlFor="fechaFin">Fecha de finalización</Label>
+          <Input
+            type="date"
+            name="fechaFin"
+            value={fechaFin}
+            onChange={onInputChange}
+            disabled={tipoContrato === "Indefinido" ? true : false}
           />
         </div>
         <div className="space-y-1">

@@ -24,66 +24,49 @@ import { employees } from "@/data/employees";
 import { de, id } from "date-fns/locale";
 import { useDataContext } from "@/context/DataContext";
 
-
-
-export const NewEmployeeComponent = ({defaultTab, onEmployeeAdded}) => {
-
-  const {addEmployee} = useDataContext();
-
-  
-
+export const NewEmployeeComponent = ({ onEmployeeDataSaved }) => {
   const initialForm = {
-    numero_documento: "",
+    numeroDocumento: "",
     nombre: "",
-    tipo_documento: "",
-    fecha_nacimiento: "",
+    tipoDocumento: "",
+    fechaNacimiento: "",
     correo: "",
     telefono: "",
     direccion: "",
+    epsEmpleado: "Compensar",
+    departamentoIdDepartamento: 1,
+    cuentabancariaNumeroCuenta: "",
+    bancoIdBanco: 1,
   };
 
   const { formState, setFormState, onInputChange } = useForm(initialForm);
 
   const {
-    numero_documento,
+    numeroDocumento,
     nombre,
-    tipo_documento,
-    fecha_nacimiento,
+    tipoDocumento,
+    fechaNacimiento,
     correo,
     telefono,
     direccion,
+    epsEmpleado,
+    departamentoIdDepartamento,
+    cuentabancariaNumeroCuenta,
+    bancoIdBanco,
   } = formState;
 
   const handleSaveChanges = () => {
-      const newEmployee = {
-        numero_documento,
-        nombre,
-        tipo_documento,
-        fecha_nacimiento,
-        correo,
-        telefono,
-        direccion,
-        fecha_contratacion: new Date().toISOString().split("T")[0],
-        id_departamento: 1,
-      };
+    // Validar campos requeridos
+    if (!numeroDocumento || !nombre || !tipoDocumento || !fechaNacimiento || !correo || !telefono || !direccion) {
+      // Mostrar error o mensaje de validación
+      return;
+    }
 
-      const employeeId = addEmployee(newEmployee);
-
-
-    setFormState({
-      numero_documento: "",
-      nombre: "",
-      tipo_documento: "",
-      fecha_nacimiento: "",
-      correo: "",
-      telefono: "",
-      direccion: "",
-    });
-    if(onEmployeeAdded){
-      onEmployeeAdded(employeeId);
+    // Enviamos los datos al componente padre
+    if (onEmployeeDataSaved) {
+      onEmployeeDataSaved(formState);
     }
   };
-
 
   return (
     <Card>
@@ -95,10 +78,10 @@ export const NewEmployeeComponent = ({defaultTab, onEmployeeAdded}) => {
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="space-y-1">
-          <Label htmlFor="numero_documento">Número de documento</Label>
+          <Label htmlFor="numeroDocumento">Número de documento</Label>
           <Input
-            name="numero_documento"
-            value={numero_documento}
+            name="numeroDocumento"
+            value={numeroDocumento}
             onChange={onInputChange}
             onKeyDown={(e) => {
               const allowedKeys = [
@@ -122,13 +105,13 @@ export const NewEmployeeComponent = ({defaultTab, onEmployeeAdded}) => {
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="tipo_documento">Tipo de documento</Label>
+          <Label htmlFor="tipoDocumento">Tipo de documento</Label>
           <Select
-            name="tipo_documento"
-            value={tipo_documento}
+            name="tipoDocumento"
+            value={tipoDocumento}
             required
             onValueChange={(value) => {
-              setFormState({ ...formState, tipo_documento: value });
+              setFormState({ ...formState, tipoDocumento: value });
             }}
             onChange={onInputChange}
           >
@@ -145,11 +128,11 @@ export const NewEmployeeComponent = ({defaultTab, onEmployeeAdded}) => {
           </Select>
         </div>
         <div className="space-y-1">
-          <Label htmlFor="fecha_nacimiento">Fecha de nacimiento</Label>
+          <Label htmlFor="fechaNacimiento">Fecha de nacimiento</Label>
           <Input
             type="date"
-            name="fecha_nacimiento"
-            value={fecha_nacimiento}
+            name="fechaNacimiento"
+            value={fechaNacimiento}
             onChange={onInputChange}
             required
           />
@@ -190,6 +173,90 @@ export const NewEmployeeComponent = ({defaultTab, onEmployeeAdded}) => {
             onChange={onInputChange}
             required
           />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="epsEmpleado">EPS</Label>
+          <Select
+            name="epsEmpleado"
+            value={epsEmpleado}
+            onValueChange={(value) => {
+              setFormState({ ...formState, epsEmpleado: value });
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Selecciona la EPS" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Compensar">Compensar</SelectItem>
+                <SelectItem value="Sura">Sura</SelectItem>
+                <SelectItem value="Nueva EPS">Nueva EPS</SelectItem>
+                <SelectItem value="Sanitas">Sanitas</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="departamentoIdDepartamento">Departamento</Label>
+          <Select
+            name="departamentoIdDepartamento"
+            value={departamentoIdDepartamento}
+            onValueChange={(value) => {
+              setFormState({ ...formState, departamentoIdDepartamento: value });
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Selecciona la EPS" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="1">Compensar</SelectItem>
+                <SelectItem value="2">Sura</SelectItem>
+                <SelectItem value="3">Nueva EPS</SelectItem>
+                <SelectItem value="4">Sanitas</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="cuentabancariaNumeroCuenta">Dirección</Label>
+          <Input
+            name="cuentabancariaNumeroCuenta"
+            value={cuentabancariaNumeroCuenta}
+            onChange={onInputChange}
+            onKeyDown={(e) => {
+              const allowedKeys = [
+                "Backspace", "Tab", "ArrowLeft", "ArrowRight", "Delete"
+              ];
+          
+              if (!/^\d$/.test(e.key) && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            required
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="bancoIdBanco">Banco</Label>
+          <Select
+            name="bancoIdBanco"
+            value={bancoIdBanco}
+            onValueChange={(value) => {
+              setFormState({ ...formState, bancoIdBanco: value });
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Selecciona la EPS" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="1">Compensar</SelectItem>
+                <SelectItem value="2">Sura</SelectItem>
+                <SelectItem value="3">Nueva EPS</SelectItem>
+                <SelectItem value="4">Sanitas</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </CardContent>
       <CardFooter>

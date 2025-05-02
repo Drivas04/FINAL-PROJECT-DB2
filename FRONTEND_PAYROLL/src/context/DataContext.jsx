@@ -15,11 +15,18 @@ export const DataProvider = ({ children }) => {
   const contractContext = useContractContext();
   const payrollContext = usePayrollContext();
 
+  // Crea un método para agregar contratos más fácilmente desde componentes
+  const addContract = async (contratoData, empleadoData) => {
+    return await contractContext.addContract(contratoData, empleadoData);
+  };
+
   return (
     <DataContext.Provider value={{
       employeeContext,
       contractContext,
-      payrollContext
+      payrollContext,
+      // Exponer métodos específicos para facilitar su uso
+      addContract
     }}>
       {children}
     </DataContext.Provider>

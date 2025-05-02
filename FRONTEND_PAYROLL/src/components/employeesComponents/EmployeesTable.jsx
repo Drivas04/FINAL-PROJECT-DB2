@@ -63,7 +63,10 @@ export const EmployeesTable = () => {
         <Input
           placeholder="Buscar por numero de documento..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            goToPage(1);
+          }}
           className="w-[300px]"
         />
       </div>

@@ -1,16 +1,41 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import React, { useState } from "react";
 import { NewEmployeeComponent } from "@/components/contractsComponents/newContractComponents/NewEmployeeComponent";
 import { NewContractComponent } from "@/components/contractsComponents/newContractComponents/NewContractComponent";
+import { useToast } from "@/hooks/use-toast";
+import { useContractContext } from "@/context/ContractContext";
+import { useNavigate } from "react-router-dom";
 
 export const NewContractScreen = () => {
   const [activeTab, setActiveTab] = useState("new-employee");
-  const [newEmployeeId, setNewEmployeeId] = useState(null);
+  const [newEmployeeData, setNewEmployeeData] = useState(null);
+  const { addContract } = useContractContext();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleEmployeeAdded = (employeeId) => {
-    setNewEmployeeId(employeeId);
+  const handleEmployeeDataSaved = (employeeData) => {
+    setNewEmployeeData(employeeData);
     setActiveTab("new-contract");
+  };
+
+  const handleContractSubmit = async (contractData) => {
+    try {
+      // Envía tanto los datos del empleado como del contrato
+      await addContract(contractData, newEmployeeData);
+      
+      toast({
+        description: "El contrato y empleado se han creado con éxito",
+      });
+      
+      navigate("/contratos");
+    } catch (error) {
+      console.error("Error al crear contrato y empleado:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No se pudo crear el contrato. Por favor, intenta de nuevo.",
+      });
+    }
   };
 
   return (
@@ -22,15 +47,20 @@ export const NewContractScreen = () => {
       >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="new-employee">Datos del empleado</TabsTrigger>
-          <TabsTrigger value="new-contract" disabled={!newEmployeeId}>
+          <TabsTrigger value="new-contract" disabled={!newEmployeeData}>
             Datos del contrato
           </TabsTrigger>
         </TabsList>
         <TabsContent value="new-employee">
-          <NewEmployeeComponent onEmployeeAdded={handleEmployeeAdded} />
+          <NewEmployeeComponent onEmployeeDataSaved={handleEmployeeDataSaved} />
         </TabsContent>
         <TabsContent value="new-contract">
-          {newEmployeeId && <NewContractComponent employeeId={newEmployeeId} />}
+          {newEmployeeData && (
+            <NewContractComponent 
+              employeeData={newEmployeeData} 
+              onContractSubmit={handleContractSubmit}
+            />
+          )}
         </TabsContent>
       </Tabs>
     </main>
