@@ -1,5 +1,5 @@
-"use client"
- 
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -18,23 +18,42 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { getEmployee } from "@/data/employees";
+import { employees, getEmployee } from "@/data/employees";
 import { useToast } from "@/hooks/use-toast";
+import { getEmployeeByPayroll, getPayrrolPayrrollById } from "@/helpers/payrollHelper";
+import { contract } from "@/data/contract";
+import { useContractContext } from "@/context/ContractContext";
+import { useEmployeeContext } from "@/context/EmployeeContext";
 
 export const RequestsArea = () => {
+  const [payrollNews, setPayrollNews] = useState([]);
+  const {contracts} = useContractContext();
+  const { employees} = useEmployeeContext();
 
-  //const reqs = requests;
+  const fetchPayrollNews = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/novedades");
+      const data = await response.json();
+      setPayrollNews(data);
+    } catch (error) {
+      console.error("Error fetching payroll news:", error);
+    }
+  };
+  useEffect(() => {
+    fetchPayrollNews();
+  }, []);
 
   const [reqs, setReqs] = useState(requests);
 
-    const {toast} = useToast();
+  const { toast } = useToast();
 
   const acceptRequest = (request_id) => {
     setReqs(reqs.filter((request) => request_id !== request.id));
     toast({
       title: "Solicitud aceptada",
-      description: "La solicitud ha sido aceptada y se vera reflejada en la nomina del empleado",
-    })
+      description:
+        "La solicitud ha sido aceptada y se vera reflejada en la nomina del empleado",
+    });
   };
 
   const declineRequest = (request_id) => {
@@ -43,16 +62,15 @@ export const RequestsArea = () => {
       variant: "destructive",
       title: "Solicitud rechazada",
       description: "La solicitud del empleado ha sido rechazada",
-    })
+    });
   };
-  
 
   return (
     <Card>
       <div className="p-4">
         <CardTitle>
           <h1 className="text-violet-600 text-4xl font-semibold">
-            Solicitudes pendientes
+            Novedades de nomina recientes
           </h1>
         </CardTitle>
         <br />
@@ -60,55 +78,55 @@ export const RequestsArea = () => {
         <CardContent>
           <ScrollArea className="h-72 w-full rounded-md border">
             <div className="p-4">
-              {reqs.map((req) => {
-                let employee = getEmployee(req.id_empleado);
+              {payrollNews.map((pay) => {
+                let employee = getEmployeeByPayroll(contracts, employees, getPayrrolPayrrollById(payrollNews, pay.nominaIdNomina));
                 return (
-                  <div key={req.id}>
+                  <div key={pay.id_novedad}>
                     <div className="flex justify-between content-center">
-                      <div className="text-sm">{req.requestType}</div>
+                      <div className="font-semibold">{pay.tipo_novedad}</div>
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button>Ver</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px] rounded-lg">
                           <DialogHeader>
-                            <DialogTitle>Solicitud</DialogTitle>
+                            <DialogTitle>Novedad de nomina</DialogTitle>
                             <DialogDescription>
-                              Hay una solicitud pendiente del empleado:
+                              Hay una novedad reciente: {employee.nombre}
                             </DialogDescription>
                           </DialogHeader>
                           <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <Label htmlFor="name" className="text-right">
-                                Nombre:
+                            <div className="flex flex-row ml-14 justify-items-start gap-4">
+                              <Label htmlFor="name" className="">
+                                Documento:
                               </Label>
-                              <Label>{employee.nombre}</Label>
+                              <Label>{employee.numeroDocumento}</Label>
                             </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="flex flex-row ml-14 items-center gap-4">
                               <Label htmlFor="username" className="text-right">
-                                Cédula:
+                                Novedad:
                               </Label>
-                              <Label>{employee.documento}</Label>
+                              <Label>{pay.tipo_novedad}</Label>
                             </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="flex flex-row ml-14 items-start content-start gap-4">
                               <Label htmlFor="username" className="text-right">
                                 Motivo:
                               </Label>
-                              <Label>{req.requestType}</Label>
+                              <Label className='w-full'>{pay.descripcion}</Label>
+                            </div>
+                            <div className="flex flex-row ml-14 items-start content-start gap-4">
+                              <Label htmlFor="username" className="">
+                                Código de nómina:
+                              </Label>
+                              <Label className='w-full'>{pay.id_nomina}</Label>
                             </div>
                           </div>
                           <DialogFooter>
-                            <div className="flex justify-between">
+                            <div className="flex justify-end">
                               <DialogClose asChild>
-                                <Button
-                                  onClick={() => declineRequest(req.id)}
-                                  variant="destructive"
-                                >
-                                  Rechazar
+                                <Button>
+                                  Volver
                                 </Button>
-                              </DialogClose>
-                              <DialogClose asChild>
-                                <Button onClick={() => acceptRequest(req.id)}>Aceptar</Button>
                               </DialogClose>
                             </div>
                           </DialogFooter>

@@ -14,16 +14,16 @@ export const NewsTable = () => {
 
   const [payrollNews, setPayrollNews] = useState([]);
 
+  const fetchPayrollNews = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/novedades');
+      const data = await response.json();
+      setPayrollNews(data);
+    } catch (error) {
+      console.error('Error fetching payroll news:', error);
+    }
+  };
   useEffect(() => {
-    const fetchPayrollNews = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/novedades');
-        const data = await response.json();
-        setPayrollNews(data);
-      } catch (error) {
-        console.error('Error fetching payroll news:', error);
-      }
-    };
 
     fetchPayrollNews();
   }, []);

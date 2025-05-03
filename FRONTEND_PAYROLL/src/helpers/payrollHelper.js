@@ -8,8 +8,13 @@ export const getTotalDeductions = (id_nomina) => {
 }
 
 
-export const getEmployeeNameByPayroll = (contracts, employees, payroll) => {
+export const getEmployeeByPayroll = (contracts, employees, payroll) => {
   const contract = contracts.find((contract) => contract.id_contrato === payroll.id_contrato);
   const employee = employees.find((emp) => emp.id_empleado === contract.id_empleado);
-  return employee ? employee.nombre : "Empleado no encontrado";
+  return employee ? employee : "Empleado no encontrado";
+}
+
+export const getPayrrolPayrrollById = (payrollNews, id_nomina) => {
+  const payroll = payrollNews.find((payroll) => payroll.nominaIdNomina === id_nomina);
+  return payroll ? payroll : "Nómina no encontrada";
 }
