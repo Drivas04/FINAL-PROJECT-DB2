@@ -7,7 +7,8 @@ import {
   Building,
   Home,
   Newspaper,
-  List
+  List,
+  Plus
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -24,6 +25,7 @@ export function SidebarComponent() {
   } else if (path.startsWith("/novedades")) {
     items = [
       { label: "Novedades", path: "/novedades" },
+      { label: "Registrar novedad", path: "/novedades/registrar", icon: <Plus /> }, // Añade esta línea
       { label: "Historial", path: "/novedades/historial" },
     ];
   } else if (path.startsWith("/contratos")) {

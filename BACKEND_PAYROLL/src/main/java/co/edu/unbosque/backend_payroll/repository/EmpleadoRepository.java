@@ -46,6 +46,10 @@ public interface EmpleadoRepository  extends JpaRepository<Empleado, Short> {
                             @Param("pv_eps_empleado") String eps,
                             @Param("pn_Departamento_ID_Departamento") Short idDepartamento,
                             @Param("pn_CuentaBancaria_Numero_cuenta") Long numeroCuenta);
+
+
+    @Procedure(procedureName = "sp_eliminarempleado")
+    void eliminarEmpleado(@Param("pn_ID_Empleado") Short idEmpleado);
 }
 
 

@@ -9,8 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { format, set } from "date-fns";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
 import {
@@ -32,13 +39,18 @@ import useSearch from "@/hooks/useSearch";
 import { Input } from "../ui/input";
 import { useEmployeeContext } from "@/context/EmployeeContext";
 import { useDepartmentContext } from "@/context/DepartmentsContext";
+import { useToast } from "@/hooks/use-toast";
 
 export const EmployeesTable = () => {
-  const { employees, updateEmployee } = useEmployeeContext();
+  const { employees, updateEmployee, deleteEmployee } = useEmployeeContext();
   const { departments } = useDepartmentContext();
+  const { toast } = useToast();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
@@ -47,10 +59,32 @@ export const EmployeesTable = () => {
     setSearch,
     filteredData: filteredEmployees,
   } = useSearch(employees, "numeroDocumento");
+  
   const { currentPage, maxPage, goToPage, paginatedData } = usePagination(
     filteredEmployees,
     5
   );
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (employeeToDelete) {
+        await deleteEmployee(employeeToDelete.idEmpleado);
+        toast({
+          title: "Empleado dado de baja",
+          description: `${employeeToDelete.nombre} ha sido dado de baja exitosamente.`,
+        });
+        setIsDeleteDialogOpen(false);
+        setEmployeeToDelete(null);
+      }
+    } catch (error) {
+      console.error("Error al dar de baja al empleado:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No se pudo dar de baja al empleado. Intente nuevamente.",
+      });
+    }
+  };
 
   return (
     <>
@@ -90,7 +124,6 @@ export const EmployeesTable = () => {
         </TableHeader>
         <TableBody>
           {paginatedData.map((emp) => {
-            console.log(emp.idEmpleado);
             return (
               <TableRow key={emp.numeroDocumento}>
                 <TableCell className="text-center">
@@ -154,7 +187,19 @@ export const EmployeesTable = () => {
                         >
                           Editar perfil
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="!text-red-600 hover:!text-white hover:!bg-red-600">
+                        <DropdownMenuItem 
+                          className="!text-red-600 hover:!text-white hover:!bg-red-600"
+                          onClick={() => {
+                            if (dropdownRef.current) {
+                              dropdownRef.current.click();
+                            }
+
+                            setTimeout(() => {
+                              setEmployeeToDelete(emp);
+                              setIsDeleteDialogOpen(true);
+                            }, 50);
+                          }}
+                        >
                           Dar de baja
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
@@ -194,6 +239,34 @@ export const EmployeesTable = () => {
           <ChevronRight />
         </Button>
       </div>
+
+      {/* Diálogo de confirmación para dar de baja */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Confirmar dar de baja</DialogTitle>
+            <DialogDescription>
+              ¿Estás seguro de que deseas dar de baja a {employeeToDelete?.nombre}?
+              Al dar de baja a un empleado, se eliminarán todos sus datos y no podrá acceder a su cuenta.
+              Esta acción no se puede deshacer.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex justify-between">
+            <Button 
+              variant="outline" 
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Cancelar
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleDeleteConfirm}
+            >
+              Confirmar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

@@ -39,8 +39,9 @@ public class EmpleadoController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-employee/{id}")
-    public ResponseEntity<Empleado> deleteById(@PathVariable Short id){
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Short id){
+        empleadoService.eliminarEmpleado(id);
+        return ResponseEntity.ok().build();
     }
 }

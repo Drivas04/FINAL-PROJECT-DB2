@@ -36,8 +36,8 @@ public class Nomina {
     @Column(name = "auxilio_transporte", precision = 10, scale = 2)
     private BigDecimal auxilioTransporte;
 
-    @Column(name = "dias_trabajados", precision = 10, scale = 2)
-    private BigDecimal diasTrabajados;
+    @Column(name = "dias_trabajados", precision = 10)
+    private Integer diasTrabajados;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

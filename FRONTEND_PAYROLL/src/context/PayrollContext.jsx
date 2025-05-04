@@ -6,13 +6,13 @@ const PayrollContext = createContext();
 export const usePayrollContext = () => useContext(PayrollContext);
 
 export const PayrollProvider = ({ children }) => {
-  const [Payrolls, setPayrolls] = useState([]);
+  const [payrolls, setPayrolls] = useState([]);
   const [loadingPayrolls, setLoadingPayrolls] = useState(true);
 
   useEffect(() => {
     const fetchPayrolls = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/contratos"); // Ajusta la URL
+        const response = await axios.get("http://localhost:8080/nominas"); // Ajusta la URL
         setPayrolls(response.data);
       } catch (error) {
         console.error("Error al cargar contratos:", error);
@@ -49,7 +49,7 @@ export const PayrollProvider = ({ children }) => {
     };
 
   const value = {
-    Payrolls,
+    payrolls,
     loadingPayrolls,
     setPayrolls,
   };

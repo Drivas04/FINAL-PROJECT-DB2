@@ -52,13 +52,15 @@ export const PayrollsTable = () => {
     search,
     setSearch,
     filteredData: filteredPayrolls,
-  } = useSearch(payrolls, "id_contrato");
+  } = useSearch(payrolls, "contratoIdContrato");
   const {
     currentPage,
     maxPage,
     goToPage,
     paginatedData,
   } = usePagination(filteredPayrolls, 5);
+
+  console.log(paginatedData);
 
   return (
     <>
@@ -78,59 +80,73 @@ export const PayrollsTable = () => {
             <TableHead className="w-[100px]">Id de nómina</TableHead>
             <TableHead>Empleado</TableHead>
             <TableHead>Periodo</TableHead>
+            <TableHead>Codigo de contrato</TableHead>
             <TableHead className="text-right">Total pagado</TableHead>
             <TableHead className="text-center">Acción</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedData.map((pay) => (
-            <TableRow key={pay.id_nomina}>
-              <TableCell className="font-medium">{pay.id_nomina}</TableCell>
-              <TableCell className="font-medium">{getEmployeeByPayroll(contracts, employees, pay).nombre}</TableCell>
-              <TableCell>{pay.periodo}</TableCell>
-              <TableCell className="text-right font-bold">
-                ${pay.total_pagado}
-              </TableCell>
-              <TableCell className="text-center">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button ref={dropdownRef} variant="ghost">
-                      <HiEllipsisHorizontal />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>Ver detalles</DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          // Aquí puedes abrir un modal o navegar para editar
-                          console.log("Editar nómina:", pay);
-                        }}
-                      >
-                        Editar nómina
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="!text-red-600 hover:!text-white hover:!bg-red-600"
-                        onClick={() => {
-                          if (dropdownRef.current) {
-                            dropdownRef.current.click();
-                          }
-                          setTimeout(() => {
-                            setSelectedPayroll(pay);
-                            setIsDialogOpen(true);
-                          }, 50);
-                        }}
-                      >
-                        Eliminar nómina
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
+          {paginatedData.map((pay) => {
+            // Obtener información del empleado para esta nómina específica
+            const empleadoInfo = getEmployeeByPayroll(contracts, employees, pay);
+            
+            return (
+              <TableRow key={pay.idNomina}>
+                <TableCell className="font-medium">{pay.idNomina}</TableCell>
+                <TableCell className="font-medium">
+                  {empleadoInfo.nombre || "Sin asignar"}
+                  {empleadoInfo.documento && (
+                    <span className="text-xs text-gray-500 block">
+                      Doc: {empleadoInfo.documento}
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell>{pay.periodo}</TableCell>
+                <TableCell>{pay.contratoIdContrato}</TableCell>
+                <TableCell className="text-right font-bold">
+                  ${pay.pagoTotal.toLocaleString()}
+                </TableCell>
+                <TableCell className="text-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button ref={dropdownRef} variant="ghost">
+                        <HiEllipsisHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>Ver detalles</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            // Aquí puedes abrir un modal o navegar para editar
+                            console.log("Editar nómina:", pay);
+                          }}
+                        >
+                          Editar nómina
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="!text-red-600 hover:!text-white hover:!bg-red-600"
+                          onClick={() => {
+                            if (dropdownRef.current) {
+                              dropdownRef.current.click();
+                            }
+                            setTimeout(() => {
+                              setSelectedPayroll(pay);
+                              setIsDialogOpen(true);
+                            }, 50);
+                          }}
+                        >
+                          Eliminar nómina
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
       <div>

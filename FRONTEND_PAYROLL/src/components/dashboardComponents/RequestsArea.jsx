@@ -24,6 +24,7 @@ import { getEmployeeByPayroll, getPayrrolPayrrollById } from "@/helpers/payrollH
 import { contract } from "@/data/contract";
 import { useContractContext } from "@/context/ContractContext";
 import { useEmployeeContext } from "@/context/EmployeeContext";
+import { Link } from "react-router-dom";
 
 export const RequestsArea = () => {
   const [payrollNews, setPayrollNews] = useState([]);
@@ -47,31 +48,16 @@ export const RequestsArea = () => {
 
   const { toast } = useToast();
 
-  const acceptRequest = (request_id) => {
-    setReqs(reqs.filter((request) => request_id !== request.id));
-    toast({
-      title: "Solicitud aceptada",
-      description:
-        "La solicitud ha sido aceptada y se vera reflejada en la nomina del empleado",
-    });
-  };
-
-  const declineRequest = (request_id) => {
-    setReqs(reqs.filter((request) => request_id !== request.id));
-    toast({
-      variant: "destructive",
-      title: "Solicitud rechazada",
-      description: "La solicitud del empleado ha sido rechazada",
-    });
-  };
 
   return (
     <Card>
       <div className="p-4">
         <CardTitle>
+          <Link to="/novedades">
           <h1 className="text-violet-600 text-4xl font-semibold">
             Novedades de nomina recientes
           </h1>
+          </Link>
         </CardTitle>
         <br />
         <hr />

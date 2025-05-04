@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface LiquidacionCensantiasRepository extends JpaRepository<Liquidacioncesantia, Short> {
@@ -24,4 +25,9 @@ public interface LiquidacionCensantiasRepository extends JpaRepository<Liquidaci
                                      @Param("pv_motivo_retiro") String motivoRetiro,
                                      @Param("pv_fondo_cesantias") String fondoCesantias,
                                      @Param("pn_id_contrato") Short idContrato);
+
+    @Query(value = "SELECT fn_calcular_valor_cesantias(:contratoId) AS valor_cesantias, " +
+            "fn_calcular_intereses_cesantias(:contratoId) AS intereses_cesantias",
+            nativeQuery = true)
+    Map<String, Object> calcularCesantiasDisponibles(@Param("contratoId") Integer contratoId);
 }

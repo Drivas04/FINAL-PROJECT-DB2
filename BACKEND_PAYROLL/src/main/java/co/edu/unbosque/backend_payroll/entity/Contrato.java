@@ -41,7 +41,7 @@ public class Contrato {
     private String estado;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "empleado_id_empleado", nullable = false)
     private Empleado empleadoIdEmpleado;
 

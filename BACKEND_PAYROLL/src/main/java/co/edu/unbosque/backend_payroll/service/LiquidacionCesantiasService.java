@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LiquidacionCesantiasService {
@@ -20,5 +21,9 @@ public class LiquidacionCesantiasService {
 
     public void agregarLiquidacionCesantias(LiquidacionCesantiasDTO dto){
         liquidacionCensantiasRepository.agregarLiquidacionCesantias(dto.getPeriodo(), dto.getFechaPago(), dto.getMotivoRetiro(), dto.getFondoCesantias(), dto.getIdContrato());
+    }
+
+    public Map<String, Object> consultarCesantiasDisponibles(Integer contratoId) {
+        return liquidacionCensantiasRepository.calcularCesantiasDisponibles(contratoId);
     }
 }

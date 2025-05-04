@@ -25,6 +25,7 @@ import { DataProvider } from "./context/DataContext";
 import { DepartmentProvider } from "./context/DepartmentsContext";
 import { SeveranceListScreen } from "./routes/SeveranceListScreen";
 import { CesantiasProvider } from "./context/CesantiasContext";
+import { RegisterNewsScreen } from "./routes/RegisterNewsScreen";
 
 function App() {
   const location = useLocation();
@@ -73,6 +74,7 @@ function App() {
                         element={<SocialSecurity />}
                       />
                       <Route path="/novedades" element={<NewsScreen />} />
+                      <Route path="/novedades/registrar" element={<RegisterNewsScreen />} />
                       <Route path="/contratos" element={<ContractsScreen />} />
                       <Route
                         path="/contratos/nuevo"

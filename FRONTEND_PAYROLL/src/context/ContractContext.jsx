@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useEmployeeContext } from './EmployeeContext';
 
@@ -11,20 +11,43 @@ export const ContractProvider = ({ children }) => {
   const [loadingContracts, setLoadingContracts] = useState(true);
   const {fetchEmployees} = useEmployeeContext();
 
+  // Cargar los contratos al iniciar
   useEffect(() => {
-    const fetchContracts = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/contratos");
-        setContracts(response.data);
-      } catch (error) {
-        console.error("Error al cargar contratos:", error);
-      } finally {
-        setLoadingContracts(false);
-      }
-    };
-
     fetchContracts();
   }, []);
+  
+  // Escuchar eventos de eliminación de empleados
+  useEffect(() => {
+    const handleEmployeeDeleted = (event) => {
+      const employeeId = event.detail;
+      console.log(`Eliminando contratos del empleado: ${employeeId}`);
+      
+      // Filtrar contratos para eliminar los del empleado eliminado
+      setContracts(prevContracts => 
+        prevContracts.filter(contract => contract.empleadoIdEmpleado !== employeeId)
+      );
+    };
+    
+    // Registrar el escuchador de eventos
+    window.addEventListener('employeeDeleted', handleEmployeeDeleted);
+    
+    // Limpiar el escuchador cuando el componente se desmonte
+    return () => {
+      window.removeEventListener('employeeDeleted', handleEmployeeDeleted);
+    };
+  }, []);
+
+  const fetchContracts = async () => {
+    try {
+      setLoadingContracts(true);
+      const response = await axios.get("http://localhost:8080/contratos");
+      setContracts(response.data);
+    } catch (error) {
+      console.error("Error al cargar contratos:", error);
+    } finally {
+      setLoadingContracts(false);
+    }
+  };
 
   const addContract = async (contratoData, empleadoData) => {
     try {
@@ -93,6 +116,7 @@ export const ContractProvider = ({ children }) => {
     addContract,
     updateContract,
     setContracts,
+    fetchContracts
   };
 
   return (

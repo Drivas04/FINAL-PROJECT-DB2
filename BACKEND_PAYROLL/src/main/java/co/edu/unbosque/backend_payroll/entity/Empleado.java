@@ -56,7 +56,7 @@ public class Empleado {
     private String epsEmpleado;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "cuentabancaria_numero_cuenta", nullable = false)
     private Cuentabancaria cuentabancariaNumeroCuenta;
 

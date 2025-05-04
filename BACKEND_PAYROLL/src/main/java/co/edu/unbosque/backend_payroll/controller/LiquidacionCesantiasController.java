@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cesantias")
@@ -25,5 +26,15 @@ public class LiquidacionCesantiasController {
     public ResponseEntity<Void> agregarCesantia(@RequestBody LiquidacionCesantiasDTO dto){
         service.agregarLiquidacionCesantias(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/disponible/{contratoId}")
+    public ResponseEntity<Map<String, Object>> consultarCesantiasDisponibles(@PathVariable Integer contratoId) {
+        try {
+            Map<String, Object> cesantias = service.consultarCesantiasDisponibles(contratoId);
+            return ResponseEntity.ok(cesantias);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

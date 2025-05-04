@@ -30,4 +30,8 @@ public class EmpleadoService {
                 dto.getCorreo(), dto.getTelefono(), dto.getDireccion(), dto.getFechaNacimiento(), dto.getFechaContratacion(),
                 dto.getEpsEmpleado(), dto.getDepartamentoIdDepartamento(), dto.getCuentabancariaNumeroCuenta());
     }
+
+    public void eliminarEmpleado(Short id){
+        empleadoRepository.eliminarEmpleado(id);
+    }
 }

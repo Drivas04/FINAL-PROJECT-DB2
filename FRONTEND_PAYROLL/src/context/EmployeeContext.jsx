@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
+// Eliminar esta importación para evitar dependencias circulares
+// import { useContractContext } from './ContractContext';
 
 const EmployeeContext = createContext();
 
@@ -20,6 +22,7 @@ export const EmployeeProvider = ({ children }) => {
       setLoadingEmployees(false);
     }
   };
+  
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -66,12 +69,35 @@ export const EmployeeProvider = ({ children }) => {
     }
   };
 
+  const deleteEmployee = async (employeeId) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/empleados/${employeeId}`);
+      console.log("Empleado eliminado con éxito:", response.data);
+      
+      // Actualizar la lista de empleados
+      setEmployees((prevEmployees) => prevEmployees.filter((emp) => emp.idEmpleado !== employeeId));
+      
+      // Emitir evento para notificar a otros contextos sobre la eliminación
+      const employeeDeletedEvent = new CustomEvent('employeeDeleted', { 
+        detail: employeeId 
+      });
+      window.dispatchEvent(employeeDeletedEvent);
+      
+      return true;
+    } catch (error) {
+      console.error("Error al eliminar empleado:", error);
+      throw error;
+    }
+  };
+
   const value = {
     employees,
     addEmployee,
     updateEmployee,
+    deleteEmployee,
     loadingEmployees,
     setEmployees,
+    fetchEmployees, // Agregar fetchEmployees al contexto
   };
 
   return (
