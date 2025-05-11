@@ -3,7 +3,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { AuthComponent } from "./Auth/AuthComponent";
 import { Header } from "./components/Header";
 import { EmployeesScreen } from "./routes/EmployeesScreen";
-import { DashboardScreen } from "./routes/DashboardScreen";
 import { PayrollListScreen } from "./routes/PayrollListScreen";
 import { NewsScreen } from "./routes/NewsScreen";
 import { SidebarComponent } from "./components/Sidebar";
@@ -26,6 +25,8 @@ import { DepartmentProvider } from "./context/DepartmentsContext";
 import { SeveranceListScreen } from "./routes/SeveranceListScreen";
 import { CesantiasProvider } from "./context/CesantiasContext";
 import { RegisterNewsScreen } from "./routes/RegisterNewsScreen";
+import { RegistrarNominaScreen } from "./routes/RegistrarNominaScreen";
+import { SocialSecurityProvider } from "./context/SocialSecurityContext";
 
 function App() {
   const location = useLocation();
@@ -33,59 +34,63 @@ function App() {
     location.pathname === "/" || location.pathname === "/dashboard";
 
   return (
-    // Anidamos los proveedores de contexto correctamente
     <EmployeeProvider>
       <ContractProvider>
         <PayrollProvider>
           <DepartmentProvider>
             <CesantiasProvider>
-              <DataProvider>
-                <Header />
-                <div className="flex h-[calc(100vh-101px)]">
-                  {!isAuthPage && <SidebarComponent />}
-                  <main className="flex-1 overflow-y-auto bg-gray-100">
-                    <Routes>
-                      <Route path="/" element={<AuthComponent />} />
-                      <Route path="/dashboard" element={<DashboardScreen />} />
-                      <Route path="/empleados" element={<EmployeesScreen />} />
-                      <Route path="/nominas" element={<AllPayrollsScreen />} />
-                      <Route
-                        path="/empleados/:idEmpleado/nominas"
-                        element={<PayrollListScreen />}
-                      />
-                      <Route
-                        path="/empleados/:idEmpleado/nominas/:idNomina"
-                        element={<PayrollDetailsScreen />}
-                      />
-                      <Route
-                        path="/deposito-cesantias"
-                        element={<SeveranceDepositScreen />}
-                      />
-                      <Route
-                        path="/retiro-cesantias"
-                        element={<SeveranceWithdrawScreen />}
-                      />
-                      <Route
-                        path="/lista-retiros"
-                        element={<SeveranceListScreen />}
-                      />
-                      <Route
-                        path="/seguridad-social"
-                        element={<SocialSecurity />}
-                      />
-                      <Route path="/novedades" element={<NewsScreen />} />
-                      <Route path="/novedades/registrar" element={<RegisterNewsScreen />} />
-                      <Route path="/contratos" element={<ContractsScreen />} />
-                      <Route
-                        path="/contratos/nuevo"
-                        element={<NewContractScreen />}
-                      />
-                      <Route path="/departamentos" element={<Departments />} />
-                    </Routes>
-                  </main>
-                </div>
-                <Toaster />
-              </DataProvider>
+              <SocialSecurityProvider>
+                <DataProvider>
+                  <Header />
+                  <div className="flex h-[calc(100vh-101px)]">
+                    {!isAuthPage && <SidebarComponent />}
+                    <main className="flex-1 overflow-y-auto bg-gray-100">
+                      <Routes>
+                        <Route path="/" element={<AuthComponent />} />
+                        <Route path="/empleados" element={<EmployeesScreen />} />
+                        <Route path="/nominas" element={<AllPayrollsScreen />} />
+                        <Route
+                          path="/empleados/:idEmpleado/nominas"
+                          element={<PayrollListScreen />}
+                        />
+                        <Route
+                          path="/empleados/:idEmpleado/nominas/:idNomina"
+                          element={<PayrollDetailsScreen />}
+                        />
+                        <Route
+                          path="/registrar-nomina"
+                          element={<RegistrarNominaScreen />}
+                        />
+                        <Route
+                          path="/deposito-cesantias"
+                          element={<SeveranceDepositScreen />}
+                        />
+                        <Route
+                          path="/retiro-cesantias"
+                          element={<SeveranceWithdrawScreen />}
+                        />
+                        <Route
+                          path="/lista-retiros"
+                          element={<SeveranceListScreen />}
+                        />
+                        <Route
+                          path="/seguridad-social"
+                          element={<SocialSecurity />}
+                        />
+                        <Route path="/novedades" element={<NewsScreen />} />
+                        <Route path="/novedades/registrar" element={<RegisterNewsScreen />} />
+                        <Route path="/contratos" element={<ContractsScreen />} />
+                        <Route
+                          path="/contratos/nuevo"
+                          element={<NewContractScreen />}
+                        />
+                        <Route path="/departamentos" element={<Departments />} />
+                      </Routes>
+                    </main>
+                  </div>
+                  <Toaster />
+                </DataProvider>
+              </SocialSecurityProvider>
             </CesantiasProvider>
           </DepartmentProvider>
         </PayrollProvider>

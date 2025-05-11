@@ -25,7 +25,7 @@ export const AuthComponent = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     if(authHelper(username, password, setUser, setError)){
-      navigate('/dashboard')
+      navigate('/empleados')
     }
   };
 

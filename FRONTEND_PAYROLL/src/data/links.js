@@ -19,9 +19,4 @@ export const links = [
     name: "Seguridad Social",
     path: "/seguridad-social",
   },
-  {
-    id: 5,
-    name: "Inicio",
-    path: "/dashboard",
-  },
 ];

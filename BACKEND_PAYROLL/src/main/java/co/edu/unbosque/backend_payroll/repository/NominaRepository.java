@@ -17,4 +17,10 @@ public interface NominaRepository extends JpaRepository<Nomina, Long> {
             "JOIN contrato c ON n.contrato_id_contrato = c.id_contrato " +
             "WHERE c.empleado_id_empleado = :empleadoId", nativeQuery = true)
     List<NominaProjection> findNominasByEmpleadoId(@Param("empleadoId") Integer empleadoId);
+
+    @Query(value = "SELECT * FROM fn_consultar_nomina(:pn_id_nomina)", nativeQuery = true)
+    NominaProjection consultarNominaPorId(@Param("pn_id_nomina") Short idNomina);
+
+    @Query(value = "SELECT * FROM nomina n WHERE n.contrato_id_contrato = :contratoId", nativeQuery = true)
+    List<NominaProjection> findByContratoId(@Param("contratoId") Integer contratoId);
 }

@@ -29,4 +29,17 @@ public class NominaController {
         List<NominaProjection> nominas = nominaService.getNominasByEmpleadoId(empleadoId);
         return ResponseEntity.ok(nominas);
     }
+
+    @GetMapping("/contrato/{contratoId}")
+    public ResponseEntity<List<NominaProjection>> getNominasByContrato(@PathVariable Integer contratoId) {
+        List<NominaProjection> nominas = nominaService.getNominasByContratoId(contratoId);
+        return ResponseEntity.ok(nominas);
+    }
+
+    @GetMapping("/{idNomina}")
+    public ResponseEntity<NominaProjection> getNominaById(@PathVariable Short idNomina) {
+        NominaProjection nomina = nominaService.getNominaById(idNomina);
+        return ResponseEntity.ok(nomina);
+    }
 }
+

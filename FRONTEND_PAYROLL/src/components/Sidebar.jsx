@@ -55,20 +55,19 @@ export function SidebarComponent() {
   else if (path.startsWith("/departamentos")) {
     items = [
       { label: "Empleados", path: "/empleados", icon: <Users /> },
-      { label: "Dashboard", path: "/dashboard", icon: <Home/> },
     ];
   }
   else if (path.startsWith("/nominas")) {
     items = [
       { label: "Empleados", path: "/empleados", icon: <Users /> },
-      { label: "Dashboard", path: "/dashboard", icon: <Home/> },
       { label: "Novedades", path: "/novedades", icon: <Newspaper/> },
+      { label: "Registrar nomina", path: "/registrar-nomina", icon: <Plus/> },
     ];
   }
   else if (path.startsWith("/seguridad-social")) {
     items = [
       { label: "Empleados", path: "/empleados", icon: <Users /> },
-      { label: "Dashboard", path: "/dashboard", icon: <Home/> },
+      { label: "Registrar novedades", path: "/novedades/registrar", icon: <Plus /> }, // Añade esta línea
     ];
   } else {
     items = [
