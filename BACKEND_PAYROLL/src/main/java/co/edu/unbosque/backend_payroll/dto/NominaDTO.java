@@ -1,22 +1,14 @@
 package co.edu.unbosque.backend_payroll.dto;
 
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Getter
 public class NominaDTO {
-    String nombreEmpleado;
-    String documento;
-    String cargo;
-    String departamento;
-    String tipoContrato;
-    String fechaIngreso;
-    String entidadBancaria;
-    String EPS;
-    String fondoPensiones;
-    String periodo;
-    String salarioBase;
-    String horasExtras;
-    String deducciones;
-    String cuentaBancaria;
-    String pagoTotal;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    LocalDate periodo;
+    Short ContratoidContrato;
+    Integer horasExtras;
 }

@@ -1,5 +1,6 @@
 package co.edu.unbosque.backend_payroll.service;
 
+import co.edu.unbosque.backend_payroll.dto.NominaDTO;
 import co.edu.unbosque.backend_payroll.entity.Nomina;
 import co.edu.unbosque.backend_payroll.projection.NominaProjection;
 import co.edu.unbosque.backend_payroll.repository.NominaRepository;
@@ -27,5 +28,9 @@ public class NominaService {
 
     public NominaProjection getNominaById(Short idNomina) {
         return nominaRepository.consultarNominaPorId(idNomina);
+    }
+
+    public void agregarNomina(NominaDTO nomina) {
+        nominaRepository.agregarNomina(nomina.getPeriodo(), nomina.getContratoidContrato(), nomina.getHorasExtras());
     }
 }

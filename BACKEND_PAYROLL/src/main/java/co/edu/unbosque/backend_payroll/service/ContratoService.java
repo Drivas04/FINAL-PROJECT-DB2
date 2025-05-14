@@ -22,8 +22,13 @@ public class ContratoService {
 
     public void agregarContrato(ContratoDTO c, EmpleadoDTO e) {
         repo.agregarContrato(c.getSalario(), c.getTipoContrato(), c.getNombreCargo(), c.getFechaInicio(),
-                c.getFechaFin(), c.getEstado(), e.getNombre(), e.getApellido(), e.getTipoDocumento(), e.getNumeroDocumento(),
+                c.getFechaFin().orElse(null), c.getEstado(), e.getNombre(), e.getApellido(), e.getTipoDocumento(), e.getNumeroDocumento(),
                 e.getCorreo(), e.getTelefono(), e.getDireccion(), e.getFechaNacimiento(), e.getFechaContratacion(), e.getEpsEmpleado(),
                 e.getDepartamentoIdDepartamento(), e.getCuentabancariaNumeroCuenta(), e.getBancoIdBanco());
+    }
+
+    public void actualizarContrato(Short id, ContratoDTO c){
+        repo.actualizarContrato(id, c.getSalario(), c.getTipoContrato(), c.getNombreCargo(),
+                                c.getFechaInicio(), c.getFechaFin().orElse(null), c.getEstado(), c.getEmpleadoIdEmpleado());
     }
 }

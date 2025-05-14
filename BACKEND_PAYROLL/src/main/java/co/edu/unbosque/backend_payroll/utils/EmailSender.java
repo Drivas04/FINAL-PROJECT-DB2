@@ -29,7 +29,7 @@ public class EmailSender {
     @Value("${spring.mail.username}")
     private String from;
 
-    public void sendPayrollEmail(String to, String subject, String text, NominaDTO dto) throws MessagingException {
+    public void sendPayrollEmail(String to, String subject, String text, NominaEmailDTO dto) throws MessagingException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);

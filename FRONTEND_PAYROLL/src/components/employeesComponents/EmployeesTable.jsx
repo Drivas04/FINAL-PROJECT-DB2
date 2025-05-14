@@ -88,9 +88,12 @@ export const EmployeesTable = () => {
 
   return (
     <>
-      <div className="overflow-x-auto container mx-auto mt-5">
-        <div className="flex justify-between items-center mb-10">
-          <h1 className="text-4xl font-bold">Empleados</h1>
+      <div className="container mx-auto mt-2 md:mt-5">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-10">
+          <h1 className="text-2xl md:text-4xl font-bold mb-4 sm:mb-0">Empleados</h1>
+          <Button variant="outline" onClick={() => navigate("/new-contract")} className="w-full sm:w-auto">
+            Registrar nuevo empleado
+          </Button>
         </div>
       </div>
       <div className="flex items-center justify-between mb-4">
@@ -101,57 +104,58 @@ export const EmployeesTable = () => {
             setSearch(e.target.value)
             goToPage(1);
           }}
-          className="w-[300px]"
+          className="w-full sm:w-[300px]"
         />
       </div>
-      <Table className="w-full border-collapse border border-slate-300">
-        <TableCaption>
-          Lista de todos los empleados activos en la empresa
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Nro. de documento</TableHead>
-            <TableHead className="text-center">Tipo de documento</TableHead>
-            <TableHead className="text-center">Nombres</TableHead>
-            <TableHead className="text-center">Fecha de nacimiento</TableHead>
-            <TableHead className="text-center">Telefono</TableHead>
-            <TableHead className="text-center">Correo</TableHead>
-            <TableHead className="text-center">Fecha de contratación</TableHead>
-            <TableHead className="text-center">Departamento</TableHead>
-            <TableHead className="text-center">Número de cuenta</TableHead>
-            <TableHead className="text-center">Acción</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+      <div className="overflow-x-auto">
+        <Table className="w-full border-collapse border border-slate-300 min-w-[900px]">
+          <TableCaption>
+            Lista de todos los empleados activos en la empresa
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px] text-xs md:text-sm">Nro. de documento</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Tipo de documento</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Nombres</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Fecha de nacimiento</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Telefono</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Correo</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Fecha de contratación</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Departamento</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Número de cuenta</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Acción</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
           {paginatedData.map((emp) => {
             return (
               <TableRow key={emp.numeroDocumento}>
-                <TableCell className="text-center">
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {emp.numeroDocumento}
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {emp.tipoDocumento}
                 </TableCell>
-                <TableCell className="text-center">{emp.nombre}</TableCell>
-                <TableCell className="text-center">
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{emp.nombre}</TableCell>
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {format(new Date(emp.fechaNacimiento).setHours(24), "dd-MM-yyyy", {
                     locale: es, 
                   })}
                 </TableCell>
-                <TableCell className="text-center">{emp.telefono}</TableCell>
-                <TableCell className="text-center">{emp.correo}</TableCell>
-                <TableCell className="text-center">
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{emp.telefono}</TableCell>
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{emp.correo}</TableCell>
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {format(new Date(emp.fechaContratacion), "dd-MM-yyyy", {
                     locale: es,
                   })}
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {getDepartmentName(
                     emp.departamentoIdDepartamento,
                     departments
                   )}
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {emp.cuentabancariaNumeroCuenta}
                 </TableCell>
                 <TableCell>
@@ -222,21 +226,23 @@ export const EmployeesTable = () => {
           )}
         </TableBody>
       </Table>
-      <div>
+      <div className="flex items-center justify-center sm:justify-start mt-4 gap-2">
         <Button
           variant="ghost"
           onClick={() => goToPage(currentPage - 1)}
           disabled={currentPage === 1}
+          className="h-8 w-8 p-0 sm:h-10 sm:w-10"
         >
-          <ChevronLeft />
+          <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
-        <span>{`Página ${currentPage} de ${maxPage}`}</span>
+        <span className="text-xs sm:text-sm">{`Página ${currentPage} de ${maxPage}`}</span>
         <Button
           variant="ghost"
           onClick={() => goToPage(currentPage + 1)}
           hidden={currentPage === maxPage}
+          className="h-8 w-8 p-0 sm:h-10 sm:w-10"
         >
-          <ChevronRight />
+          <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
       </div>
 
@@ -267,6 +273,7 @@ export const EmployeesTable = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
     </>
   );
 };

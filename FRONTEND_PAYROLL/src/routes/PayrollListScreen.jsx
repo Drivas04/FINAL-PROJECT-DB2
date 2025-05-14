@@ -91,35 +91,45 @@ export const PayrollListScreen = () => {
   const nombreEmpleado = empleado ? empleado.nombre : 'Empleado no encontrado';
 
   return (
-    <div className="container mx-auto mt-5 w-auto">
-      <h1 className='text-4xl font-bold mb-10 p-6'>Nóminas del empleado {nombreEmpleado}</h1>
+    <div className="container mx-auto mt-3 md:mt-5 px-4 md:px-6 w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6">
+        <h1 className='text-2xl md:text-4xl font-bold mb-4 sm:mb-0 p-0 md:p-2'>{nombreEmpleado}</h1>
+        <Link to={`/nominas/registrar`} className="w-full sm:w-auto">
+          <button className="bg-violet-600 text-white px-4 py-2 rounded-md w-full sm:w-auto text-sm md:text-base">
+            Registrar nueva nómina
+          </button>
+        </Link>
+      </div>
       {payrolls.length === 0 ? (
-        <p className="text-center text-gray-500 my-10">No hay nóminas registradas para este empleado.</p>
+        <p className="text-center text-gray-500 my-6 md:my-10">No hay nóminas registradas para este empleado.</p>
       ) : (
-      <Table>
-        <TableCaption>Lista de nóminas del empleado</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Código</TableHead>
-            <TableHead>Periodo</TableHead>
-            <TableHead>Total pagado</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {payrolls.map((payroll) => (
-            <TableRow key={payroll.idNomina || payroll.id_nomina}>
-              <TableCell className="font-medium text-center text-violet-600">
-                <Link className='border-b-2 border-violet-600' to={`/empleados/${idEmpleado}/nominas/${payroll.idNomina || payroll.id_nomina}`}>
-                  {payroll.idNomina || payroll.id_nomina}
-                </Link>
-              </TableCell>
-              <TableCell className="font-medium">{payroll.periodo}</TableCell>
-              <TableCell>${payroll.totalPagado || payroll.total_pagado}</TableCell>
+      <div className="overflow-x-auto">
+        <Table className="min-w-full">
+          <TableCaption>Lista de nóminas del empleado</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px] text-xs md:text-sm">Código</TableHead>
+              <TableHead className="text-xs md:text-sm">Periodo</TableHead>
+              <TableHead className="text-xs md:text-sm">Total pagado</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {payrolls.map((payroll) => (
+              <TableRow key={payroll.idNomina || payroll.id_nomina}>
+                <TableCell className="font-medium text-center text-violet-600 text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
+                  <Link className='border-b-2 border-violet-600' to={`/empleados/${idEmpleado}/nominas/${payroll.idNomina || payroll.id_nomina}`}>
+                    {payroll.idNomina || payroll.id_nomina}
+                  </Link>
+                </TableCell>
+                <TableCell className="font-medium text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{payroll.periodo}</TableCell>
+                <TableCell className="text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">${payroll.totalPagado || payroll.total_pagado}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </div>
       )}
     </div>
+    
   )
 }

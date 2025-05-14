@@ -17,11 +17,11 @@ export const Departments = () => {
   
 
   return (
-    <div className="overflow-x-auto container mx-auto mt-10">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-4xl font-bold">Departamentos</h1>
+    <div className="overflow-x-auto container mx-auto mt-6 md:mt-10 px-4 md:px-6">
+      <div className="flex justify-between items-center mb-3 md:mb-5">
+        <h1 className="text-2xl md:text-4xl font-bold">Departamentos</h1>
       </div>
-      <div className="container mx-auto mt-10 w-[600px]">
+      <div className="container mx-auto mt-6 md:mt-10 w-full md:w-[600px]">
         <Table className="w-full border-collapse border border-slate-300">
           <TableCaption>
             Lista de los departamentos actuales en la empresa.

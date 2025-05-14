@@ -4,8 +4,10 @@ import co.edu.unbosque.backend_payroll.entity.Nomina;
 import co.edu.unbosque.backend_payroll.projection.NominaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface NominaRepository extends JpaRepository<Nomina, Long> {
@@ -23,4 +25,9 @@ public interface NominaRepository extends JpaRepository<Nomina, Long> {
 
     @Query(value = "SELECT * FROM nomina n WHERE n.contrato_id_contrato = :contratoId", nativeQuery = true)
     List<NominaProjection> findByContratoId(@Param("contratoId") Integer contratoId);
+
+    @Procedure(procedureName = "sp_agregarnomina")
+    void agregarNomina(@Param("pd_periodo") LocalDate periodo,
+                       @Param("pn_idContrato") Short idContrato,
+                       @Param("pn_horasExtras") Integer horasExtras);
 }

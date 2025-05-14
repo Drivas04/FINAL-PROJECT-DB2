@@ -1,14 +1,13 @@
 package co.edu.unbosque.backend_payroll.controller;
 
+import co.edu.unbosque.backend_payroll.dto.NominaDTO;
 import co.edu.unbosque.backend_payroll.entity.Nomina;
 import co.edu.unbosque.backend_payroll.projection.NominaProjection;
 import co.edu.unbosque.backend_payroll.service.NominaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,6 +39,12 @@ public class NominaController {
     public ResponseEntity<NominaProjection> getNominaById(@PathVariable Short idNomina) {
         NominaProjection nomina = nominaService.getNominaById(idNomina);
         return ResponseEntity.ok(nomina);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createNomina(@RequestBody NominaDTO nomina) {
+        nominaService.agregarNomina(nomina);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 

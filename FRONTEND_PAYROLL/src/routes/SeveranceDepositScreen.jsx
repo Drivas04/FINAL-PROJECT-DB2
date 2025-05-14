@@ -28,25 +28,25 @@ export const SeveranceDepositScreen = () => {
   const { id_empleado, fondo, año } = formState;
 
   return (
-    <main>
-      <h1 className="text-3xl font-bold text-center mt-5">
+    <main className="px-4 md:px-6 py-4 md:py-6">
+      <h1 className="text-2xl md:text-3xl font-bold text-center mt-3 md:mt-5">
         Depósito de Cesantías
       </h1>
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mt-3 md:mt-5">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1110/1110152.png"
           alt="Logo"
-          className="w-24 h-24"
+          className="w-16 h-16 md:w-24 md:h-24"
         />
       </div>
-      <div className="flex justify-center mt-5">
-        <h2 className="text-xl font-semibold">
+      <div className="flex justify-center mt-3 md:mt-5">
+        <h2 className="text-lg md:text-xl font-semibold text-center px-4">
           Bienvenido a la sección de depósito de cesantías
         </h2>
       </div>
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mt-3 md:mt-5">
         <form>
-          <div className="grid w-[300px] items-center gap-4">
+          <div className="grid w-full max-w-[300px] items-center gap-3 md:gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="id_empleado">Número de identificación</Label>
               <Input

@@ -39,15 +39,15 @@ export const NewContractScreen = () => {
   };
 
   return (
-    <main className="flex h-[calc(100vh-101px)] justify-center items-center">
+    <main className="flex min-h-[calc(100vh-101px)] justify-center items-center px-4 md:px-0 py-6 md:py-0">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-[400px]"
+        className="w-full max-w-[400px]"
       >
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="new-employee">Datos del empleado</TabsTrigger>
-          <TabsTrigger value="new-contract" disabled={!newEmployeeData}>
+          <TabsTrigger value="new-employee" className="text-xs md:text-sm py-1 md:py-2">Datos del empleado</TabsTrigger>
+          <TabsTrigger value="new-contract" disabled={!newEmployeeData} className="text-xs md:text-sm py-1 md:py-2">
             Datos del contrato
           </TabsTrigger>
         </TabsList>

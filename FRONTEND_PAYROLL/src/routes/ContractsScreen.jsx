@@ -3,6 +3,8 @@ import React from 'react'
 
 export const ContractsScreen = () => {
   return (
-    <ContractsTable/>
+    <div className="container mx-auto px-4 md:px-6 py-4 md:py-6 overflow-x-auto">
+      <ContractsTable/>
+    </div>
   )
 }

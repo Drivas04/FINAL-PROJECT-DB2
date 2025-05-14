@@ -39,4 +39,14 @@ public interface ContratoRepository extends JpaRepository<Contrato, Long> {
                          @Param("pn_Departamento_ID_Departamento") Short deapartamentoId,
                          @Param("pn_CuentaBancaria_Numero_cuenta") Long numeroCuentaBancaria,
                          @Param("pn_Banco_ID_Banco") Short idBanco);
+
+    @Procedure(procedureName = "sp_actualizarcontrato")
+    void actualizarContrato(@Param("pn_ID_Contrato") Short idContrato,
+                            @Param("pn_salario") BigDecimal salario,
+                            @Param("pv_tipo_contrato") String tipoContrato,
+                            @Param("pv_nombre_cargo") String cargo,
+                            @Param("pd_fecha_inicio") LocalDate fechaInicio,
+                            @Param("pd_fecha_fin") LocalDate fechaFin,
+                            @Param("pv_estado") String estado,
+                            @Param("pn_Empleado_ID_Empleado") Short empleadoIdEmpleado);
 }

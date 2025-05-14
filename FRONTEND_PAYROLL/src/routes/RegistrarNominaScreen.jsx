@@ -227,11 +227,11 @@ export const RegistrarNominaScreen = () => {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-6">Registrar nueva nómina</h1>
+    <div className="container mx-auto py-4 md:py-6 px-4 md:px-6">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Registrar nueva nómina</h1>
       
-      <Card className="max-w-3xl mx-auto">
-        <CardHeader>
+      <Card className="w-full max-w-3xl mx-auto">
+        <CardHeader className="px-4 md:px-6">
           <CardTitle>Formulario de registro</CardTitle>
           <CardDescription>
             Complete todos los campos para registrar una nueva nómina para un empleado
@@ -239,15 +239,15 @@ export const RegistrarNominaScreen = () => {
         </CardHeader>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="px-6">
+          <div className="px-4 md:px-6">
             <TabsList className="grid grid-cols-3 w-full">
-              <TabsTrigger value="datos-basicos" className="flex items-center gap-2">
+              <TabsTrigger value="datos-basicos" className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm py-1 md:py-2">
                 Datos básicos
               </TabsTrigger>
-              <TabsTrigger value="apropiaciones" className="flex items-center gap-2">
+              <TabsTrigger value="apropiaciones" className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm py-1 md:py-2">
                 Apropiaciones
               </TabsTrigger>
-              <TabsTrigger value="deducciones" className="flex items-center gap-2">
+              <TabsTrigger value="deducciones" className="flex items-center justify-center gap-1 md:gap-2 text-xs md:text-sm py-1 md:py-2">
                 Deducciones
               </TabsTrigger>
             </TabsList>
@@ -283,15 +283,15 @@ export const RegistrarNominaScreen = () => {
                 {/* Mostrar datos del empleado seleccionado */}
                 {selectedEmployee && (
                   <div className="bg-gray-50 p-3 rounded-md">
-                    <p className="font-medium">Empleado: {selectedEmployee.nombre}</p>
-                    <p className="text-sm text-gray-500">Documento: {selectedEmployee.numeroDocumento}</p>
+                    <p className="font-medium text-sm md:text-base">Empleado: {selectedEmployee.nombre}</p>
+                    <p className="text-xs md:text-sm text-gray-500">Documento: {selectedEmployee.numeroDocumento}</p>
                     {selectedContract && (
-                      <p className="text-sm text-gray-500">Salario base: ${parseFloat(selectedContract.salario).toLocaleString('es-CO')}</p>
+                      <p className="text-xs md:text-sm text-gray-500">Salario base: ${parseFloat(selectedContract.salario).toLocaleString('es-CO')}</p>
                     )}
                   </div>
                 )}
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div className="flex flex-col space-y-1.5">
                     <Label>Período <span className="text-red-500">*</span></Label>
                     <Input
@@ -317,7 +317,7 @@ export const RegistrarNominaScreen = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div className="flex flex-col space-y-1.5">
                     <Label>Horas extras</Label>
                     <Input
@@ -343,7 +343,7 @@ export const RegistrarNominaScreen = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div className="flex flex-col space-y-1.5">
                     <Label>Retención en la fuente</Label>
                     <Input
@@ -387,6 +387,7 @@ export const RegistrarNominaScreen = () => {
                     type="button" 
                     onClick={() => setActiveTab("apropiaciones")} 
                     disabled={!selectedContractId}
+                    className="w-full sm:w-auto"
                   >
                     Continuar a Apropiaciones
                   </Button>
@@ -401,30 +402,30 @@ export const RegistrarNominaScreen = () => {
                   Registre los conceptos que la empresa debe asumir para el empleado
                 </p>
                 
-                <div className="border rounded-md">
+                <div className="border rounded-md overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="bg-gray-50 border-b">
-                        <th className="py-2 px-4 text-left">Concepto</th>
-                        <th className="py-2 px-4 text-right">Porcentaje (%)</th>
-                        <th className="py-2 px-4 text-right">Valor ($)</th>
-                        <th className="py-2 px-4 text-center">Acción</th>
+                        <th className="py-2 px-2 md:px-4 text-left">Concepto</th>
+                        <th className="py-2 px-2 md:px-4 text-right">Porcentaje (%)</th>
+                        <th className="py-2 px-2 md:px-4 text-right">Valor ($)</th>
+                        <th className="py-2 px-2 md:px-4 text-center">Acción</th>
                       </tr>
                     </thead>
                     <tbody>
                       {apropiaciones.map((item, index) => (
                         <tr key={index} className="border-b">
-                          <td className="py-2 px-4">{item.concepto}</td>
-                          <td className="py-2 px-4 text-right">{item.porcentaje}%</td>
-                          <td className="py-2 px-4 text-right">${parseFloat(item.valor).toLocaleString('es-CO')}</td>
-                          <td className="py-2 px-4 text-center">
+                          <td className="py-2 px-2 md:px-4 text-xs md:text-base">{item.concepto}</td>
+                          <td className="py-2 px-2 md:px-4 text-right text-xs md:text-base">{item.porcentaje}%</td>
+                          <td className="py-2 px-2 md:px-4 text-right text-xs md:text-base">${parseFloat(item.valor).toLocaleString('es-CO')}</td>
+                          <td className="py-2 px-2 md:px-4 text-center">
                             <Button 
                               variant="ghost" 
                               size="icon" 
                               onClick={() => handleDeleteApropiacion(index)}
-                              className="h-8 w-8 text-red-500"
+                              className="h-6 w-6 md:h-8 md:w-8 text-red-500"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
                             </Button>
                           </td>
                         </tr>
@@ -432,15 +433,17 @@ export const RegistrarNominaScreen = () => {
                       
                       {/* Fila para agregar nueva apropiación */}
                       <tr>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 md:px-4">
                           <Input 
+                            className="text-xs md:text-base"
                             placeholder="Nuevo concepto"
                             value={nuevaApropiacion.concepto}
                             onChange={(e) => setNuevaApropiacion({...nuevaApropiacion, concepto: e.target.value})}
                           />
                         </td>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 md:px-4">
                           <Input 
+                            className="text-xs md:text-base"
                             type="number"
                             placeholder="% del salario"
                             value={nuevaApropiacion.porcentaje}
@@ -449,9 +452,9 @@ export const RegistrarNominaScreen = () => {
                             step="0.01"
                           />
                         </td>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 md:px-4">
                           {selectedContract ? (
-                            <div className="text-right text-gray-500">
+                            <div className="text-right text-gray-500 text-xs md:text-base">
                               {nuevaApropiacion.porcentaje 
                                 ? `$${(parseFloat(selectedContract.salario) * parseFloat(nuevaApropiacion.porcentaje || 0) / 100).toLocaleString('es-CO')}`
                                 : "$0"
@@ -459,6 +462,7 @@ export const RegistrarNominaScreen = () => {
                             </div>
                           ) : (
                             <Input 
+                              className="text-xs md:text-base"
                               type="number"
                               placeholder="Valor"
                               value={nuevaApropiacion.valor}
@@ -466,39 +470,41 @@ export const RegistrarNominaScreen = () => {
                             />
                           )}
                         </td>
-                        <td className="py-2 px-4 text-center">
+                        <td className="py-2 px-2 md:px-4 text-center">
                           <Button 
                             variant="ghost" 
                             size="icon" 
                             onClick={handleAddApropiacion}
-                            className="h-8 w-8 text-green-500"
+                            className="h-6 w-6 md:h-8 md:w-8 text-green-500"
                           >
-                            <Plus className="h-4 w-4" />
+                            <Plus className="h-3 w-3 md:h-4 md:w-4" />
                           </Button>
                         </td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr className="bg-gray-50">
-                        <td className="py-2 px-4 font-medium" colSpan="2">Total</td>
-                        <td className="py-2 px-4 text-right font-medium">${parseFloat(totalApropiaciones).toLocaleString('es-CO')}</td>
+                        <td className="py-2 px-2 md:px-4 font-medium text-xs md:text-base" colSpan="2">Total</td>
+                        <td className="py-2 px-2 md:px-4 text-right font-medium text-xs md:text-base">${parseFloat(totalApropiaciones).toLocaleString('es-CO')}</td>
                         <td></td>
                       </tr>
                     </tfoot>
                   </table>
                 </div>
                 
-                <div className="flex justify-between mt-4">
+                <div className="flex flex-col sm:flex-row justify-between gap-2 mt-4">
                   <Button 
                     type="button" 
                     variant="outline"
                     onClick={() => setActiveTab("datos-basicos")}
+                    className="w-full sm:w-auto"
                   >
                     Volver a Datos Básicos
                   </Button>
                   <Button 
                     type="button" 
                     onClick={() => setActiveTab("deducciones")}
+                    className="w-full sm:w-auto"
                   >
                     Continuar a Deducciones
                   </Button>
@@ -513,30 +519,30 @@ export const RegistrarNominaScreen = () => {
                   Registre los conceptos que se deducen del salario del empleado
                 </p>
                 
-                <div className="border rounded-md">
+                <div className="border rounded-md overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="bg-gray-50 border-b">
-                        <th className="py-2 px-4 text-left">Concepto</th>
-                        <th className="py-2 px-4 text-right">Porcentaje (%)</th>
-                        <th className="py-2 px-4 text-right">Valor ($)</th>
-                        <th className="py-2 px-4 text-center">Acción</th>
+                        <th className="py-2 px-2 md:px-4 text-left">Concepto</th>
+                        <th className="py-2 px-2 md:px-4 text-right">Porcentaje (%)</th>
+                        <th className="py-2 px-2 md:px-4 text-right">Valor ($)</th>
+                        <th className="py-2 px-2 md:px-4 text-center">Acción</th>
                       </tr>
                     </thead>
                     <tbody>
                       {deducciones.map((item, index) => (
                         <tr key={index} className="border-b">
-                          <td className="py-2 px-4">{item.concepto}</td>
-                          <td className="py-2 px-4 text-right">{item.porcentaje}%</td>
-                          <td className="py-2 px-4 text-right">${parseFloat(item.valor).toLocaleString('es-CO')}</td>
-                          <td className="py-2 px-4 text-center">
+                          <td className="py-2 px-2 md:px-4 text-xs md:text-base">{item.concepto}</td>
+                          <td className="py-2 px-2 md:px-4 text-right text-xs md:text-base">{item.porcentaje}%</td>
+                          <td className="py-2 px-2 md:px-4 text-right text-xs md:text-base">${parseFloat(item.valor).toLocaleString('es-CO')}</td>
+                          <td className="py-2 px-2 md:px-4 text-center">
                             <Button 
                               variant="ghost" 
                               size="icon" 
                               onClick={() => handleDeleteDeduccion(index)}
-                              className="h-8 w-8 text-red-500"
+                              className="h-6 w-6 md:h-8 md:w-8 text-red-500"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
                             </Button>
                           </td>
                         </tr>
@@ -544,15 +550,17 @@ export const RegistrarNominaScreen = () => {
                       
                       {/* Fila para agregar nueva deducción */}
                       <tr>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 md:px-4">
                           <Input 
+                            className="text-xs md:text-base"
                             placeholder="Nuevo concepto"
                             value={nuevaDeduccion.concepto}
                             onChange={(e) => setNuevaDeduccion({...nuevaDeduccion, concepto: e.target.value})}
                           />
                         </td>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 md:px-4">
                           <Input 
+                            className="text-xs md:text-base"
                             type="number"
                             placeholder="% del salario"
                             value={nuevaDeduccion.porcentaje}
@@ -561,9 +569,9 @@ export const RegistrarNominaScreen = () => {
                             step="0.01"
                           />
                         </td>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 md:px-4">
                           {selectedContract ? (
-                            <div className="text-right text-gray-500">
+                            <div className="text-right text-gray-500 text-xs md:text-base">
                               {nuevaDeduccion.porcentaje 
                                 ? `$${(parseFloat(selectedContract.salario) * parseFloat(nuevaDeduccion.porcentaje || 0) / 100).toLocaleString('es-CO')}`
                                 : "$0"
@@ -571,6 +579,7 @@ export const RegistrarNominaScreen = () => {
                             </div>
                           ) : (
                             <Input 
+                              className="text-xs md:text-base"
                               type="number"
                               placeholder="Valor"
                               value={nuevaDeduccion.valor}
@@ -578,22 +587,22 @@ export const RegistrarNominaScreen = () => {
                             />
                           )}
                         </td>
-                        <td className="py-2 px-4 text-center">
+                        <td className="py-2 px-2 md:px-4 text-center">
                           <Button 
                             variant="ghost" 
                             size="icon" 
                             onClick={handleAddDeduccion}
-                            className="h-8 w-8 text-green-500"
+                            className="h-6 w-6 md:h-8 md:w-8 text-green-500"
                           >
-                            <Plus className="h-4 w-4" />
+                            <Plus className="h-3 w-3 md:h-4 md:w-4" />
                           </Button>
                         </td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr className="bg-gray-50">
-                        <td className="py-2 px-4 font-medium" colSpan="2">Total</td>
-                        <td className="py-2 px-4 text-right font-medium">${parseFloat(totalDeducciones).toLocaleString('es-CO')}</td>
+                        <td className="py-2 px-2 md:px-4 font-medium text-xs md:text-base" colSpan="2">Total</td>
+                        <td className="py-2 px-2 md:px-4 text-right font-medium text-xs md:text-base">${parseFloat(totalDeducciones).toLocaleString('es-CO')}</td>
                         <td></td>
                       </tr>
                     </tfoot>
@@ -625,18 +634,19 @@ export const RegistrarNominaScreen = () => {
                   </div>
                 </div>
                 
-                <div className="flex justify-between mt-6">
+                <div className="flex flex-col sm:flex-row justify-between gap-2 mt-6">
                   <Button 
                     type="button" 
                     variant="outline"
                     onClick={() => setActiveTab("apropiaciones")}
+                    className="w-full sm:w-auto"
                   >
                     Volver a Apropiaciones
                   </Button>
                   <Button 
                     type="button" 
                     onClick={handleSubmit}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
                   >
                     <CheckCircle className="mr-2 h-4 w-4" />
                     Registrar Nómina

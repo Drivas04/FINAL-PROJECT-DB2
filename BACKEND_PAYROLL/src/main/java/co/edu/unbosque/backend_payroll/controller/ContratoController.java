@@ -28,4 +28,10 @@ public class ContratoController {
         contratoService.agregarContrato(dto.getContrato(), dto.getEmpleado());
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping
+    public ResponseEntity<Void> updateContrato(Short id, @RequestBody ContratoDTO dto) {
+        contratoService.actualizarContrato(id, dto);
+        return ResponseEntity.ok().build();
+    }
 }
