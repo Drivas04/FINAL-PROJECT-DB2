@@ -14,6 +14,9 @@ public class EmpleadoService {
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
+    @Autowired
+    private AuditoriaService auditoriaService;
+
     public List<EmpleadoProjection> findAll() {
         return empleadoRepository.findAllEmpleados();
     }
@@ -25,13 +28,23 @@ public class EmpleadoService {
     }
 
     public void actualizarEmpleado(Short id, ActualizarEmpleadoDTO dto){
-        //id = dto.getIdEmpleado();
         empleadoRepository.actualizarEmpleado(id, dto.getNombre(), dto.getApellido(), dto.getTipoDocumento(), dto.getNumeroDocumento(),
                 dto.getCorreo(), dto.getTelefono(), dto.getDireccion(), dto.getFechaNacimiento(), dto.getFechaContratacion(),
                 dto.getEpsEmpleado(), dto.getDepartamentoIdDepartamento(), dto.getCuentabancariaNumeroCuenta());
+
+        auditoriaService.registrarCambio(
+                "EMPLEADO",
+                id,
+                "UPDATE"
+        );
     }
 
     public void eliminarEmpleado(Short id){
         empleadoRepository.eliminarEmpleado(id);
+        auditoriaService.registrarCambio(
+                "EMPLEADO",
+                id,
+                "DELETE"
+        );
     }
 }

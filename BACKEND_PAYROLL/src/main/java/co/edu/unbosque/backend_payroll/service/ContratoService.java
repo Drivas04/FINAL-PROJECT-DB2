@@ -9,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ContratoService {
 
     @Autowired
     private ContratoRepository repo;
+
+    @Autowired
+    private AuditoriaService auditoriaService;
 
     public List<ContratoProjection> getContratos() {
         return repo.findAllContratos();
@@ -30,5 +34,11 @@ public class ContratoService {
     public void actualizarContrato(Short id, ContratoDTO c){
         repo.actualizarContrato(id, c.getSalario(), c.getTipoContrato(), c.getNombreCargo(),
                                 c.getFechaInicio(), c.getFechaFin().orElse(null), c.getEstado(), c.getEmpleadoIdEmpleado());
+
+        auditoriaService.registrarCambio(
+                "CONTRATO",
+                id,
+                "UPDATE"
+        );
     }
 }
