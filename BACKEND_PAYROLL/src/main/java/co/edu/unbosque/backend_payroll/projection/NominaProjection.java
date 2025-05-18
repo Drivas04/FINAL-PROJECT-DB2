@@ -13,5 +13,6 @@ public interface NominaProjection {
     BigDecimal getPagoTotal();
     BigDecimal getAuxilioTransporte();
     Integer getDiasTrabajados();
+    LocalDate getFechaPago();
     Short getContratoIdContrato();
 }

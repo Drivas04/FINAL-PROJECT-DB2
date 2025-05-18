@@ -46,5 +46,11 @@ public class NominaController {
         nominaService.agregarNomina(nomina);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping("/{idNomina}")
+    public ResponseEntity<Void> deleteNomina(@PathVariable Short idNomina) {
+        nominaService.eliminarNomina(idNomina);
+        return ResponseEntity.noContent().build();
+    }
 }
 

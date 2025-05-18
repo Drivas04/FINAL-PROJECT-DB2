@@ -40,12 +40,11 @@ export const RegisterNewsForm = () => {
   
   // Form state for new payroll news
   const [newsData, setNewsData] = useState({
-    tipo_novedad: '',
+    tipoNovedad: '',
     descripcion: '',
-    fecha_inicio: format(new Date(), 'yyyy-MM-dd'),
-    fecha_fin: '',
-    valorAfectacion: 0,
-    id_nomina: ''
+    fechaInicio: format(new Date(), 'yyyy-MM-dd'),
+    fechaFin: format(new Date(), 'yyyy-MM-dd'),
+    nominaIdNomina: ''
   });
   
   // Initialize search functionality
@@ -100,7 +99,7 @@ export const RegisterNewsForm = () => {
   const handlePayrollChange = (payrollId) => {
     const payroll = employeePayrolls.find(p => p.idNomina === payrollId);
     setSelectedPayroll(payroll);
-    setNewsData({...newsData, id_nomina: payrollId});
+    setNewsData({...newsData, nominaIdNomina: payrollId});
   };
   
   // Handle form input changes
@@ -109,16 +108,11 @@ export const RegisterNewsForm = () => {
     setNewsData({...newsData, [name]: value});
   };
   
-  // Handle number input specifically for monetary values
-  const handleNumberInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewsData({...newsData, [name]: parseFloat(value) || 0});
-  };
   
   // Handle form submission
   const handleSubmit = async () => {
     // Validate required fields
-    if (!newsData.tipo_novedad || !newsData.descripcion || !newsData.fecha_inicio || !newsData.id_nomina) {
+    if (!newsData.tipoNovedad  || !newsData.fechaInicio || !newsData.fechaFin || !newsData.nominaIdNomina) {
       toast({
         variant: "destructive",
         title: "Error de validación",
@@ -131,12 +125,11 @@ export const RegisterNewsForm = () => {
       setLoading(true);
       
       const payload = {
-        tipo_novedad: newsData.tipo_novedad,
+        tipoNovedad: newsData.tipoNovedad,
         descripcion: newsData.descripcion,
-        fecha_inicio: newsData.fecha_inicio,
-        fecha_fin: newsData.fecha_fin || null,
-        valorAfectacion: newsData.valorAfectacion,
-        id_nomina: newsData.id_nomina
+        fechaInicio: newsData.fechaInicio,
+        fechaFin: newsData.fechaFin,
+        nominaIdNomina: newsData.nominaIdNomina
       };
       
       const response = await axios.post('http://localhost:8080/novedades', payload);
@@ -148,12 +141,11 @@ export const RegisterNewsForm = () => {
       
       // Reset form
       setNewsData({
-        tipo_novedad: '',
+        tipoNovedad: '',
         descripcion: '',
-        fecha_inicio: format(new Date(), 'yyyy-MM-dd'),
-        fecha_fin: '',
-        valorAfectacion: 0,
-        id_nomina: ''
+        fechainicio: format(new Date(), 'yyyy-MM-dd'),
+        fechaFin: '',
+        nominaIdNomina: ''
       });
       setSelectedEmployee(null);
       setSelectedPayroll(null);
@@ -228,7 +220,7 @@ export const RegisterNewsForm = () => {
             <h3 className="font-semibold">2. Seleccionar nómina</h3>
             <Select 
               onValueChange={handlePayrollChange}
-              value={newsData.id_nomina}
+              value={newsData.nominaIdNomina}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleccione un período de nómina" />
@@ -237,7 +229,7 @@ export const RegisterNewsForm = () => {
                 <SelectGroup>
                   {employeePayrolls.map((payroll) => (
                     <SelectItem key={payroll.idNomina} value={payroll.idNomina}>
-                      {payroll.periodo || `Nómina #${payroll.idNomina}`} - {payroll.fechaGeneracion && format(new Date(payroll.fechaGeneracion), 'dd/MM/yyyy')}
+                      {payroll.periodo || `Nómina #${payroll.idNomina}`}
                     </SelectItem>
                   ))}
                 </SelectGroup>
@@ -259,11 +251,11 @@ export const RegisterNewsForm = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="tipo_novedad">Tipo de novedad *</Label>
+                <Label htmlFor="tipoNovedad">Tipo de novedad *</Label>
                 <Select
-                  name="tipo_novedad"
-                  value={newsData.tipo_novedad}
-                  onValueChange={(value) => setNewsData({...newsData, tipo_novedad: value})}
+                  name="tipoNovedad"
+                  value={newsData.tipoNovedad}
+                  onValueChange={(value) => setNewsData({...newsData, tipoNovedad: value})}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione el tipo de novedad" />
@@ -272,26 +264,11 @@ export const RegisterNewsForm = () => {
                     <SelectGroup>
                       <SelectItem value="Incapacidad">Incapacidad</SelectItem>
                       <SelectItem value="Vacaciones">Vacaciones</SelectItem>
-                      <SelectItem value="Licencia">Licencia</SelectItem>
-                      <SelectItem value="Horas extras">Horas extras</SelectItem>
-                      <SelectItem value="Bonificación">Bonificación</SelectItem>
-                      <SelectItem value="Auxilio de transporte">Auxilio de transporte</SelectItem>
-                      <SelectItem value="Descuento">Descuento</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="valorAfectacion">Valor de afectación *</Label>
-                <Input
-                  type="number"
-                  name="valorAfectacion"
-                  value={newsData.valorAfectacion}
-                  onChange={handleNumberInputChange}
-                  placeholder="0"
-                />
-              </div>
             </div>
             
             <div className="space-y-2">
@@ -307,21 +284,21 @@ export const RegisterNewsForm = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="fecha_inicio">Fecha de inicio *</Label>
+                <Label htmlFor="fechaInicio">Fecha de inicio *</Label>
                 <Input
                   type="date"
-                  name="fecha_inicio"
-                  value={newsData.fecha_inicio}
+                  name="fechaInicio"
+                  value={newsData.fechaInicio}
                   onChange={handleInputChange}
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="fecha_fin">Fecha de finalización</Label>
+                <Label htmlFor="fechaFin">Fecha de finalización</Label>
                 <Input
                   type="date"
-                  name="fecha_fin"
-                  value={newsData.fecha_fin}
+                  name="fechaFin"
+                  value={newsData.fechaFin}
                   onChange={handleInputChange}
                 />
               </div>

@@ -33,13 +33,8 @@ export function SidebarComponent() {
       { label: "Empleados", path: "/empleados", icon: <Users /> },
       { label: "Nuevo Contrato", path: "/contratos/nuevo", icon: <UserPlus /> },
     ];
-  } else if (path.startsWith("/deposito-cesantias") || path.startsWith("/retiro-cesantias") || path.startsWith("/lista-retiros") || path.startsWith("/lista-depositos")) {
+  } else if (path.startsWith("/retiro-cesantias") || path.startsWith("/lista-retiros") || path.startsWith("/lista-depositos")) {
     items = [
-      {
-        label: "Deposito de cesantias",
-        path: "/deposito-cesantias",
-        icon: <PiggyBank />,
-      },
       {
         label: "Retiro de cesantias",
         path: "/retiro-cesantias",
@@ -73,7 +68,6 @@ export function SidebarComponent() {
     items = [
       { label: "Empleados", path: "/empleados", icon: <Users /> },
       { label: "Nominas", path: "/nominas", icon: <ScrollText /> },
-      { label: "Deposito de cesantias", path: "/deposito-cesantias", icon: <PiggyBank /> },
       { label: "Retiro de cesantias", path: "/retiro-cesantias", icon: <HandCoins /> },
       { label: "Seguridad Social", path: "/seguridad-social", icon: <ScrollText /> },
       { label: "Novedades", path: "/novedades", icon: <ScrollText /> },

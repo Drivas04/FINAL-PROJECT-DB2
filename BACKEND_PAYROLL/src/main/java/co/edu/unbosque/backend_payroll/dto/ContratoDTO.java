@@ -13,7 +13,7 @@ public class ContratoDTO {
     String tipoContrato;
     String nombreCargo;
     LocalDate fechaInicio;
-    Optional<LocalDate> fechaFin;
+    LocalDate fechaFin;
     String estado;
     Short empleadoIdEmpleado;
 }

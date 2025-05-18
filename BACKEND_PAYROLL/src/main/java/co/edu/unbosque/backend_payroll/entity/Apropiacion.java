@@ -25,7 +25,7 @@ public class Apropiacion {
     private BigDecimal valor;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "nomina_id_nomina", nullable = false)
     private Nomina nominaIdNomina;
 

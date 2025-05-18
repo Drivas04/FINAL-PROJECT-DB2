@@ -29,5 +29,5 @@ public interface LiquidacionCensantiasRepository extends JpaRepository<Liquidaci
     @Query(value = "SELECT fn_calcular_valor_cesantias(:contratoId) AS valor_cesantias, " +
             "fn_calcular_intereses_cesantias(:contratoId) AS intereses_cesantias",
             nativeQuery = true)
-    Map<String, Object> calcularCesantiasDisponibles(@Param("contratoId") Integer contratoId);
+    Map<String, Object> calcularCesantiasDisponibles(@Param("contratoId") Short contratoId);
 }

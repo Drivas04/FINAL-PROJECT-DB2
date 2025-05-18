@@ -29,7 +29,7 @@ public class LiquidacionCesantiasController {
     }
 
     @GetMapping("/disponible/{contratoId}")
-    public ResponseEntity<Map<String, Object>> consultarCesantiasDisponibles(@PathVariable Integer contratoId) {
+    public ResponseEntity<Map<String, Object>> consultarCesantiasDisponibles(@PathVariable Short contratoId) {
         try {
             Map<String, Object> cesantias = service.consultarCesantiasDisponibles(contratoId);
             return ResponseEntity.ok(cesantias);

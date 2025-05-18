@@ -1,11 +1,4 @@
-import { deductions } from "@/data/deductions";
 
-export const getTotalDeductions = (id_nomina) => {
-  const totalDeductions = deductions
-    .filter((deduction) => deduction.nomina_id_nomina === id_nomina)
-    .reduce((acc, deduction) => acc + deduction.valor, 0);
-  return totalDeductions;
-}
 
 // Versión corregida de la función
 export const getEmployeeByPayroll = (contracts, employees, payroll) => {

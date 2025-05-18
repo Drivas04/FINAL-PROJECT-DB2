@@ -18,11 +18,10 @@ public class Novedadesnomina {
     @Id
     @Column(name = "id_novedad", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+    private Short idNovedad;
 
     @Size(max = 20)
     @Column(name = "tipo_novedad", length = 20)
-    //@Enumerated(EnumType.STRING)
     private String tipoNovedad;
 
     @Column(name = "descripcion", length = Integer.MAX_VALUE)
@@ -38,7 +37,7 @@ public class Novedadesnomina {
     private LocalDate fechaFin;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "nomina_id_nomina", nullable = false)
     private Nomina nominaIdNomina;
 

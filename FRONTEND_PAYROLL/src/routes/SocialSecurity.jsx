@@ -70,6 +70,23 @@ export const SocialSecurity = () => {
   // Hook de búsqueda para filtrado de empleados
   const { search, setSearch, filteredData: empleadosFiltrados } = useSearch(employees, "nombre");
 
+  // Utilidad para depurar problemas de formato de fecha
+  const debugFechas = (periodos) => {
+    if (!Array.isArray(periodos) || periodos.length === 0) return;
+    
+    console.group('Depuración de formatos de fecha:');
+    periodos.forEach((periodo, index) => {
+      console.log(`Periodo ${index + 1}:`, {
+        original: periodo,
+        tipo: typeof periodo,
+        fechaObj: new Date(periodo),
+        valido: !isNaN(new Date(periodo).getTime()),
+        formateado: formatearPeriodo(periodo)
+      });
+    });
+    console.groupEnd();
+  };
+
   // Efecto para cargar nóminas cuando se selecciona un empleado
   useEffect(() => {
     if (empleadoSeleccionado) {
@@ -122,7 +139,30 @@ export const SocialSecurity = () => {
         for (const idContrato of idsContratos) {
           const response = await axios.get(`http://localhost:8080/nominas/contrato/${idContrato}`);
           if (response.data && response.data.length > 0) {
-            nominasDelEmpleado = [...nominasDelEmpleado, ...response.data];
+            // Asegurarnos que cada nómina tenga un formato de fecha consistente
+            const nominasFormateadas = response.data.map(nomina => {
+              if (nomina.periodo) {
+                // Intentar normalizar el formato de la fecha si es necesario
+                try {
+                  // Asegurar que esté en formato YYYY-MM-DD
+                  const fechaObj = new Date(nomina.periodo);
+                  if (!isNaN(fechaObj.getTime())) {
+                    // Solo modificar si podemos convertirla correctamente
+                    return {
+                      ...nomina,
+                      // Guardar fecha original y normalizada para evitar problemas
+                      periodoOriginal: nomina.periodo,
+                      periodoFormateado: fechaObj.toISOString().split('T')[0]
+                    };
+                  }
+                } catch (error) {
+                  console.warn("Error al formatear periodo de nómina:", error);
+                }
+              }
+              return nomina;
+            });
+            
+            nominasDelEmpleado = [...nominasDelEmpleado, ...nominasFormateadas];
           }
         }
       } catch (error) {
@@ -130,20 +170,65 @@ export const SocialSecurity = () => {
         // Si hay error con el backend, usar datos del contexto como respaldo
         nominasDelEmpleado = payrolls.filter(nomina => 
           contratosEmpleado.some(contrato => contrato.idContrato === nomina.contratoIdContrato)
-        );
+        ).map(nomina => {
+          if (nomina.periodo) {
+            try {
+              const fechaObj = new Date(nomina.periodo);
+              if (!isNaN(fechaObj.getTime())) {
+                return {
+                  ...nomina,
+                  periodoOriginal: nomina.periodo,
+                  periodoFormateado: fechaObj.toISOString().split('T')[0]
+                };
+              }
+            } catch (error) {
+              console.warn("Error al formatear periodo de nómina del contexto:", error);
+            }
+          }
+          return nomina;
+        });
+      }
+      
+      // Log para depuración de periodos 
+      if (nominasDelEmpleado.length > 0) {
+        console.log("Total de nóminas encontradas:", nominasDelEmpleado.length);
+        
+        // Depurar los formatos de fecha para diagnosticar problemas
+        const periodos = nominasDelEmpleado.map(n => n.periodo);
+        debugFechas(periodos);
       }
       
       // Ordenar por fecha descendente
-      const nominasOrdenadas = nominasDelEmpleado.sort((a, b) => 
-        new Date(b.periodo) - new Date(a.periodo)
-      );
+      const nominasOrdenadas = nominasDelEmpleado.sort((a, b) => {
+        // Intentar usar la fecha formateada si existe
+        const fechaA = a.periodoFormateado || a.periodo;
+        const fechaB = b.periodoFormateado || b.periodo;
+        
+        // Convertir a objetos Date para comparación
+        try {
+          const dateA = new Date(fechaA);
+          const dateB = new Date(fechaB);
+          
+          // Verificar si ambas fechas son válidas
+          if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
+            return dateB.getTime() - dateA.getTime();
+          }
+        } catch (error) {
+          console.warn("Error al ordenar nóminas por fecha:", error);
+        }
+        
+        // Si hay error, intentar ordenar por string simple
+        return String(fechaB).localeCompare(String(fechaA));
+      });
       
       setNominasEmpleado(nominasOrdenadas);
       
       // Seleccionar la nómina más reciente por defecto
       if (nominasOrdenadas.length > 0) {
         setNominaSeleccionada(nominasOrdenadas[0]);
-        setPeriodoCargado(formatearPeriodo(nominasOrdenadas[0].periodo));
+        // Usar la fecha formateada si existe, de lo contrario usar la original
+        const periodoMostrar = nominasOrdenadas[0].periodoFormateado || nominasOrdenadas[0].periodo;
+        setPeriodoCargado(formatearPeriodo(periodoMostrar));
       } else {
         toast({
           variant: "destructive",
@@ -166,8 +251,22 @@ export const SocialSecurity = () => {
   // Función para cambiar la nómina seleccionada
   const handleNominaChange = (nominaId) => {
     const nomina = nominasEmpleado.find(n => n.idNomina === Number(nominaId));
-    setNominaSeleccionada(nomina);
-    setPeriodoCargado(formatearPeriodo(nomina.periodo));
+    if (nomina) {
+      setNominaSeleccionada(nomina);
+      // Usar la fecha formateada si existe, de lo contrario usar la original
+      const periodoMostrar = nomina.periodoFormateado || nomina.periodo;
+      setPeriodoCargado(formatearPeriodo(periodoMostrar));
+      
+      // Log para depuración
+      console.log("Nómina seleccionada:", {
+        id: nomina.idNomina,
+        periodoOriginal: nomina.periodo,
+        periodoFormateado: nomina.periodoFormateado,
+        periodoMostrado: formatearPeriodo(periodoMostrar)
+      });
+    } else {
+      console.error("No se encontró la nómina con ID:", nominaId);
+    }
   };
 
   // Función para formatear el período de nómina
@@ -175,9 +274,39 @@ export const SocialSecurity = () => {
     if (!periodo) return "";
     
     try {
-      const fecha = new Date(periodo);
+      // Asegurar que la fecha esté en formato ISO (YYYY-MM-DD)
+      // Algunos backends pueden enviar fechas en formatos inconsistentes
+      let fecha;
+      
+      // Si es un string con formato de fecha ISO
+      if (typeof periodo === 'string' && periodo.match(/^\d{4}-\d{2}-\d{2}/)) {
+        fecha = new Date(periodo);
+      } 
+      // Si es un string con formato timestamp
+      else if (typeof periodo === 'string' && !isNaN(Date.parse(periodo))) {
+        fecha = new Date(periodo);
+      }
+      // Si es un objeto Date
+      else if (periodo instanceof Date) {
+        fecha = periodo;
+      }
+      // Otros formatos posibles
+      else {
+        console.warn("Formato de fecha no reconocido:", periodo);
+        return periodo.toString();
+      }
+      
+      // Verificar si la fecha es válida
+      if (isNaN(fecha.getTime())) {
+        console.warn("Fecha inválida después de la conversión:", periodo);
+        return periodo.toString();
+      }
+      
+      // Formatear la fecha como "Mes Año"
       return `${fecha.toLocaleString('es-CO', { month: 'long' })} ${fecha.getFullYear()}`;
     } catch (e) {
+      console.error("Error al formatear período:", e, periodo);
+      // En caso de error, devolver el valor original
       return periodo.toString();
     }
   };
@@ -436,14 +565,20 @@ export const SocialSecurity = () => {
                   <SelectContent>
                     <SelectGroup>
                       {nominasEmpleado.length > 0 ? (
-                        nominasEmpleado.map(nomina => (
-                          <SelectItem 
-                            key={nomina.idNomina} 
-                            value={nomina.idNomina.toString()}
-                          >
-                            {formatearPeriodo(nomina.periodo)}
-                          </SelectItem>
-                        ))
+                        nominasEmpleado.map(nomina => {
+                          // Usar la fecha formateada si existe, de lo contrario usar la original
+                          const periodoMostrar = nomina.periodoFormateado || nomina.periodo;
+                          const periodoFormateado = formatearPeriodo(periodoMostrar);
+                          
+                          return (
+                            <SelectItem 
+                              key={nomina.idNomina} 
+                              value={nomina.idNomina.toString()}
+                            >
+                              {periodoFormateado}
+                            </SelectItem>
+                          );
+                        })
                       ) : (
                         <SelectItem disabled value="none">
                           No hay nóminas disponibles

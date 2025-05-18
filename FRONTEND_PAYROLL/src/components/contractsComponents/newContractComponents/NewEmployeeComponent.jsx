@@ -20,9 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "@/hooks/useForm";
-import { employees } from "@/data/employees";
-import { de, id } from "date-fns/locale";
-import { useDataContext } from "@/context/DataContext";
+
 
 export const NewEmployeeComponent = ({ onEmployeeDataSaved }) => {
   const initialForm = {
@@ -206,20 +204,26 @@ export const NewEmployeeComponent = ({ onEmployeeDataSaved }) => {
             }}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Selecciona la EPS" />
+              <SelectValue placeholder="Selecciona el departamento al que pertenecerá el empleado" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="1">Compensar</SelectItem>
-                <SelectItem value="2">Sura</SelectItem>
-                <SelectItem value="3">Nueva EPS</SelectItem>
-                <SelectItem value="4">Sanitas</SelectItem>
+                <SelectItem value="1">Administrativa</SelectItem>
+                <SelectItem value="2">Finanzas</SelectItem>
+                <SelectItem value="3">Recursos humanos</SelectItem>
+                <SelectItem value="4">Ventas</SelectItem>
+                <SelectItem value="5">Marketing</SelectItem>
+                <SelectItem value="6">Producción</SelectItem>
+                <SelectItem value="7">Logística</SelectItem>
+                <SelectItem value="8">Sistemas</SelectItem>
+                <SelectItem value="9">Investigación</SelectItem>
+                <SelectItem value="10">Calidad</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-1">
-          <Label htmlFor="cuentabancariaNumeroCuenta">Dirección</Label>
+          <Label htmlFor="cuentabancariaNumeroCuenta">Número de cuenta</Label>
           <Input
             name="cuentabancariaNumeroCuenta"
             value={cuentabancariaNumeroCuenta}
@@ -246,14 +250,20 @@ export const NewEmployeeComponent = ({ onEmployeeDataSaved }) => {
             }}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Selecciona la EPS" />
+              <SelectValue placeholder="Selecciona el banco del empleado" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="1">Compensar</SelectItem>
-                <SelectItem value="2">Sura</SelectItem>
-                <SelectItem value="3">Nueva EPS</SelectItem>
-                <SelectItem value="4">Sanitas</SelectItem>
+                <SelectItem value="1">Bancolombia</SelectItem>
+                <SelectItem value="2">Davivienda</SelectItem>
+                <SelectItem value="3">Banco de Bogotá</SelectItem>
+                <SelectItem value="4">BBVA</SelectItem>
+                <SelectItem value="5">Banco Popular</SelectItem>
+                <SelectItem value="6">Banco Agrario</SelectItem>
+                <SelectItem value="7">Colpatria</SelectItem>
+                <SelectItem value="8">Scotiabank</SelectItem>
+                <SelectItem value="9">Itaú</SelectItem>
+                <SelectItem value="10">Citibank</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

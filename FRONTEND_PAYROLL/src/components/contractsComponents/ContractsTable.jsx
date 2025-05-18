@@ -32,7 +32,7 @@ import { useContractContext } from "@/context/ContractContext";
 import { useEmployeeContext } from "@/context/EmployeeContext";
 
 export const ContractsTable = () => {
-  const { contracts, loadingContracts, updateContract } = useContractContext();
+  const { contracts, loadingContracts, updateContract, fetchContracts } = useContractContext();
   const { employees } = useEmployeeContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
@@ -55,9 +55,6 @@ export const ContractsTable = () => {
     <div className="container mx-auto mt-2 md:mt-10">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-5">
         <h1 className="text-2xl md:text-4xl font-bold mb-4 sm:mb-0">Contratos</h1>
-        <Button variant="outline" onClick={() => window.location.href = "/new-contract"} className="w-full sm:w-auto">
-          Registrar nuevo contrato
-        </Button>
       </div>
       <div className="flex items-center justify-between mb-4 pl-0 sm:pl-2">
         <Input
@@ -160,7 +157,14 @@ export const ContractsTable = () => {
           {selectedContract && (
             <EditContractComponent
               open={isDialogOpen}
-              setOpen={setIsDialogOpen}
+              setOpen={(isOpen) => {
+                setIsDialogOpen(isOpen);
+                if (!isOpen) {
+                  // Cuando se cierra el modal de edición, actualizamos los datos
+                  fetchContracts();
+                  setSelectedContract(null);
+                }
+              }}
               contract={selectedContract}
               onUpdateContract={updateContract}
             />

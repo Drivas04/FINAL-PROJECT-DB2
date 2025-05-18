@@ -42,7 +42,7 @@ import { useDepartmentContext } from "@/context/DepartmentsContext";
 import { useToast } from "@/hooks/use-toast";
 
 export const EmployeesTable = () => {
-  const { employees, updateEmployee, deleteEmployee } = useEmployeeContext();
+  const { employees, updateEmployee, deleteEmployee, fetchEmployees } = useEmployeeContext();
   const { departments } = useDepartmentContext();
   const { toast } = useToast();
 
@@ -91,9 +91,6 @@ export const EmployeesTable = () => {
       <div className="container mx-auto mt-2 md:mt-5">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-10">
           <h1 className="text-2xl md:text-4xl font-bold mb-4 sm:mb-0">Empleados</h1>
-          <Button variant="outline" onClick={() => navigate("/new-contract")} className="w-full sm:w-auto">
-            Registrar nuevo empleado
-          </Button>
         </div>
       </div>
       <div className="flex items-center justify-between mb-4">
@@ -117,6 +114,7 @@ export const EmployeesTable = () => {
               <TableHead className="w-[100px] text-xs md:text-sm">Nro. de documento</TableHead>
               <TableHead className="text-center text-xs md:text-sm">Tipo de documento</TableHead>
               <TableHead className="text-center text-xs md:text-sm">Nombres</TableHead>
+              <TableHead className="text-center text-xs md:text-sm">Apellidos</TableHead>
               <TableHead className="text-center text-xs md:text-sm">Fecha de nacimiento</TableHead>
               <TableHead className="text-center text-xs md:text-sm">Telefono</TableHead>
               <TableHead className="text-center text-xs md:text-sm">Correo</TableHead>
@@ -137,6 +135,7 @@ export const EmployeesTable = () => {
                   {emp.tipoDocumento}
                 </TableCell>
                 <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{emp.nombre}</TableCell>
+                <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{emp.apellido}</TableCell>
                 <TableCell className="text-center text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">
                   {format(new Date(emp.fechaNacimiento).setHours(24), "dd-MM-yyyy", {
                     locale: es, 
@@ -169,7 +168,6 @@ export const EmployeesTable = () => {
                       <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
-                        <DropdownMenuItem>Ver contrato</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() =>
                             navigate(`/empleados/${emp.idEmpleado}/nominas`)
@@ -216,7 +214,14 @@ export const EmployeesTable = () => {
           {selectedEmployee && (
             <EditProfileComponent
               open={isDialogOpen}
-              setOpen={setIsDialogOpen}
+              setOpen={(isOpen) => {
+                setIsDialogOpen(isOpen);
+                if (!isOpen) {
+                  // Cuando se cierra el modal de edición, actualizamos los datos
+                  fetchEmployees();
+                  setSelectedEmployee(null);
+                }
+              }}
               employee={selectedEmployee}
               departmentName={getDepartmentName(
                 selectedEmployee.departamentoIdDepartamento,

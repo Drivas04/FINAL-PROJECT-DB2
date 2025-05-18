@@ -23,9 +23,7 @@ import { useForm } from "@/hooks/useForm";
 import { DatePicker } from "@/components/ui/date-picker";
 import { useDepartmentContext } from "@/context/DepartmentsContext";
 import { useEmployeeContext } from "@/context/EmployeeContext";
-import { department } from "@/data/department";
 import { useToast } from "@/hooks/use-toast";
-import { DialogSafeDatePicker } from "../ui/DialogSafeDatePicker";
 
 export const EditProfileComponent = ({
   open,
@@ -170,6 +168,11 @@ export const EditProfileComponent = ({
       });
     } catch (error) {
       console.error("Error al guardar cambios:", error);
+      toast({
+        variant: "destructive",
+        title: "Error al actualizar",
+        description: "No se pudieron guardar los cambios. Intente nuevamente.",
+      });
     }
   };
 

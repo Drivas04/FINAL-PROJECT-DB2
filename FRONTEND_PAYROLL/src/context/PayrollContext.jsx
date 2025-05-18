@@ -9,17 +9,17 @@ export const PayrollProvider = ({ children }) => {
   const [payrolls, setPayrolls] = useState([]);
   const [loadingPayrolls, setLoadingPayrolls] = useState(true);
 
+  const fetchPayrolls = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/nominas"); // Ajusta la URL
+      setPayrolls(response.data);
+    } catch (error) {
+      console.error("Error al cargar contratos:", error);
+    } finally {
+      setLoadingPayrolls(false);
+    }
+  };
   useEffect(() => {
-    const fetchPayrolls = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/nominas"); // Ajusta la URL
-        setPayrolls(response.data);
-      } catch (error) {
-        console.error("Error al cargar contratos:", error);
-      } finally {
-        setLoadingPayrolls(false);
-      }
-    };
 
     fetchPayrolls();
   }, []);
@@ -42,16 +42,25 @@ export const PayrollProvider = ({ children }) => {
       );
     };
   
-    const deletePayroll = (id_nomina) => {
-      setPayrolls((prevPayrolls) => 
-        prevPayrolls.filter((payroll) => payroll.id_nomina !== id_nomina)
-      );
+    const deletePayroll = async (id_nomina) => {
+      try {
+        // Esperar a que se complete la eliminación antes de continuar
+        await axios.delete(`http://localhost:8080/nominas/${id_nomina}`);
+        console.log("Nómina eliminada con ID:", id_nomina);
+        
+        // Actualizar el estado después de confirmar la eliminación
+        await fetchPayrolls();
+      }
+      catch (error) {
+        console.error("Error al eliminar la nómina:", error);
+      }
     };
 
   const value = {
     payrolls,
     loadingPayrolls,
     setPayrolls,
+    deletePayroll
   };
 
   return (

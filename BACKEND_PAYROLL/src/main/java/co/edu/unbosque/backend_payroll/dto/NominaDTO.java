@@ -9,6 +9,6 @@ import java.time.LocalDate;
 public class NominaDTO {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     LocalDate periodo;
-    Short ContratoidContrato;
+    Short contratoIdContrato;
     Integer horasExtras;
 }

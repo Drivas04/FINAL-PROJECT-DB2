@@ -122,7 +122,7 @@ export const PayrollListScreen = () => {
                   </Link>
                 </TableCell>
                 <TableCell className="font-medium text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">{payroll.periodo}</TableCell>
-                <TableCell className="text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">${payroll.totalPagado || payroll.total_pagado}</TableCell>
+                <TableCell className="text-xs md:text-sm px-2 py-2 md:px-4 md:py-4">${payroll.pagoTotal.toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

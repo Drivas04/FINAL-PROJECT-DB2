@@ -1,7 +1,6 @@
 package co.edu.unbosque.backend_payroll.service;
 
 import co.edu.unbosque.backend_payroll.dto.NominaDTO;
-import co.edu.unbosque.backend_payroll.entity.Nomina;
 import co.edu.unbosque.backend_payroll.projection.NominaProjection;
 import co.edu.unbosque.backend_payroll.repository.NominaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,10 @@ public class NominaService {
     }
 
     public void agregarNomina(NominaDTO nomina) {
-        nominaRepository.agregarNomina(nomina.getPeriodo(), nomina.getContratoidContrato(), nomina.getHorasExtras());
+        nominaRepository.agregarNomina(nomina.getPeriodo(), nomina.getContratoIdContrato(), nomina.getHorasExtras());
+    }
+
+    public void eliminarNomina(Short idNomina) {
+        nominaRepository.eliminarNomina(idNomina);
     }
 }

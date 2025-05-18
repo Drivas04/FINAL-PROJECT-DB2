@@ -39,8 +39,11 @@ public class Nomina {
     @Column(name = "dias_trabajados", precision = 10)
     private Integer diasTrabajados;
 
+    @Column(name = "fecha_pago")
+    LocalDate fechaPago;
+
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "contrato_id_contrato", nullable = false)
     private Contrato contratoIdContrato;
 

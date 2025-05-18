@@ -62,10 +62,6 @@ function App() {
                           element={<RegistrarNominaScreen />}
                         />
                         <Route
-                          path="/deposito-cesantias"
-                          element={<SeveranceDepositScreen />}
-                        />
-                        <Route
                           path="/retiro-cesantias"
                           element={<SeveranceWithdrawScreen />}
                         />

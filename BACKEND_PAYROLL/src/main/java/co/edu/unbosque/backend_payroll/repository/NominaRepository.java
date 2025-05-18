@@ -28,6 +28,9 @@ public interface NominaRepository extends JpaRepository<Nomina, Long> {
 
     @Procedure(procedureName = "sp_agregarnomina")
     void agregarNomina(@Param("pd_periodo") LocalDate periodo,
-                       @Param("pn_idContrato") Short idContrato,
+                       @Param("pn_idcontrato") Short idContrato,
                        @Param("pn_horasExtras") Integer horasExtras);
+
+    @Procedure(procedureName = "sp_eliminar_nomina")
+    void eliminarNomina(@Param("pn_id_nomina") Short idNomina);
 }

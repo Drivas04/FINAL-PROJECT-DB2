@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
  public interface DepartamentoRepository extends JpaRepository<Departamento, Short> {
 
-    @Query(value = "SELECT * FROM fn_consultar_departamentos()", nativeQuery = true)
+    @Query(value = "SELECT * FROM fn_consultardepartamentos()", nativeQuery = true)
     List<Departamento> getDepartments();
 
 

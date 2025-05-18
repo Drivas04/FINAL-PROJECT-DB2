@@ -28,7 +28,7 @@ public class Deduccion {
     private String descripcion;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "nomina_id_nomina", nullable = false)
     private Nomina nominaIdNomina;
 

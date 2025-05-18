@@ -19,7 +19,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@/hooks/useForm";
 import React, { useEffect } from "react";
-import { ca } from "date-fns/locale";
+import { useContractContext } from "@/context/ContractContext";
+import { useToast } from "@/hooks/use-toast";
 
 export const EditContractComponent = ({
   open,
@@ -27,55 +28,86 @@ export const EditContractComponent = ({
   contract,
   onUpdateContract,
 }) => {
+  const { updateContract } = useContractContext();
+  const { toast } = useToast();
+  
   const initialForm = {
-    id_empleado: contract.id_empleado,
-    tipo_contrato: contract.tipo_contrato,
-    cargo: contract.cargo,
-    fecha_inicio: contract.fecha_inicio,
-    fecha_fin: contract.fecha_fin,
+    empleadoIdEmpleado: contract.empleadoIdEmpleado || contract.id_empleado,
+    tipoContrato: contract.tipoContrato || contract.tipo_contrato,
+    nombreCargo: contract.nombreCargo || contract.cargo,
+    fechaInicio: contract.fechaInicio || contract.fecha_inicio,
+    fechaFin: contract.fechaFin || contract.fecha_fin,
     salario: contract.salario,
-    estado: contract.estado,
+    estado: contract.estado === 'A' ? 'Activo' : 'Inactivo',
   };
   const { formState, setFormState, onInputChange } = useForm(initialForm);
 
   const {
-    id_empleado,
-    tipo_contrato,
-    cargo,
-    fecha_inicio,
-    fecha_fin,
     salario,
+    tipoContrato,
+    nombreCargo,
+    fechaInicio,
+    fechaFin,
     estado,
+    empleadoIdEmpleado,
   } = formState;
 
   useEffect(() => {
     if (contract) {
       setFormState({
-        id_empleado: contract.id_empleado || "",
-        tipo_contrato: contract.tipo_contrato || "",
-        cargo: contract.cargo || "",
-        fecha_inicio: contract.fecha_inicio || "",
-        fecha_fin: contract.fecha_fin || "",
+        tipoContrato: contract.tipoContrato || "",
+        nombreCargo: contract.nombreCargo || "",
+        fechaInicio: contract.fechaInicio || "",
+        fechaFin: contract.fechaFin || "",
         salario: contract.salario || "",
-        estado: contract.estado || "",
+        estado: contract.estado === 'A' ? 'Activo' : 'Inactivo',
+        empleadoIdEmpleado: contract.empleadoIdEmpleado || "",
       });
     }
   }, [contract, setFormState]);
 
-  const handleSaveChanges = () => {
-    const updatedContract = {
-      ...contract,
-      id_empleado: formState.id_empleado,
-      tipo_contrato: formState.tipo_contrato,
-      cargo: formState.cargo,
-      fecha_inicio: formState.fecha_inicio.toString(),
-      fecha_fin: formState.fecha_fin.toString(),
-      salario: formState.salario,
-      estado: formState.estado,
-    };
+  const handleSaveChanges = async () => {
+    try {
+      // Validaciones básicas
+      if (!formState.nombreCargo || !formState.salario || !formState.tipoContrato) {
+        toast({
+          variant: "destructive",
+          title: "Campos requeridos",
+          description: "Por favor complete todos los campos obligatorios."
+        });
+        return;
+      }
 
-    onUpdateContract(updatedContract);
-    setOpen(false);
+      const updatedContractData = {
+        ...formState,
+        // Asegurarse que el salario es un número
+        salario: parseFloat(formState.salario)
+      };
+
+      // Llama a la función del contexto para actualizar en el backend
+      await updateContract(contract.idContrato, updatedContractData);
+      
+      // Si hay una función en el componente padre, la llamamos también
+      if (onUpdateContract) {
+        onUpdateContract({
+          ...contract,
+          ...updatedContractData
+        });
+      }
+
+      setOpen(false);
+      toast({
+        title: "Contrato actualizado",
+        description: "Los datos del contrato se han actualizado correctamente."
+      });
+    } catch (error) {
+      console.error("Error al guardar cambios:", error);
+      toast({
+        variant: "destructive",
+        title: "Error al actualizar",
+        description: "No se pudieron guardar los cambios. Intente nuevamente."
+      });
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -85,22 +117,22 @@ export const EditContractComponent = ({
           <DialogDescription>Edita los datos del contrato</DialogDescription>
         </DialogHeader>
         <form className="flex flex-col gap-4">
-          <Label htmlFor="id_empleado">Id del empleado</Label>
+          <Label htmlFor="empleadoIdEmpleado">Id del empleado</Label>
           <Input
             disabled
             type="text"
-            name="id_empleado"
-            value={id_empleado}
+            name="empleadoIdEmpleado"
+            value={empleadoIdEmpleado}
             onChange={onInputChange}
           />
-          <Label htmlFor="tipo_contrato">Tipo de contrato</Label>
+          <Label htmlFor="tipoContrato">Tipo de contrato</Label>
           <Select
-            name="tipo_contrato"
-            value={tipo_contrato}
+            name="tipoContrato"
+            value={tipoContrato}
             onValueChange={(value) => {
-              setFormState({ ...formState, tipo_contrato: value });
+              setFormState({ ...formState, tipoContrato: value });
             }}
-            defaultValue={tipo_contrato}
+            defaultValue={tipoContrato}
             onChange={onInputChange}
           >
             <SelectTrigger className="w-full">
@@ -113,20 +145,20 @@ export const EditContractComponent = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Label htmlFor="cargo">Cargo</Label>
-          <Input name="cargo" value={cargo} onChange={onInputChange} required />
-          <Label htmlFor="fecha_inicio">Fecha de inicio</Label>
+          <Label htmlFor="nombreCargo">Cargo</Label>
+          <Input name="nombreCargo" value={nombreCargo} onChange={onInputChange} required />
+          <Label htmlFor="fechaInicio">Fecha de inicio</Label>
           <Input
             type="date"
-            name="fecha_inicio"
-            value={fecha_inicio}
+            name="fechaInicio"
+            value={fechaInicio}
             onChange={onInputChange}
           />
-          <Label htmlFor="fecha_fin">Fecha de finalización</Label>
+          <Label htmlFor="fechaFin">Fecha de finalización</Label>
           <Input
             type="date"
-            name="fecha_fin"
-            value={fecha_fin ? fecha_fin : ""}
+            name="fechaFin"
+            value={fechaFin ? fechaFin : ""}
             onChange={onInputChange}
           />
           <Label htmlFor="salario">Salario</Label>

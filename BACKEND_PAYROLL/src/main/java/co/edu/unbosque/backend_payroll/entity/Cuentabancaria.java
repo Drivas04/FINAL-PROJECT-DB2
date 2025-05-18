@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 @Getter
 @Setter
 @Entity
@@ -12,7 +15,7 @@ import lombok.Setter;
 public class Cuentabancaria {
     @Id
     @Column(name = "numero_cuenta", nullable = false)
-    private Integer numeroCuenta;
+    private Long numeroCuenta;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

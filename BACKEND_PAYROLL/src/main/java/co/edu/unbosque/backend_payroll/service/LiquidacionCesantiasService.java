@@ -23,7 +23,7 @@ public class LiquidacionCesantiasService {
         liquidacionCensantiasRepository.agregarLiquidacionCesantias(dto.getPeriodo(), dto.getFechaPago(), dto.getMotivoRetiro(), dto.getFondoCesantias(), dto.getIdContrato());
     }
 
-    public Map<String, Object> consultarCesantiasDisponibles(Integer contratoId) {
+    public Map<String, Object> consultarCesantiasDisponibles(Short contratoId) {
         return liquidacionCensantiasRepository.calcularCesantiasDisponibles(contratoId);
     }
 }

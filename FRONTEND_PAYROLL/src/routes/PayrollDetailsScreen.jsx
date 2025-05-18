@@ -18,19 +18,16 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { getEmployeeName } from '@/helpers/EmployeeHelper';
 import { useEmployeeContext } from '@/context/EmployeeContext';
 import { useContractContext } from '@/context/ContractContext';
 import { usePayrollContext } from '@/context/PayrollContext';
-import { useSocialSecurityContext } from '@/context/SocialSecurityContext';
 import axios from 'axios';
 
 export const PayrollDetailsScreen = () => {
   const { idEmpleado, idNomina } = useParams();
   const { employees } = useEmployeeContext();
   const { contracts } = useContractContext();
-  const { payrolls: contextPayrolls } = usePayrollContext();
-  const { deducciones: contextDeducciones } = useSocialSecurityContext();
+  const { payrolls } = usePayrollContext();
   
   const [payrollDetails, setPayrollDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,33 +41,41 @@ export const PayrollDetailsScreen = () => {
       setError(null);
 
       try {
-        // Intentar obtener los detalles de la nómina desde el backend
+        // Obtener los detalles de la nómina desde el backend
         const response = await axios.get(`http://localhost:8080/nominas/${idNomina}`);
         
         if (response.data) {
-          setPayrollDetails(response.data);
-        } else {
-          // Si no hay datos del backend, buscar en el contexto
-          const nominaEnContexto = contextPayrolls.find(
-            n => (n.idNomina === parseInt(idNomina) || n.id_nomina === parseInt(idNomina))
-          );
+          console.log("Datos de nómina recibidos (detalle):", response.data);
           
-          if (nominaEnContexto) {
-            setPayrollDetails(nominaEnContexto);
+          // Buscar la nómina en el listado completo donde podría tener más datos
+          const nominaEnListado = payrolls.find(p => p.idNomina === parseInt(idNomina));
+          
+          if (nominaEnListado) {
+            console.log("Datos de nómina en listado:", nominaEnListado);
+            // Combinar los datos para asegurar que tenemos la información más completa
+            setPayrollDetails({
+              ...response.data,
+              fechaPago: nominaEnListado.fechaPago || response.data.fechaPago
+            });
           } else {
-            setError("No se encontró la nómina solicitada");
+            setPayrollDetails(response.data);
+          }
+        } else {
+          // Si no hay datos en la respuesta específica, intentar con el listado
+          const nominaEnListado = payrolls.find(p => p.idNomina === parseInt(idNomina));
+          if (nominaEnListado) {
+            setPayrollDetails(nominaEnListado);
+          } else {
+            setError("No se encontró información de esta nómina");
           }
         }
       } catch (error) {
         console.error("Error al cargar los detalles de la nómina:", error);
         
-        // Intentar usar datos del contexto como respaldo
-        const nominaEnContexto = contextPayrolls.find(
-          n => (n.idNomina === parseInt(idNomina) || n.id_nomina === parseInt(idNomina))
-        );
-        
-        if (nominaEnContexto) {
-          setPayrollDetails(nominaEnContexto);
+        // Como último recurso, intentar obtener del listado de nóminas
+        const nominaEnListado = payrolls.find(p => p.idNomina === parseInt(idNomina));
+        if (nominaEnListado) {
+          setPayrollDetails(nominaEnListado);
         } else {
           setError("No se pudieron cargar los detalles de la nómina. Por favor, intenta de nuevo más tarde.");
         }
@@ -80,7 +85,7 @@ export const PayrollDetailsScreen = () => {
     };
 
     fetchPayrollDetails();
-  }, [idNomina, contextPayrolls]);
+  }, [idNomina, payrolls]);
 
   useEffect(() => {
     const fetchDeducciones = async () => {
@@ -92,26 +97,7 @@ export const PayrollDetailsScreen = () => {
         if (response.data && response.data.length > 0) {
           setDeducciones(response.data);
         } else {
-          // Si no hay datos del backend, buscar en el contexto
-          const deduccionesDeNomina = contextDeducciones?.filter(
-            d => d.nomina_id_nomina === parseInt(idNomina)
-          );
-          
-          if (deduccionesDeNomina && deduccionesDeNomina.length > 0) {
-            setDeducciones(deduccionesDeNomina);
-          } else {
-            // Cargar desde datos estáticos si están disponibles
-            try {
-              const { deductions } = await import('@/data/deductions.js');
-              const deduccionesEstaticas = deductions?.filter(
-                d => d.nomina_id_nomina === parseInt(idNomina)
-              );
-              setDeducciones(deduccionesEstaticas || []);
-            } catch (err) {
-              console.error("Error al cargar deducciones estáticas:", err);
-              setDeducciones([]);
-            }
-          }
+          setDeducciones([]);
         }
       } catch (error) {
         console.error("Error al cargar deducciones:", error);
@@ -120,7 +106,7 @@ export const PayrollDetailsScreen = () => {
     };
 
     fetchDeducciones();
-  }, [idNomina, contextDeducciones]);
+  }, [idNomina]);
   
   useEffect(() => {
     const fetchApropiaciones = async () => {
@@ -132,17 +118,7 @@ export const PayrollDetailsScreen = () => {
         if (response.data && response.data.length > 0) {
           setApropiaciones(response.data);
         } else {
-          // Cargar desde datos estáticos si están disponibles
-          try {
-            const { apropriations } = await import('@/data/appropriations.js');
-            const apropiacionesEstaticas = apropriations?.filter(
-              a => a.nomina_id_nomina === parseInt(idNomina)
-            );
-            setApropiaciones(apropiacionesEstaticas || []);
-          } catch (err) {
-            console.error("Error al cargar apropiaciones estáticas:", err);
-            setApropiaciones([]);
-          }
+          setApropiaciones([]);
         }
       } catch (error) {
         console.error("Error al cargar apropiaciones:", error);
@@ -169,10 +145,14 @@ export const PayrollDetailsScreen = () => {
     periodo = payrollDetails.periodo,
     fechaPago = payrollDetails.fechaPago || payrollDetails.fecha_pago,
     salarioBase = payrollDetails.salarioBase || payrollDetails.salario_base,
-    totalPagado = payrollDetails.totalPagado || payrollDetails.total_pagado,
+    pagoTotal = payrollDetails.totalPagado || payrollDetails.total_pagado || payrollDetails.pagoTotal,
     diasTrabajados = payrollDetails.diasTrabajados || payrollDetails.dias_trabajados,
     contratoIdContrato = payrollDetails.contratoIdContrato || payrollDetails.contrato_id_contrato
   } = payrollDetails;
+
+  console.log("Fecha de pago recibida:", fechaPago, "tipo:", typeof fechaPago);
+  
+
 
   // Obtener datos del contrato
   const contrato = contracts.find(c => c.idContrato === parseInt(contratoIdContrato));
@@ -213,7 +193,7 @@ export const PayrollDetailsScreen = () => {
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Fecha de Pago:</span>
-                <span>{new Date(fechaPago).toLocaleDateString('es-ES')}</span>
+                <span>{fechaPago}</span>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Días Trabajados:</span>
@@ -240,19 +220,15 @@ export const PayrollDetailsScreen = () => {
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Total Devengado:</span>
-                <span>${totalPagado?.toLocaleString('es-CO')}</span>
+                <span>${pagoTotal?.toLocaleString('es-CO')}</span>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Total Deducciones:</span>
                 <span className="text-red-500">${totalDeducciones.toLocaleString('es-CO')}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="font-medium">Total Apropiaciones:</span>
-                <span className="text-red-500">${totalApropiaciones.toLocaleString('es-CO')}</span>
-              </div>
               <div className="flex justify-between mt-4 pt-4 border-t">
                 <span className="font-bold">Total Pagado:</span>
-                <span className="font-bold text-green-600">${(parseFloat(totalPagado || 0) - totalDeducciones - totalApropiaciones).toLocaleString('es-CO')}</span>
+                <span className="font-bold text-green-600">${(parseFloat(pagoTotal || 0) - totalDeducciones).toLocaleString('es-CO')}</span>
               </div>
             </div>
           </CardContent>

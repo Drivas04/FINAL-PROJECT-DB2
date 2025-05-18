@@ -40,7 +40,7 @@ public class Liquidacioncesantia {
     private String fondoCesantias;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "contrato_id_contrato", nullable = false)
     private Contrato contratoIdContrato;
 

@@ -39,11 +39,13 @@ import { getEmployeeByPayroll } from "@/helpers/payrollHelper";
 import { usePayrollContext } from "@/context/PayrollContext";
 import { useEmployeeContext } from "@/context/EmployeeContext";
 import { useContractContext } from "@/context/ContractContext";
+import { useNavigate } from "react-router-dom";
 
 export const PayrollsTable = () => {
   const { payrolls, deletePayroll } = usePayrollContext();
   const {employees} = useEmployeeContext();
   const { contracts } = useContractContext();
+  const navigate  = useNavigate();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPayroll, setSelectedPayroll] = useState(null);
@@ -60,7 +62,10 @@ export const PayrollsTable = () => {
     paginatedData,
   } = usePagination(filteredPayrolls, 5);
 
-  console.log(paginatedData);
+
+  const seeDetails = (payroll) => {
+    navigate(`/empleados/${payroll.empleadoIdEmpleado}/nominas/${payroll.idNomina}`);
+  }
 
   return (
     <>
@@ -80,6 +85,7 @@ export const PayrollsTable = () => {
             <TableHead className="w-[100px]">Id de nómina</TableHead>
             <TableHead>Empleado</TableHead>
             <TableHead>Periodo</TableHead>
+            <TableHead>Fecha de pago</TableHead>
             <TableHead>Codigo de contrato</TableHead>
             <TableHead className="text-right">Total pagado</TableHead>
             <TableHead className="text-center">Acción</TableHead>
@@ -87,7 +93,6 @@ export const PayrollsTable = () => {
         </TableHeader>
         <TableBody>
           {paginatedData.map((pay) => {
-            // Obtener información del empleado para esta nómina específica
             const empleadoInfo = getEmployeeByPayroll(contracts, employees, pay);
             
             return (
@@ -102,9 +107,12 @@ export const PayrollsTable = () => {
                   )}
                 </TableCell>
                 <TableCell>{pay.periodo}</TableCell>
+                <TableCell>{pay.fechaPago}</TableCell>
                 <TableCell>{pay.contratoIdContrato}</TableCell>
                 <TableCell className="text-right font-bold">
-                  ${pay.pagoTotal.toLocaleString()}
+                  ${pay.pagoTotal !== null && pay.pagoTotal !== undefined 
+                    ? parseFloat(pay.pagoTotal).toLocaleString() 
+                    : "0"}
                 </TableCell>
                 <TableCell className="text-center">
                   <DropdownMenu>
@@ -117,7 +125,11 @@ export const PayrollsTable = () => {
                       <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
-                        <DropdownMenuItem>Ver detalles</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            seeDetails(pay);
+                          }}
+                        >Ver detalles</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
                             // Aquí puedes abrir un modal o navegar para editar
@@ -172,10 +184,14 @@ export const PayrollsTable = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => {
+              onClick={async () => {
                 if (selectedPayroll) {
-                  deletePayroll(selectedPayroll.id_nomina);
-                  setSelectedPayroll(null);
+                  try {
+                    await deletePayroll(selectedPayroll.idNomina);
+                    setSelectedPayroll(null);
+                  } catch (error) {
+                    console.error("Error al eliminar nómina:", error);
+                  }
                 }
                 setIsDialogOpen(false);
               }}

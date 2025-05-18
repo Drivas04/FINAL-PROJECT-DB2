@@ -102,12 +102,49 @@ export const ContractProvider = ({ children }) => {
     }
   };
 
-  const updateContract = (updatedContract) => {
-    setContracts((prevContracts) => 
-      prevContracts.map((contract) => 
-        contract.id_contrato === updatedContract.id_contrato ? updatedContract : contract
-      )
-    );
+  const updateContract = async (contractId, updatedData) => {
+    try {
+      console.log(`Actualizando contrato ${contractId} con datos:`, updatedData);
+      
+      // Formato para el backend
+      const contractData = {
+        salario: updatedData.salario,
+        tipoContrato: updatedData.tipoContrato,
+        nombreCargo: updatedData.nombreCargo,
+        fechaInicio: updatedData.fechaInicio,
+        fechaFin: updatedData.fechaFin,
+        estado: updatedData.estado === "Activo" ? "A" : "I",
+        empleadoIdEmpleado: updatedData.empleadoIdEmpleado
+      };
+      
+      const response = await axios.put(
+        `http://localhost:8080/contratos/${contractId}`,
+        contractData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      // Actualiza el estado local con los datos devueltos por el servidor
+      setContracts(prevContracts => 
+        prevContracts.map(contract => 
+          contract.idContrato === contractId ? { ...contract, ...updatedData } : contract
+        )
+      );
+      
+      console.log("Contrato actualizado con éxito:", response.data);
+      
+      // También obtener la lista fresca de contratos para asegurarnos
+      // que tenemos los datos actualizados del servidor
+      await fetchContracts();
+      
+      return response.data;
+    } catch (error) {
+      console.error("Error al actualizar contrato:", error);
+      throw error; // Re-lanzar el error para manejarlo en el componente
+    }
   };
 
   const value = {

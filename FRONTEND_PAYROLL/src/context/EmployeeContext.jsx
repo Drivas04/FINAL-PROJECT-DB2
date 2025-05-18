@@ -62,6 +62,10 @@ export const EmployeeProvider = ({ children }) => {
       
       console.log("Empleado actualizado con éxito:", response.data);
       
+      // También obtener la lista fresca de empleados para asegurarnos
+      // que tenemos los datos actualizados del servidor
+      await fetchEmployees();
+      
       return response.data;
     } catch (error) {
       console.error("Error al actualizar empleado:", error);

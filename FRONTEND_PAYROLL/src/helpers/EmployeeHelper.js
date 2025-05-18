@@ -2,7 +2,7 @@ import { get } from "react-hook-form";
 
 export const getEmployeeName = (idEmpleado, employees) => {
   const employee = employees.find((emp) => emp.idEmpleado === idEmpleado);
-  return  employee ? employee.nombre: "Empleado no encontrado";
+  return  employee ? employee.nombre + ' ' + employee.apellido: "Empleado no encontrado";
 }
 
 export const getEmployeeDocument = (idEmpleado, employees) => {
