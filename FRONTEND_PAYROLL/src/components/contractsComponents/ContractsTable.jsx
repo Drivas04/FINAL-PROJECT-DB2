@@ -129,7 +129,6 @@ export const ContractsTable = () => {
                       <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup>
-                        <DropdownMenuItem>Ver contrato</DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
                             if (dropdownRef.current) {
@@ -143,9 +142,6 @@ export const ContractsTable = () => {
                           }}
                         >
                           Editar contrato
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="!text-red-600 hover:!text-white hover:!bg-red-600">
-                          Recindir contrato
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>

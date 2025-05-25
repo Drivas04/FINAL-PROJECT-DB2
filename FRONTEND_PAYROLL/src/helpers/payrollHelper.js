@@ -42,6 +42,7 @@ export const getEmployeeByPayroll = (contracts, employees, payroll) => {
     // Retornar el empleado encontrado
     return {
       nombre: empleadoAsociado.nombre,
+      apellido: empleadoAsociado.apellido,
       id: empleadoAsociado.idEmpleado,
       documento: empleadoAsociado.numeroDocumento
     };

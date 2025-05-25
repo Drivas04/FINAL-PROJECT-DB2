@@ -64,8 +64,10 @@ export const PayrollsTable = () => {
 
 
   const seeDetails = (payroll) => {
-    navigate(`/empleados/${payroll.empleadoIdEmpleado}/nominas/${payroll.idNomina}`);
+    navigate(`/empleados/${getEmployeeByPayroll(contracts, employees, payroll).id}/nominas/${payroll.idNomina}`);
+    console.log(getEmployeeByPayroll(contracts, employees, payroll))
   }
+
 
   return (
     <>
@@ -99,7 +101,7 @@ export const PayrollsTable = () => {
               <TableRow key={pay.idNomina}>
                 <TableCell className="font-medium">{pay.idNomina}</TableCell>
                 <TableCell className="font-medium">
-                  {empleadoInfo.nombre || "Sin asignar"}
+                  {empleadoInfo.nombre+' '+empleadoInfo.apellido || "Sin asignar"}
                   {empleadoInfo.documento && (
                     <span className="text-xs text-gray-500 block">
                       Doc: {empleadoInfo.documento}
@@ -130,14 +132,6 @@ export const PayrollsTable = () => {
                             seeDetails(pay);
                           }}
                         >Ver detalles</DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            // Aquí puedes abrir un modal o navegar para editar
-                            console.log("Editar nómina:", pay);
-                          }}
-                        >
-                          Editar nómina
-                        </DropdownMenuItem>
                         <DropdownMenuItem
                           className="!text-red-600 hover:!text-white hover:!bg-red-600"
                           onClick={() => {

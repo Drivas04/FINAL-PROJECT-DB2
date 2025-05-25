@@ -33,4 +33,6 @@ public interface NominaRepository extends JpaRepository<Nomina, Long> {
 
     @Procedure(procedureName = "sp_eliminar_nomina")
     void eliminarNomina(@Param("pn_id_nomina") Short idNomina);
+
+   
 }
