@@ -18,7 +18,7 @@ public class NominaService {
         return nominaRepository.consultarNominas();
     }
 
-    public List<NominaProjection> getNominasByEmpleadoId(Integer empleadoId) {
+    public List<NominaProjection> getNominasByEmpleadoId(Short empleadoId) {
         return nominaRepository.findNominasByEmpleadoId(empleadoId);
     }
     public List<NominaProjection> getNominasByContratoId(Integer contratoId) {

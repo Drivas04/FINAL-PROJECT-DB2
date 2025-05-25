@@ -11,7 +11,6 @@ import {
 import usePagination from "@/hooks/usePagination";
 import useSearch from "@/hooks/useSearch";
 import { useCesantiasContext } from "@/context/CesantiasContext";
-import { getDocumentById } from "@/data/employees";
 import { getEmployeeDocument } from "@/helpers/EmployeeHelper";
 import { useEmployeeContext } from "@/context/EmployeeContext";
 import { getContractById } from "@/helpers/contractHelper";

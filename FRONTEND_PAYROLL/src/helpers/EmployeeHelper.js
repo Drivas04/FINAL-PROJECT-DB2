@@ -20,3 +20,12 @@ export const getDepartmentName = (department_id, departments) => {
   return departamento ? departamento.nombreDepartamento : "Departamento no encontrado";
 };
 
+
+export const getEmployee = (id, employees) => {
+  return employees.find((employee) => employee.id_empleado === id);
+};
+
+export const getDocumentById = (id, employees) => {
+  const employee = employees.find((employee) => employee.id_empleado === id);
+  return employee.documento;
+}

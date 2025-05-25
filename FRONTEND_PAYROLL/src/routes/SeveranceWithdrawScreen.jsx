@@ -384,7 +384,7 @@ export const SeveranceWithdrawScreen = () => {
                         <SelectValue placeholder="Seleccione la causal de retiro" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Terminacion de contrato">
+                        <SelectItem value="Terminación de contrato">
                           Terminación de contrato
                         </SelectItem>
                         <SelectItem value="Vivienda">

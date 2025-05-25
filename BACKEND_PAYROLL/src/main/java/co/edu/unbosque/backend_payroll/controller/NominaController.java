@@ -24,7 +24,7 @@ public class NominaController {
     }
 
     @GetMapping("/empleado/{empleadoId}")
-    public ResponseEntity<List<NominaProjection>> getNominasByEmpleado(@PathVariable Integer empleadoId) {
+    public ResponseEntity<List<NominaProjection>> getNominasByEmpleado(@PathVariable Short empleadoId) {
         List<NominaProjection> nominas = nominaService.getNominasByEmpleadoId(empleadoId);
         return ResponseEntity.ok(nominas);
     }
