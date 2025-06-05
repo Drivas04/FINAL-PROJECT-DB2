@@ -1,0 +1,10 @@
+.sidebar{
+    width: 60px;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    color: violet;
+    overflow: hidden;
+    border-radius: 5px 0 0 5px;
+    transition: width .75s ease;
+}

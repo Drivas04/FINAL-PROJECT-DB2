@@ -1,0 +1,164 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { useEmployeeContext } from './EmployeeContext';
+
+const ContractContext = createContext();
+
+export const useContractContext = () => useContext(ContractContext);
+
+export const ContractProvider = ({ children }) => {
+  const [contracts, setContracts] = useState([]);
+  const [loadingContracts, setLoadingContracts] = useState(true);
+  const {fetchEmployees} = useEmployeeContext();
+
+  // Cargar los contratos al iniciar
+  useEffect(() => {
+    fetchContracts();
+  }, []);
+  
+  // Escuchar eventos de eliminación de empleados
+  useEffect(() => {
+    const handleEmployeeDeleted = (event) => {
+      const employeeId = event.detail;
+      console.log(`Eliminando contratos del empleado: ${employeeId}`);
+      
+      // Filtrar contratos para eliminar los del empleado eliminado
+      setContracts(prevContracts => 
+        prevContracts.filter(contract => contract.empleadoIdEmpleado !== employeeId)
+      );
+    };
+    
+    // Registrar el escuchador de eventos
+    window.addEventListener('employeeDeleted', handleEmployeeDeleted);
+    
+    // Limpiar el escuchador cuando el componente se desmonte
+    return () => {
+      window.removeEventListener('employeeDeleted', handleEmployeeDeleted);
+    };
+  }, []);
+
+  const fetchContracts = async () => {
+    try {
+      setLoadingContracts(true);
+      const response = await axios.get("http://localhost:8080/contratos");
+      setContracts(response.data);
+    } catch (error) {
+      console.error("Error al cargar contratos:", error);
+    } finally {
+      setLoadingContracts(false);
+    }
+  };
+
+  const addContract = async (contratoData, empleadoData) => {
+    try {
+      // Crear el DTO con la estructura que espera el backend
+      const contratoEmpleadoDTO = {
+        contrato: {
+          salario: contratoData.salario,
+          tipoContrato: contratoData.tipoContrato,
+          nombreCargo: contratoData.nombreCargo,
+          fechaInicio: contratoData.fechaInicio || new Date().toISOString().split("T")[0],
+          fechaFin: contratoData.fecha_fin,
+          estado: contratoData.estado === "Activo" ? "A" : "I"
+        },
+        empleado: {
+          nombre: empleadoData.nombre.split(" ")[0] || "",
+          apellido: empleadoData.nombre.split(" ")[1] || "",
+          tipoDocumento: empleadoData.tipoDocumento,
+          numeroDocumento: empleadoData.numeroDocumento,
+          correo: empleadoData.correo,
+          telefono: empleadoData.telefono,
+          direccion: empleadoData.direccion,
+          fechaNacimiento: empleadoData.fechaNacimiento,
+          fechaContratacion: new Date().toISOString().split("T")[0],
+          epsEmpleado: empleadoData.eps || "Compensar", // Valor por defecto
+          departamentoIdDepartamento: empleadoData.departamentoIdDepartamento || 1,
+          cuentabancariaNumeroCuenta: empleadoData.cuentabancariaNumeroCuenta || 0,
+          bancoIdBanco: empleadoData.bancoIdbanco || 1 // Valor por defecto
+        }
+      };
+
+      console.log("Enviando datos al servidor:", contratoEmpleadoDTO);
+
+      const response = await axios.post(
+        "http://localhost:8080/contratos", 
+        contratoEmpleadoDTO
+      );
+      
+      // Si la respuesta es exitosa, actualizamos el estado local
+      // Asumimos que el backend nos devuelve el contrato creado
+      if (response.status === 200 || response.status === 201) {
+        // Recargar los contratos para obtener los datos actualizados
+        const contractsResponse = await axios.get("http://localhost:8080/contratos");
+        setContracts(contractsResponse.data);
+      }
+
+      await fetchEmployees(); 
+      
+      return response;
+    } catch (error) {
+      console.error("Error al agregar contrato:", error);
+      throw error; // Re-lanzar el error para manejarlo en el componente
+    }
+  };
+
+  const updateContract = async (contractId, updatedData) => {
+    try {
+      console.log(`Actualizando contrato ${contractId} con datos:`, updatedData);
+      
+      // Formato para el backend
+      const contractData = {
+        salario: updatedData.salario,
+        tipoContrato: updatedData.tipoContrato,
+        nombreCargo: updatedData.nombreCargo,
+        fechaInicio: updatedData.fechaInicio,
+        fechaFin: updatedData.fechaFin,
+        estado: updatedData.estado === "Activo" ? "A" : "I",
+        empleadoIdEmpleado: updatedData.empleadoIdEmpleado
+      };
+      
+      const response = await axios.put(
+        `http://localhost:8080/contratos/${contractId}`,
+        contractData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      // Actualiza el estado local con los datos devueltos por el servidor
+      setContracts(prevContracts => 
+        prevContracts.map(contract => 
+          contract.idContrato === contractId ? { ...contract, ...updatedData } : contract
+        )
+      );
+      
+      console.log("Contrato actualizado con éxito:", response.data);
+      
+      // También obtener la lista fresca de contratos para asegurarnos
+      // que tenemos los datos actualizados del servidor
+      await fetchContracts();
+      
+      return response.data;
+    } catch (error) {
+      console.error("Error al actualizar contrato:", error);
+      throw error; // Re-lanzar el error para manejarlo en el componente
+    }
+  };
+
+  const value = {
+    contracts,
+    loadingContracts,
+    addContract,
+    updateContract,
+    setContracts,
+    fetchContracts
+  };
+
+  return (
+    <ContractContext.Provider value={value}>
+      {children}
+    </ContractContext.Provider>
+  );
+};
